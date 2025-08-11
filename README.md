@@ -1,69 +1,66 @@
-# React + TypeScript + Vite
+# Ongil
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Setting
 
-Currently, two official plugins are available:
+```bash
+# Install dependencies
+yarn install
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Start development server
+yarn run dev
 
-## Expanding the ESLint configuration
+# Build for production
+yarn build
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+# Run tests
+yarn test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 2. Project Structure
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+```
+realconnect/
+├── node_modules/    
+├── public/          
+├── src/
+│   ├── assets/             
+│   ├── components/
+│   ├── hooks/ 
+│   ├── pages/ 
+│   ├── styles/
+│   ├── types/          
+│   ├── App.tsx
+│   ├── main.tsx       
+│   └── routes.tsx     
+├── package.json
+├── index.html
+├── vite.config.ts
+└── README.md        
+```
 
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+## 3. Commit Convention
+
+### Example:
+```bash
+ex) feat: 로그인 기능 추가
+```
+
+- feat: 새로운 기능 추가
+- add: 새로운 파일 추가
+- fix: 버그 수정
+- docs: 문서 수정
+- style: 코드 스타일 변경 (포맷팅, 세미콜론 추가 등)
+- refactor: 코드 리팩토링 (기능 수정 없이 코드 개선)
+- test: 테스트 추가/수정
+- chore: 기타 작업 (빌드 프로세스, 의존성 업데이트 등)
+- hotfix: 긴급 버그 수정
+
+### 추가 규칙(선택 사항)
+커밋 메시지의 본문에 추가적인 설명이 필요한 경우 추가합니다.
+
+```bash
+git commit -m "feat: 로그인 기능 추가
+
+로그인 기능을 추가하여 사용자가 이메일과 비밀번호로 로그인할 수 있습니다.
+이 기능은 세션 관리와 함께 작동합니다."
 ```
