@@ -1,4 +1,30 @@
-/* src/components/TopBar.module.scss */
+/* ==== optional: SF Pro 폰트 등록 (파일이 있을 때 동작) ==== */
+@font-face {
+  font-family: "SF Pro";
+  src: local("SF Pro Text"), local("SFProText-Regular"),
+    url("../../assets/fonts/SFProText-Regular.woff2") format("woff2"),
+    url("../../assets/fonts/SFProText-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SF Pro";
+  src: local("SF Pro Semibold"), local("SFProText-Semibold"),
+    url("../../assets/fonts/SFProText-Semibold.woff2") format("woff2"),
+    url("../../assets/fonts/SFProText-Semibold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ===== design tokens ===== */
+:root {
+  --status-top: 21px; /* Status Bar 위 여백 */
+  --status-side: 25px; /* 좌우 정렬선 (←, ✕ 와 동일) */
+  --levels-gap: 7px; /* 신호/와이파이/배터리 간격 */
+  --time-extra-offset: 9px; /* ← 라인보다 더 안쪽으로 밀기 값 */
+}
 
 .root {
   position: fixed;
@@ -27,54 +53,59 @@
   );
 }
 
-/* <status bar> VStack ... padding(.top,21) / frame(375×48) */
+/* ===== Status Bar (iOS) ===== */
 .statusWrap {
   width: 375px;
   height: 48px;
   margin: 0 auto;
-  padding: 21px 0 0 0;
+  padding-top: var(--status-top);
   box-sizing: border-box;
   display: flex;
   align-items: flex-start;
 }
 
-/* 내부 HStack frame(375×22) */
 .statusRow {
   width: 100%;
   height: 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* ←, ✕ 아이콘과 동일한 좌우 정렬선 */
+  padding: 0 var(--status-side);
+  box-sizing: border-box;
 }
 
-/* <time> HStack(spacing:10) padding L16/R6 */
+/* 시간: ← 라인보다 더 안쪽으로 강제 오프셋 */
 .time {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 6px 0 16px;
-  font-size: 14px;
+  gap: 6px;
+  margin-left: var(--time-extra-offset); /* 핵심! */
+  padding: 0;
+  font-size: 16px;
   font-weight: 600;
+  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", sans-serif;
 }
 
-/* <levels> HStack(spacing:7) padding L6/R16 */
+/* 우측 아이콘 묶음 */
 .levels {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 0 16px 0 6px;
+  gap: var(--levels-gap);
 }
 .levelIcon {
   height: 14px;
+  width: auto;
   display: block;
 }
 
-/* <top bar> padding(.horizontal,25) / frame(width:375) */
+/* ===== Top Bar (Back / Close) ===== */
 .navRow {
   width: 375px;
   height: 52px;
   margin: 0 auto;
-  padding: 0 25px;
+  padding: 0 var(--status-side);
   box-sizing: border-box;
   display: flex;
   align-items: center;
