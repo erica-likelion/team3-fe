@@ -1,11 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
+import AppLayout from "./layouts/AppLayout";
 import Onboarding from "./pages/Onboarding";
+import SelectType from "./pages/SelectType/SelectType";
 
-const routes = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
-    element: <Onboarding />,
+    element: <AppLayout />, // 공통 레이아웃
+    children: [
+      { index: true, element: <Onboarding /> }, // "/"
+      { path: "select-type", element: <SelectType /> },
+    ],
   },
 ]);
 
-export default routes;
+export default router;

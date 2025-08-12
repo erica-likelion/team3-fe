@@ -1,0 +1,94 @@
+/* src/components/TopBar.module.scss */
+
+.root {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 375px;
+  max-width: 100%;
+  z-index: 10;
+  color: #383326; /* Neutral/BK */
+  background: transparent;
+  font-family: var(
+    --font-main,
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif
+  );
+}
+
+/* <status bar> VStack ... padding(.top,21) / frame(375×48) */
+.statusWrap {
+  width: 375px;
+  height: 48px;
+  margin: 0 auto;
+  padding: 21px 0 0 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* 내부 HStack frame(375×22) */
+.statusRow {
+  width: 100%;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* <time> HStack(spacing:10) padding L16/R6 */
+.time {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* <levels> HStack(spacing:7) padding L6/R16 */
+.levels {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 16px 0 6px;
+}
+.levelIcon {
+  height: 14px;
+  display: block;
+}
+
+/* <top bar> padding(.horizontal,25) / frame(width:375) */
+.navRow {
+  width: 375px;
+  height: 52px;
+  margin: 0 auto;
+  padding: 0 25px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.iconBtn {
+  background: none;
+  border: 0;
+  padding: 0;
+  line-height: 0;
+  cursor: pointer;
+}
+.iconBtn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}

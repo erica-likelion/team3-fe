@@ -1,0 +1,129 @@
+/* src/pages/SelectType/SelectType.module.scss */
+
+:root {
+  --NeutralBK: #383326;
+  --GR400: #b5b5b5;
+  --NeutralWT: #fffafa;
+  --PRIMARYOR: #f57f4c;
+  --OR600: #f26b4a;
+  --statusbar: 21px;
+  --homebar: 19px;
+  --page-hpad: 20px;
+  --card-w: 103px;
+  --card-h: 103px;
+  --card-pad-x: 12px;
+  --card-pad-y: 16px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+}
+
+.screen {
+  max-width: 375px;
+  min-height: 100vh;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: var(--NeutralWT);
+  padding: calc(52px + max(var(--statusbar), env(safe-area-inset-top, 0px))) 0 0; /* topbar+status만 더하고, 헤드는 자체 패딩 20 줌 */
+  font-family: var(
+    --font-main,
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif
+  );
+}
+
+/* HeadInfo: VStack(alignment:.leading, spacing:12) + padding(.horizontal,20) */
+.head {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.head h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--NeutralBK);
+  line-height: 1.4;
+  white-space: pre-line;
+}
+.head p {
+  margin: 12px 0 0 0;
+  font-size: 14px;
+  color: var(--GR400);
+}
+
+/* 카드 영역: 헤드 아래 32 간격, 3열, gap 16 */
+.grid {
+  width: 100%;
+  margin: 32px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  width: var(--card-w);
+  height: var(--card-h);
+  padding: var(--card-pad-y) var(--card-pad-x);
+  background: var(--NeutralWT);
+  border-radius: var(--radius-12);
+  border: 1px solid var(--PRIMARYOR);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+.label {
+  font-size: 12px;
+  color: var(--PRIMARYOR);
+}
+
+/* 선택상태 */
+.cardActive {
+  background: var(--OR600);
+  border-color: var(--PRIMARYOR);
+  box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
+}
+.labelActive {
+  color: #fff !important;
+}
+
+.bottomSafe {
+  height: max(var(--homebar), env(safe-area-inset-bottom, 0px));
+}
+
+.next {
+  position: sticky;
+  bottom: 0;
+  width: 335px;
+  height: 54px;
+  margin: 12px auto;
+  border: 0;
+  border-radius: var(--radius-16);
+  background: var(--PRIMARYOR);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  display: block;
+}
+.disabled {
+  background: #e6e6e6 !important;
+  color: #bdbdbd !important;
+}
