@@ -1,0 +1,141 @@
+:root {
+  /* 컬러 토큰 */
+  --NeutralBK: #383326;
+  --GR400: #b5b5b5;
+  --NeutralWT: #fffafa;
+  --PRIMARYOR: #f57f4c;
+
+  /* 레이아웃 토큰 */
+  --page-hpad: 20px;
+  --gap-topbar-head: 24px; /* TopBar ↔ HeadInfo */
+  --gap-head-to-list: 32px; /* 본문 → 첫 아이템 */
+  --gap-list-to-btn: 132px; /* 마지막 아이템 → 버튼 위 */
+
+  --btn-h: 54px;
+  --btn-bottom-offset: 34px;
+
+  --radius-16: 16px;
+}
+
+/* ===== 페이지 루트: 좌우 20 + 상단 24 보장 ===== */
+.root {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--gap-topbar-head) 0 0 0 !important;
+}
+
+/* ===== HeadInfo ===== */
+.head {
+  /* 좌우 패딩은 root가 책임짐 */
+}
+
+.head h1 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--NeutralBK);
+  line-height: 22px; /* 시안처럼 타이트 */
+  white-space: normal; /* <br>만 줄바꿈으로 사용 */
+  word-break: keep-all; /* 한국어 단어 깨짐 방지 */
+}
+
+/* 이모지는 제목 끝에서 줄바꿈 되지 않도록 */
+.nowrap {
+  white-space: nowrap;
+}
+
+.head p,
+.desc {
+  margin: 0; /* 위 여백은 h1이 가짐 */
+  font-size: 14px; /* Body/14S */
+  font-weight: 400;
+  color: var(--GR400);
+  line-height: 20px; /* 고정 */
+  white-space: pre-line;
+  word-break: keep-all;
+}
+.line {
+  white-space: nowrap;
+}
+.desc br {
+  display: inline;
+}
+/* ===== List ===== */
+.list {
+  margin: var(--gap-head-to-list) 0 0;
+  padding: 0; /* 좌우는 root 패딩과 동일(20px) */
+  list-style: none;
+
+  /* (보이는 간격 132) + (버튼 54) + (오프셋 34) = 220 */
+  padding-bottom: calc(
+    var(--gap-list-to-btn) + var(--btn-h) + var(--btn-bottom-offset)
+  );
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 8px 0; /* 시안 기준 타이트 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+}
+
+.itemLeft {
+  padding-right: 8px;
+}
+
+.itemTitle {
+  font-size: 16px; /* Title/16SB */
+  font-weight: 600;
+  color: var(--NeutralBK);
+  line-height: 20px; /* 고정 */
+  margin-bottom: 4px;
+}
+
+.itemValue {
+  font-size: 16px; /* Body/16M */
+  font-weight: 500;
+  color: var(--GR400);
+  line-height: 20px; /* 고정 */
+}
+
+.selected {
+  color: var(--PRIMARYOR);
+  font-weight: 700;
+}
+
+.chev {
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 18px;
+  line-height: 1;
+  padding-left: 8px;
+}
+
+/* ===== Fixed Button ===== */
+.next {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--btn-bottom-offset));
+  width: 335px;
+  height: var(--btn-h);
+  margin: 0;
+  border: 0;
+  border-radius: var(--radius-16);
+  background: var(--PRIMARYOR);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 5;
+}
+
+.disabled {
+  background: #e6e6e6 !important;
+  color: #bdbdbd !important;
+}
+
+/* 전역에서 상단 패딩을 따로 주는 경우 무력화 */
+.page-content {
+  padding-top: 0 !important;
+}

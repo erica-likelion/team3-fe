@@ -1,0 +1,83 @@
+/* src/components/BottomSheet/BottomSheet.module.scss */
+:root {
+  --bg: #fffafa;
+  --or: #f57f4c;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+}
+.sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 375px;
+  max-width: 100%;
+  max-height: 80vh;
+  background: var(--bg);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.12);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+.handle {
+  width: 64px;
+  height: 5px;
+  border-radius: 999px;
+  background: #ddd;
+  align-self: center;
+  margin-top: 10px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 8px;
+}
+.header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.close {
+  background: transparent;
+  border: 0;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.content {
+  padding: 12px 20px 0;
+  overflow: auto;
+}
+.footer {
+  padding: 16px 20px calc(env(safe-area-inset-bottom) + 10px);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+.btn {
+  height: 48px;
+  flex: 1;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+}
+.outline {
+  background: #fff;
+  border: 1px solid var(--or);
+  color: var(--or);
+}
+.primary {
+  background: var(--or);
+  border: 1px solid var(--or);
+  color: #fff;
+}
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

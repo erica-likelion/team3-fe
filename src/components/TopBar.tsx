@@ -1,4 +1,3 @@
-// src/components/TopBar.tsx
 import { useEffect, useState } from "react";
 import s from "./TopBar.module.scss";
 
@@ -20,28 +19,25 @@ export default function TopBar() {
   const [time, setTime] = useState<string>(formatNow());
 
   useEffect(() => {
-    // 다음 분(00초)에 처음 갱신 → 이후 1분마다
     let intervalId: number | undefined;
-
     const now = new Date();
     const msToNextMinute =
       (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-
     const timeoutId = window.setTimeout(() => {
       setTime(formatNow());
       intervalId = window.setInterval(() => setTime(formatNow()), 60_000);
     }, msToNextMinute);
-
-    // 정리
     return () => {
       window.clearTimeout(timeoutId);
       if (intervalId !== undefined) window.clearInterval(intervalId);
     };
   }, []);
 
+  const emit = (name: "topbar:back" | "topbar:close") =>
+    window.dispatchEvent(new CustomEvent(name));
+
   return (
     <div className={s.root}>
-      {/* status bar */}
       <div className={s.statusWrap}>
         <div className={s.statusRow}>
           <div className={s.time}>
@@ -54,12 +50,19 @@ export default function TopBar() {
           </div>
         </div>
       </div>
-      {/* top bar */}
       <div className={s.navRow}>
-        <button className={s.iconBtn} aria-label="back">
+        <button
+          className={s.iconBtn}
+          aria-label="back"
+          onClick={() => emit("topbar:back")}
+        >
           <img src={Prev} alt="" />
         </button>
-        <button className={s.iconBtn} aria-label="close">
+        <button
+          className={s.iconBtn}
+          aria-label="close"
+          onClick={() => emit("topbar:close")}
+        >
           <img src={Close} alt="" />
         </button>
       </div>
