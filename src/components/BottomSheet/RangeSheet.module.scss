@@ -1,6 +1,7 @@
 :root {
   --NeutralBK: #383326;
   --NeutralWT: #fffafa;
+  --GR200: #eeeeee;
   --GR300: #d9d9d9;
   --GR400: #b5b5b5;
   --OR600: #f26b4a;
@@ -27,7 +28,7 @@
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
   box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
-  padding: 16px 20px 20px;
+  padding: 16px 20px 24px; /* 홈 인디케이터 여유 */
   z-index: 1001;
 }
 .grabber {
@@ -48,19 +49,23 @@
 .title {
   margin: 0;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--NeutralBK);
 }
+/* 요구#3: 회색 배경 X 버튼 */
 .close {
-  background: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background: var(--GR200);
   border: 0;
-  padding: 4px;
-  line-height: 0;
+  display: grid;
+  place-items: center;
   cursor: pointer;
 }
 .close img {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: block;
 }
 
@@ -70,10 +75,10 @@
   grid-template-columns: 1fr auto 1fr;
   gap: 12px;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .hyphen {
-  font-size: 24px;
+  font-size: 20px;
   color: var(--NeutralBK);
   user-select: none;
 }
@@ -83,149 +88,184 @@
   display: flex;
   align-items: center;
   height: 54px;
-  padding: 0 38px 0 14px;
+  padding: 0 38px 0 14px; /* 오른쪽 unit 공간 */
   border: 1px solid #e7e0db;
-  border-radius: var(--radius-12);
+  border-radius: 12px;
   background: #fff;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .fieldActive {
   border-color: var(--OR600);
   box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
 }
-.fieldLabel {
-  position: absolute;
-  left: 14px;
-  top: 6px;
-  font-size: 12px;
-  color: var(--GR400);
-  line-height: 1;
-}
+
+/* 요구#5: 비어 있을 땐 가운데 정렬 + 회색, 값 있으면 좌측정렬 + 주황 */
 .field input {
   width: 100%;
   border: 0;
   outline: none;
   font-size: 16px;
-  font-weight: 500;
-  color: var(--NeutralBK);
-  padding-top: 18px;
+  font-weight: 700;
+  background: transparent;
 }
-.field input::placeholder {
+.fieldEmpty {
+  justify-content: center;
+}
+.fieldEmpty input {
+  text-align: center;
   color: var(--GR400);
-  font-weight: 500;
 }
+.fieldEmpty .unit {
+  position: static;
+  transform: none;
+  margin-left: 6px;
+  color: var(--GR400);
+}
+
+.fieldFilled {
+  justify-content: flex-start;
+}
+.fieldFilled input {
+  text-align: left;
+  color: var(--OR600);
+}
+.fieldFilled .unit {
+  right: 12px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--NeutralBK);
+}
+
 .unit {
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
+  font-weight: 600;
   color: var(--NeutralBK);
 }
 
+/* Slider */
 .sliderWrap {
   position: relative;
-  height: 28px;
-  margin: 6px 0 20px;
+  height: 44px;
+  margin: 10px 0 18px;
   overflow: visible;
 }
-
 .track,
 .range {
   pointer-events: none;
 }
 
+/* 요구#7: 회색선(트랙) 두껍게 3px, 중앙 정렬 */
 .track {
   position: absolute;
   left: 0;
-  right: 0;
-  top: 14px;
-  height: 2px;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-1.5px);
+  height: 3px;
   border-radius: 100px;
   background: #d9d9d9;
   z-index: 0;
 }
+
+/* 요구#4: 주황색 선택 구간(색상 채움 + 도트 오버레이) */
 .range {
   position: absolute;
-  top: 12px;
+  top: 50%;
+  transform: translateY(-3px);
+  left: 0;
   height: 6px;
   border-radius: 100px;
   z-index: 1;
+  background-color: var(--OR600);
   background-image: var(--selected-url);
   background-repeat: repeat-x;
   background-size: auto 6px;
 }
 
+/* 네이티브 range 입력(항상 중앙 라인에 겹치도록) */
 .thumb {
   appearance: none;
   -webkit-appearance: none;
   position: absolute;
-  top: 0;
   left: 0;
   width: 100%;
-  height: 28px;
+  top: calc(50% - 12px); /* 24px 높이의 절반 */
+  height: 24px;
   background: transparent;
   margin: 0;
   pointer-events: auto;
 }
 .thumbLow {
-  z-index: 10;
+  z-index: 11;
 }
 .thumbHigh {
   z-index: 11;
 }
+.thumbTop {
+  z-index: 12;
+} /* 활성 thumb만 올려서 어느 쪽이든 잘 잡힘(요구#2) */
 
 .thumb::-webkit-slider-runnable-track {
-  height: 28px;
+  height: 24px;
   background: transparent;
 }
 .thumb::-moz-range-track {
-  height: 28px;
+  height: 24px;
   background: transparent;
 }
 
-/* 손잡이 */
+/* 요구#7: 동그라미(핸들) 작게 14px + 2px 테두리 */
 .thumb::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid var(--OR600);
-  margin-top: -9px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--OR600);
+  margin-top: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 }
 .thumb::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid var(--OR600);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--OR600);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 }
 
-/* Actions */
+/* Actions – 버튼 사이즈 분리 */
 .actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 125px 190px;
+  justify-content: space-between;
+  align-items: center;
   gap: 16px;
   margin-top: 8px;
+  margin-bottom: 14px; /* 홈 인디케이터와 간격(요구#6) */
 }
 .ghost,
 .primary {
-  height: 48px;
+  height: 54px;
   border-radius: 12px;
   font-size: 16px;
   font-weight: 700;
   border: 0;
 }
 .ghost {
+  width: 125px;
   background: var(--OR300);
   color: var(--OR600);
 }
 .primary {
+  width: 190px;
   background: var(--OR600);
   color: #fff;
 }
@@ -233,4 +273,14 @@
   background: #e6e6e6 !important;
   color: #bdbdbd !important;
   cursor: not-allowed;
+}
+
+/* 홈 인디케이터 */
+.homeIndicator {
+  width: 140px;
+  height: 5px;
+  border-radius: 100px;
+  background: #1c1c1e;
+  opacity: 0.9;
+  margin: 12px auto 0; /* 요구#6: 여유 */
 }

@@ -27,6 +27,10 @@ export default function RangeSheet({
   onClose,
   onApply,
 }: Props) {
+  // 요구#1: 이 화면에서는 최대 50,000(원)으로 캡
+  const effMin = Math.max(0, min);
+  const effMax = Math.min(50000, max);
+
   const [lo, setLo] = useState<string>(fmt(initial[0]));
   const [hi, setHi] = useState<string>(fmt(initial[1]));
   const [activeField, setActiveField] = useState<"lo" | "hi" | null>(null);
@@ -42,19 +46,19 @@ export default function RangeSheet({
   }, [open, initial[0], initial[1]]);
 
   const loNum = useMemo(
-    () => toNumber(lo, min, max, step),
-    [lo, min, max, step]
+    () => toNumber(lo, effMin, effMax, step),
+    [lo, effMin, effMax, step]
   );
   const hiNum = useMemo(
-    () => toNumber(hi, min, max, step),
-    [hi, min, max, step]
+    () => toNumber(hi, effMin, effMax, step),
+    [hi, effMin, effMax, step]
   );
 
   const bothValid =
     loNum !== null &&
     hiNum !== null &&
-    loNum >= min &&
-    hiNum <= max &&
+    loNum >= effMin &&
+    hiNum <= effMax &&
     loNum <= hiNum;
 
   const onReset = () => {
@@ -69,6 +73,9 @@ export default function RangeSheet({
   };
 
   if (!open) return null;
+
+  const hasLo = lo.trim().length > 0;
+  const hasHi = hi.trim().length > 0;
 
   return (
     <>
@@ -85,6 +92,7 @@ export default function RangeSheet({
           <h2 id="rangeTitle" className={s.title}>
             {title}
           </h2>
+          {/* 요구#3: 회색 배경이 있는 X 버튼 */}
           <button
             className={s.close}
             aria-label="닫기"
@@ -95,12 +103,14 @@ export default function RangeSheet({
           </button>
         </header>
 
+        {/* 입력 필드 */}
         <div className={s.fields}>
           <Field
             label="최소금액"
             unit={unit}
             value={lo}
             active={activeField === "lo"}
+            hasValue={hasLo}
             onChange={(v) => setLo(stripComma(v))}
             onFocus={() => setActiveField("lo")}
             inputRef={loRef}
@@ -111,24 +121,27 @@ export default function RangeSheet({
             unit={unit}
             value={hi}
             active={activeField === "hi"}
+            hasValue={hasHi}
             onChange={(v) => setHi(stripComma(v))}
             onFocus={() => setActiveField("hi")}
             inputRef={hiRef}
           />
         </div>
 
+        {/* 듀얼 슬라이더 */}
         <DualSlider
-          min={min}
-          max={max}
+          min={effMin}
+          max={effMax}
           step={step}
-          low={loNum ?? min}
-          high={hiNum ?? max}
+          low={loNum ?? effMin}
+          high={hiNum ?? effMax}
           onChange={(l, h) => {
             setLo(String(l));
             setHi(String(h));
           }}
         />
 
+        {/* 액션 */}
         <div className={s.actions}>
           <button className={s.ghost} type="button" onClick={onReset}>
             초기화
@@ -142,6 +155,9 @@ export default function RangeSheet({
             적용하기
           </button>
         </div>
+
+        {/* 홈 인디케이터 간격 확보 + 표시(요구#6) */}
+        <div className={s.homeIndicator} aria-hidden />
       </aside>
     </>
   );
@@ -154,6 +170,7 @@ type FieldProps = {
   unit: string;
   value: string;
   active: boolean;
+  hasValue: boolean;
   onChange: (v: string) => void;
   onFocus: () => void;
   inputRef: React.MutableRefObject<HTMLInputElement | null>;
@@ -164,13 +181,18 @@ function Field({
   unit,
   value,
   active,
+  hasValue,
   onChange,
   onFocus,
   inputRef,
 }: FieldProps) {
   return (
-    <label className={`${s.field} ${active ? s.fieldActive : ""}`}>
-      <span className={s.fieldLabel}>{label}</span>
+    <label
+      className={`${s.field} ${active ? s.fieldActive : ""} ${
+        hasValue ? s.fieldFilled : s.fieldEmpty
+      }`}
+    >
+      {/* 요구#5: 디폴트 상태엔 중앙에 '최소금액 원' / 값이 생기면 좌측 정렬 + 주황색 */}
       <input
         ref={inputRef}
         inputMode="numeric"
@@ -195,6 +217,9 @@ type DualSliderProps = {
 };
 
 function DualSlider({ min, max, step, low, high, onChange }: DualSliderProps) {
+  // 요구#2: 어느 쪽이든 정상 드래그되도록 "현재 활성 thumb"을 올려줌
+  const [active, setActive] = useState<"low" | "high" | null>(null);
+
   const onLow = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = snap(Number(e.target.value), step, min, max);
     onChange(Math.min(v, high), high);
@@ -211,36 +236,43 @@ function DualSlider({ min, max, step, low, high, onChange }: DualSliderProps) {
       className={s.sliderWrap}
       style={
         {
-          // Selected.svg 경로를 CSS 변수로 내려서 경로 이슈 방지
           ["--selected-url" as any]: `url(${SelectedIcon})`,
         } as React.CSSProperties
       }
     >
       <div className={s.track} aria-hidden />
+      {/* 요구#4: 주황색 선택 구간 확실히 보이도록 색상 채움 + SVG 도트 덮어씀 */}
       <div
         className={s.range}
         aria-hidden
         style={{ left: `${pct(low)}%`, width: `${pct(high) - pct(low)}%` }}
       />
 
-      {/* 입력은 항상 최상단에서 클릭을 받도록 */}
       <input
-        className={`${s.thumb} ${s.thumbLow}`}
+        className={`${s.thumb} ${s.thumbLow} ${
+          active === "low" ? s.thumbTop : ""
+        }`}
         type="range"
         min={min}
         max={max}
         step={step}
         value={low}
         onChange={onLow}
+        onMouseDown={() => setActive("low")}
+        onTouchStart={() => setActive("low")}
       />
       <input
-        className={`${s.thumb} ${s.thumbHigh}`}
+        className={`${s.thumb} ${s.thumbHigh} ${
+          active === "high" ? s.thumbTop : ""
+        }`}
         type="range"
         min={min}
         max={max}
         step={step}
         value={high}
         onChange={onHigh}
+        onMouseDown={() => setActive("high")}
+        onTouchStart={() => setActive("high")}
       />
     </div>
   );
