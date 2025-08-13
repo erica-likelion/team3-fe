@@ -1,0 +1,16 @@
+.iphoneFrame {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  max-width: 375px;
+  margin: 0 auto;
+  background: #fff;
+  overflow: hidden;
+}
+
+.pageContent {
+  position: relative;
+  overflow-y: auto;
+  padding-top: 60px; // TopBar 높이만큼 상단 여백
+  padding-bottom: 32px; // HomeIndicator 높이만큼 하단 여백
+}

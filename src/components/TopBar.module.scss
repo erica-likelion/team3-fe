@@ -1,23 +1,3 @@
-/* ==== optional: SF Pro 폰트 등록 (파일이 있을 때 동작) ==== */
-@font-face {
-  font-family: "SF Pro";
-  src: local("SF Pro Text"), local("SFProText-Regular"),
-    url("../../assets/fonts/SFProText-Regular.woff2") format("woff2"),
-    url("../../assets/fonts/SFProText-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "SF Pro";
-  src: local("SF Pro Semibold"), local("SFProText-Semibold"),
-    url("../../assets/fonts/SFProText-Semibold.woff2") format("woff2"),
-    url("../../assets/fonts/SFProText-Semibold.woff") format("woff");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* ===== design tokens ===== */
 :root {
   --status-top: 21px; /* Status Bar 위 여백 */
@@ -36,21 +16,9 @@
   z-index: 10;
   color: #383326; /* Neutral/BK */
   background: transparent;
-  font-family: var(
-    --font-main,
-    Pretendard,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    "Roboto",
-    "Oxygen",
-    "Ubuntu",
-    "Cantarell",
-    "Fira Sans",
-    "Droid Sans",
-    "Helvetica Neue",
-    sans-serif
-  );
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
 }
 
 /* ===== Status Bar (iOS) ===== */
@@ -58,7 +26,7 @@
   width: 375px;
   height: 48px;
   margin: 0 auto;
-  padding-top: var(--status-top);
+  padding-top: 21px;
   box-sizing: border-box;
   display: flex;
   align-items: flex-start;
@@ -82,10 +50,13 @@
   gap: 6px;
   margin-left: var(--time-extra-offset); /* 핵심! */
   padding: 0;
-  font-size: 16px;
-  font-weight: 600;
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-    "Helvetica Neue", sans-serif;
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Helvetica Neue", sans-serif;
+  font-weight: 590;
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: center;
 }
 
 /* 우측 아이콘 묶음 */

@@ -1,5 +1,4 @@
-import React from "react";
-import ongilLogo from "../assets/ongil.svg";
+import wearyOngil from "../assets/wearyOngil.svg";
 import styles from "./Onboarding.module.scss";
 
 const Onboarding: React.FC = () => {
@@ -7,7 +6,7 @@ const Onboarding: React.FC = () => {
     <div className={styles.onboarding}>
       <div className={styles.content}>
         <h1>온보딩 페이지입니다</h1>
-        <img src={ongilLogo} alt="Ongil Logo" className={styles.logo} />
+        <img src={wearyOngil} alt="Ongil Logo" className={styles.logo} />
       </div>
     </div>
   );

@@ -15,7 +15,11 @@ function formatNow(): string {
   });
 }
 
-export default function TopBar() {
+interface TopBarProps {
+  showNavRow?: boolean;
+}
+
+export default function TopBar({ showNavRow = true }: TopBarProps) {
   const [time, setTime] = useState<string>(formatNow());
 
   useEffect(() => {
@@ -50,22 +54,24 @@ export default function TopBar() {
           </div>
         </div>
       </div>
-      <div className={s.navRow}>
-        <button
-          className={s.iconBtn}
-          aria-label="back"
-          onClick={() => emit("topbar:back")}
-        >
-          <img src={Prev} alt="" />
-        </button>
-        <button
-          className={s.iconBtn}
-          aria-label="close"
-          onClick={() => emit("topbar:close")}
-        >
-          <img src={Close} alt="" />
-        </button>
-      </div>
+      {showNavRow && (
+        <div className={s.navRow}>
+          <button
+            className={s.iconBtn}
+            aria-label="back"
+            onClick={() => emit("topbar:back")}
+          >
+            <img src={Prev} alt="" />
+          </button>
+          <button
+            className={s.iconBtn}
+            aria-label="close"
+            onClick={() => emit("topbar:close")}
+          >
+            <img src={Close} alt="" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
