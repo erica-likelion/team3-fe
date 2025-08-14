@@ -41,16 +41,11 @@
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  flex: 1;
   justify-content: center;
   z-index: 10;
   position: relative;
-}
-
-.ongilImage {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
+  width: 100%;
+  margin-top: 492px;
 }
 
 .title {
@@ -70,7 +65,6 @@
   line-height: 100%;
   letter-spacing: -0.48px;
   opacity: 0.75;
-  max-width: 300px;
   z-index: 10;
   position: relative;
   white-space: pre-line;
@@ -81,26 +75,29 @@
   gap: 25px;
   width: 100%;
   max-width: 320px;
-  margin-bottom: 32px;
+  position: fixed;
+  bottom: 108px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   z-index: 10;
-  position: relative;
 }
 
 .skipButton {
   flex: 1;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #ffd4ca;
   border: none;
-  border-radius: 12px;
-  color: white;
+  border-radius: 10px;
+  color: #f36b49;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .skipButton:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #ffc4b8;
 }
 
 .nextButton,
@@ -110,9 +107,9 @@
   background: white;
   border: none;
   border-radius: 12px;
-  color: #667eea;
+  color: #f6804d;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -122,9 +119,38 @@
   background: #f8f9fa;
 }
 
-.startButton {
-  width: 100%;
-  flex: none;
+.communityButton {
+  flex: 1;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.communityButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.analysisButton {
+  flex: 1;
+  padding: 16px;
+  background: white;
+  border: none;
+  border-radius: 10px;
+  color: #f36b49;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.analysisButton:hover {
+  background: #f8f9fa;
 }
 
 .indicators {
@@ -136,13 +162,18 @@
 }
 
 .indicator {
-  width: 24px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-  transition: background-color 0.3s;
+  width: 28px;
+  height: 6px;
 }
 
 .indicator.active {
-  background: white;
+  background: #fafafa;
+  border-radius: 20px; /* 네모 모양 */
+}
+
+.indicator:not(.active) {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
 }
