@@ -1,0 +1,152 @@
+:root {
+  --NeutralWT: #fffafa;
+  --NeutralWT075: rgba(255, 250, 250, 0.75);
+  --PRIMARYOR: #f57f4c;
+  --BW800: #4a3b35;
+}
+
+/* 화면 래퍼: 가운데 배치 + 오버플로우 컷 */
+/* 화면 양옆 패딩(20px)을 무시해서 꽉 차게 */
+.wrap {
+  position: relative;
+  width: 375px; /* 기획 기준 */
+  height: 812px;
+  background: var(--NeutralWT);
+  overflow: hidden;
+
+  /* 🔧 AppLayout의 좌우 20px 패딩을 상쇄 */
+  margin-left: -20px;
+  margin-right: -20px;
+  width: calc(100% + 40px);
+}
+
+/* 몸통은 가운데 정렬 + 좌우 1px bleed 유지 */
+.body {
+  position: absolute;
+  top: 176px; /* 피그마 스펙 */
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: calc(100% + 4px); /* 양쪽 2px씩 bleed */
+  height: calc(100% - 176px + 4px); /* 바닥 딱 붙게 + 여유 4px */
+  background: var(--PRIMARYOR);
+  border-radius: 420px 500px 0 0;
+  /* 미세 글리치 방어 */
+  outline: 1px solid transparent;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.stage {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* 세로 가운데 정렬 */
+  text-align: center;
+}
+
+/* ===== 눈 ===== */
+.eyeWhite {
+  position: absolute;
+  width: 67px;
+  height: 82px;
+  border-radius: 50%;
+  background: #fff;
+  top: 100px; /* 기존 83 -> 70 (조금 위로) */
+  z-index: 1;
+}
+.leftEye {
+  left: 90px;
+}
+.rightEye {
+  left: 173px;
+}
+
+.pupil {
+  position: absolute;
+  width: 35px;
+  height: 50px;
+  background: var(--BW800);
+  border-radius: 50%;
+  left: calc(50% - 17.5px + 1px);
+  top: calc(50% - 25px + 2px);
+  will-change: transform;
+}
+.pupilL {
+  left: calc(50% - 17.5px + 1px);
+}
+.pupilR {
+  left: calc(50% - 17.5px + 1px);
+}
+
+/* 깜빡임(감김 천천히, 열림 빠르게) */
+.eyelid {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--PRIMARYOR);
+  transform-origin: top center;
+  transform: scaleY(0);
+  will-change: transform;
+  animation: blink 4.6s linear infinite;
+  pointer-events: none;
+}
+@keyframes blink {
+  0%,
+  82% {
+    transform: scaleY(0);
+  }
+  88% {
+    transform: scaleY(0.65);
+  } /* 감기기 시작 */
+  92% {
+    transform: scaleY(1);
+  } /* 완전 감김 */
+  96% {
+    transform: scaleY(0.15);
+  } /* 빠르게 열리기 */
+  100% {
+    transform: scaleY(0);
+  }
+}
+
+/* ===== 안경 ===== */
+.glasses {
+  position: absolute;
+  left: 112px;
+  top: 165px;
+  width: 80px;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+/* ===== 텍스트 ===== */
+.title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 240px; /* 눈 아래 240 */
+  margin: 0;
+  text-align: center;
+  font: 600 24px/1.35 Pretendard, system-ui, -apple-system, sans-serif;
+  color: #fff;
+}
+.desc {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 290px; /* 제목 아래 16px */
+  max-width: 310px;
+
+  margin: 0 auto;
+  text-align: center;
+  font: 400 16px/1.45 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--NeutralWT075);
+}

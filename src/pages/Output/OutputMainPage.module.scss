@@ -1,0 +1,273 @@
+:root {
+  --NeutralWT: #fffafa;
+  --NeutralBK: #383326;
+
+  --GR400: #b5b5b5;
+
+  --OR600: #f26b4a; /* Secondary/OR600 */
+  --OR300: #ffd7c7; /* Secondary/OR300 */
+  --PRIMARYOR: #f57f4c; /* PRIMARY/OR (CTA) */
+  --CR200: #fff2ec; /* 얇은 디바이더 */
+
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== 레이아웃 ===== */
+.root {
+  position: relative;
+  width: calc(100% + 40px); /* 부모 20px 패딩 상쇄 */
+  margin-left: -20px;
+  margin-right: -20px;
+
+  max-width: 375px;
+  margin-inline: auto;
+
+  background: var(--NeutralWT);
+  padding: 0 20px 20px;
+  box-sizing: border-box;
+}
+
+/* ===== 페이지 타이틀 ===== */
+.pageTitle {
+  position: sticky;
+  top: 0;
+  height: 44px;
+  display: grid;
+  place-items: center;
+
+  margin: 0 0 6px 0;
+  font: 600 18px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--NeutralBK);
+  background: transparent;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ===== 히어로 ===== */
+.hero {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 0 0 6px;
+}
+
+/* 도넛 */
+.donutWrap {
+  position: relative;
+}
+.donutSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.donutProg {
+  transform-origin: 50% 50%;
+  transform: rotate(-90deg) scaleX(-1); /* ▼ 12시 시작 & 시계 방향 */
+}
+
+.donutCenter {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.donutScore {
+  font: 700 24px/1.1 Pretendard, system-ui, -apple-system, sans-serif; /* 24px */
+  color: var(--OR600);
+}
+
+.heroRight {
+  display: grid;
+  gap: 6px;
+}
+
+.heroCaption {
+  font: 500 16px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--NeutralBK);
+}
+.heroScoreRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.heroScore {
+  font: 700 24px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--OR600);
+}
+.heroTotal {
+  font: 700 24px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--NeutralBK);
+}
+.heroMeta {
+  margin-top: 8px;
+  display: grid;
+  gap: 3px;
+  font: 400 12px/1.15 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--NeutralBK);
+}
+.metaLabel {
+  font-weight: 500;
+}
+.metaLine {
+  white-space: pre;
+}
+
+/* ===== 섹션 공통 ===== */
+.section {
+  margin-top: 14px;
+}
+.sectionTitle {
+  margin: 0;
+  font: 600 16px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--NeutralBK);
+}
+.sectionDesc {
+  margin: 8px 0 12px;
+  font: 500 12px/1.35 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--GR400);
+}
+
+/* ===== 아코디언 ===== */
+.accList {
+  display: grid;
+  gap: 12px;
+}
+
+.acc {
+  background: var(--NeutralWT);
+  border: 1px solid var(--PRIMARYOR);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+.accHead {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13.8px 12px;
+  background: var(--NeutralWT);
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.accLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.accIcon {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.accTitle {
+  font: 600 14px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--NeutralBK);
+}
+.accRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.accPoint {
+  font: 600 14px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--OR600);
+}
+.chev {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.18s ease;
+  filter: brightness(0) saturate(100%) invert(53%) sepia(95%) saturate(649%)
+    hue-rotate(343deg) brightness(93%) contrast(90%);
+}
+.accOpen .chev {
+  transform: rotate(180deg);
+}
+
+.accBody {
+  padding: 0 12px 12px 12px;
+}
+.accDivider {
+  display: block;
+  height: 1px;
+  background: var(--CR200);
+  margin: 0 0 10px 0;
+}
+.accText {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: 500 12px/1.45 Pretendard, system-ui, -apple-system, sans-serif;
+  color: #4a3b35; /* Secondary/BW800 */
+}
+
+/* ===== 추천 카드  ===== */
+.recoList {
+  display: grid;
+  gap: 10px;
+}
+
+.reco {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 77px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--OR300);
+  border: 0;
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+}
+.recoTexts {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+}
+.recoTitle {
+  font: 700 14px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--OR600);
+}
+.recoSub {
+  font: 500 12px/1.1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: #c46a5b;
+}
+.recoRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.recoScore {
+  font: 700 16px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--OR600);
+}
+.recoArrow {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* ===== CTA ===== */
+.ctaWrap {
+  padding: 16px 0 24px;
+  display: grid;
+  place-items: center;
+}
+.cta {
+  width: 100%;
+  height: 54px;
+  border-radius: 10px;
+  background: var(--PRIMARYOR);
+  color: #fff;
+  border: 0;
+  font: 700 16px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+}

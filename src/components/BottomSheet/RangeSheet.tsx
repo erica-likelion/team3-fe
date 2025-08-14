@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import s from "./RangeSheet.module.scss";
 
 import CloseIcon from "../../assets/ui/CloseButton.svg";
-import SelectedIcon from "../../assets/ui/Selected.svg";
+import SelectedIcon from "../../assets/ui/Selected.svg"; // 선택 구간 도트(오버레이용)
 
 type Props = {
   open: boolean;
@@ -27,10 +27,6 @@ export default function RangeSheet({
   onClose,
   onApply,
 }: Props) {
-  // 요구#1: 이 화면에서는 최대 50,000(원)으로 캡
-  const effMin = Math.max(0, min);
-  const effMax = Math.min(50000, max);
-
   const [lo, setLo] = useState<string>(fmt(initial[0]));
   const [hi, setHi] = useState<string>(fmt(initial[1]));
   const [activeField, setActiveField] = useState<"lo" | "hi" | null>(null);
@@ -45,20 +41,21 @@ export default function RangeSheet({
     setActiveField(null);
   }, [open, initial[0], initial[1]]);
 
+  // 숫자 파싱/스냅 (범위 제한은 props의 min/max 그대로 사용)
   const loNum = useMemo(
-    () => toNumber(lo, effMin, effMax, step),
-    [lo, effMin, effMax, step]
+    () => toNumber(lo, min, max, step),
+    [lo, min, max, step]
   );
   const hiNum = useMemo(
-    () => toNumber(hi, effMin, effMax, step),
-    [hi, effMin, effMax, step]
+    () => toNumber(hi, min, max, step),
+    [hi, min, max, step]
   );
 
   const bothValid =
     loNum !== null &&
     hiNum !== null &&
-    loNum >= effMin &&
-    hiNum <= effMax &&
+    loNum >= min &&
+    hiNum <= max &&
     loNum <= hiNum;
 
   const onReset = () => {
@@ -86,13 +83,15 @@ export default function RangeSheet({
         aria-modal="true"
         aria-labelledby="rangeTitle"
       >
+        {/* 그랩바 */}
         <div className={s.grabber} />
 
+        {/* 헤더 */}
         <header className={s.header}>
           <h2 id="rangeTitle" className={s.title}>
             {title}
           </h2>
-          {/* 요구#3: 회색 배경이 있는 X 버튼 */}
+          {/* 회색 배경의 X 버튼 */}
           <button
             className={s.close}
             aria-label="닫기"
@@ -103,7 +102,7 @@ export default function RangeSheet({
           </button>
         </header>
 
-        {/* 입력 필드 */}
+        {/* 인풋 필드 */}
         <div className={s.fields}>
           <Field
             label="최소금액"
@@ -130,11 +129,11 @@ export default function RangeSheet({
 
         {/* 듀얼 슬라이더 */}
         <DualSlider
-          min={effMin}
-          max={effMax}
+          min={min}
+          max={max}
           step={step}
-          low={loNum ?? effMin}
-          high={hiNum ?? effMax}
+          low={loNum ?? min}
+          high={hiNum ?? max}
           onChange={(l, h) => {
             setLo(String(l));
             setHi(String(h));
@@ -156,7 +155,7 @@ export default function RangeSheet({
           </button>
         </div>
 
-        {/* 홈 인디케이터 간격 확보 + 표시(요구#6) */}
+        {/* 홈 인디케이터 */}
         <div className={s.homeIndicator} aria-hidden />
       </aside>
     </>
@@ -192,7 +191,6 @@ function Field({
         hasValue ? s.fieldFilled : s.fieldEmpty
       }`}
     >
-      {/* 요구#5: 디폴트 상태엔 중앙에 '최소금액 원' / 값이 생기면 좌측 정렬 + 주황색 */}
       <input
         ref={inputRef}
         inputMode="numeric"
@@ -216,24 +214,69 @@ type DualSliderProps = {
   onChange: (low: number, high: number) => void;
 };
 
+/**
+ * 충돌/끊김 방지 버전:
+ * - 보이는 native range는 pointer-events:none
+ * - 드래그는 오버레이에서 처리 + rAF로 프레임당 1회만 업데이트
+ */
 function DualSlider({ min, max, step, low, high, onChange }: DualSliderProps) {
-  // 요구#2: 어느 쪽이든 정상 드래그되도록 "현재 활성 thumb"을 올려줌
-  const [active, setActive] = useState<"low" | "high" | null>(null);
-
-  const onLow = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = snap(Number(e.target.value), step, min, max);
-    onChange(Math.min(v, high), high);
-  };
-  const onHigh = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = snap(Number(e.target.value), step, min, max);
-    onChange(low, Math.max(v, low));
-  };
+  const wrapRef = React.useRef<HTMLDivElement | null>(null);
+  const activeRef = React.useRef<"low" | "high" | null>(null);
+  const rafId = React.useRef<number | null>(null);
+  const pending = React.useRef<{ low: number; high: number } | null>(null);
 
   const pct = (n: number) => ((n - min) / (max - min)) * 100;
+
+  const posToValue = (clientX: number) => {
+    const el = wrapRef.current!;
+    const r = el.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - r.left, 0), r.width);
+    const raw = min + (x / r.width) * (max - min);
+    return snap(raw, step, min, max);
+  };
+
+  const flushRaf = () => {
+    if (!pending.current) return;
+    onChange(pending.current.low, pending.current.high);
+    pending.current = null;
+    rafId.current = null;
+  };
+
+  const schedule = (nextLow: number, nextHigh: number) => {
+    if (nextLow === low && nextHigh === high) return;
+    pending.current = { low: nextLow, high: nextHigh };
+    if (rafId.current == null) rafId.current = requestAnimationFrame(flushRaf);
+  };
+
+  const start = (e: React.PointerEvent) => {
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+    const v = posToValue(e.clientX);
+    const pick = Math.abs(v - low) <= Math.abs(v - high) ? "low" : "high";
+    activeRef.current = pick;
+    move(e);
+  };
+
+  const move = (e: React.PointerEvent) => {
+    const pick = activeRef.current;
+    if (!pick) return;
+    const v = posToValue(e.clientX);
+    if (pick === "low") {
+      schedule(Math.min(v, high), high);
+    } else {
+      schedule(low, Math.max(v, low));
+    }
+  };
+
+  const end = (e: React.PointerEvent) => {
+    (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+    activeRef.current = null;
+    if (pending.current && rafId.current == null) flushRaf();
+  };
 
   return (
     <div
       className={s.sliderWrap}
+      ref={wrapRef}
       style={
         {
           ["--selected-url" as any]: `url(${SelectedIcon})`,
@@ -241,38 +284,43 @@ function DualSlider({ min, max, step, low, high, onChange }: DualSliderProps) {
       }
     >
       <div className={s.track} aria-hidden />
-      {/* 요구#4: 주황색 선택 구간 확실히 보이도록 색상 채움 + SVG 도트 덮어씀 */}
       <div
         className={s.range}
         aria-hidden
         style={{ left: `${pct(low)}%`, width: `${pct(high) - pct(low)}%` }}
       />
 
+      {/* 보이는 thumb (접근성용으로만 존재, 클릭/드래그는 오버레이가 처리) */}
       <input
-        className={`${s.thumb} ${s.thumbLow} ${
-          active === "low" ? s.thumbTop : ""
-        }`}
+        className={`${s.thumb} ${s.thumbLow}`}
         type="range"
         min={min}
         max={max}
         step={step}
         value={low}
-        onChange={onLow}
-        onMouseDown={() => setActive("low")}
-        onTouchStart={() => setActive("low")}
+        readOnly
+        tabIndex={-1}
+        aria-hidden
       />
       <input
-        className={`${s.thumb} ${s.thumbHigh} ${
-          active === "high" ? s.thumbTop : ""
-        }`}
+        className={`${s.thumb} ${s.thumbHigh}`}
         type="range"
         min={min}
         max={max}
         step={step}
         value={high}
-        onChange={onHigh}
-        onMouseDown={() => setActive("high")}
-        onTouchStart={() => setActive("high")}
+        readOnly
+        tabIndex={-1}
+        aria-hidden
+      />
+
+      {/* 포인터 이벤트 전담 */}
+      <div
+        className={s.dragOverlay}
+        onPointerDown={start}
+        onPointerMove={move}
+        onPointerUp={end}
+        onPointerCancel={end}
       />
     </div>
   );

@@ -101,7 +101,7 @@ export default function SelectType() {
         title="월세 기준 예상"
         unit="원"
         min={0}
-        max={3_000_000}
+        max={1_500_000}
         step={10_000}
         initial={rent}
         onClose={() => setActiveSheet(null)}
@@ -116,7 +116,7 @@ export default function SelectType() {
         title="평균 단가"
         unit="원"
         min={0}
-        max={100_000}
+        max={50_000}
         step={100}
         initial={price}
         onClose={() => setActiveSheet(null)}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./SelectConditions.module.scss";
 
 import RangeSheet from "../../components/BottomSheet/RangeSheet";
@@ -14,7 +15,7 @@ type SheetKey =
   | "선호 층수";
 
 export default function SelectConditions() {
-  // 값 상태
+  const navigate = useNavigate();
   const [unitPrice, setUnitPrice] = useState<[number | null, number | null]>([
     null,
     null,
@@ -148,7 +149,7 @@ export default function SelectConditions() {
           type="button"
           onClick={() => {
             if (!canNext) return;
-            // TODO: 다음 단계로 이동
+            navigate("/loading");
           }}
         >
           다음으로
@@ -161,7 +162,7 @@ export default function SelectConditions() {
         title="평균 단가"
         unit="원"
         min={0}
-        max={100_000}
+        max={50_000}
         step={100}
         initial={unitPrice}
         onClose={() => setActive(null)}
@@ -213,7 +214,7 @@ export default function SelectConditions() {
         title="월세 기준 예상"
         unit="원"
         min={0}
-        max={3_000_000}
+        max={1_500_000}
         step={10_000}
         initial={rent}
         onClose={() => setActive(null)}
@@ -224,27 +225,9 @@ export default function SelectConditions() {
       />
 
       <RadioSheet
-        open={active === "선호 평수"}
-        title="선호 평수"
-        items={[
-          { key: "10평 이하", label: "10평 이하" },
-          { key: "11~20평", label: "11~20평" },
-          { key: "21~30평", label: "21~30평" },
-          { key: "31~40평", label: "31~40평" },
-          { key: "41~50평", label: "41~50평" },
-          { key: "51평 이상", label: "51평 이상" },
-        ]}
-        initial={size}
-        onClose={() => setActive(null)}
-        onApply={(v) => {
-          setSize(v);
-          setActive(null);
-        }}
-      />
-
-      <RadioSheet
         open={active === "선호 층수"}
         title="선호 층수"
+        variant="dropdown" // ← 드롭다운
         items={[
           { key: "지하층", label: "지하층" },
           { key: "1층", label: "1층" },
@@ -257,6 +240,26 @@ export default function SelectConditions() {
         onClose={() => setActive(null)}
         onApply={(v) => {
           setFloor(v);
+          setActive(null);
+        }}
+      />
+
+      <RadioSheet
+        open={active === "선호 평수"}
+        title="선호 평수"
+        variant="dropdown" // ← 드롭다운
+        items={[
+          { key: "10평 이하", label: "10평 이하" },
+          { key: "11~20평", label: "11~20평" },
+          { key: "21~30평", label: "21~30평" },
+          { key: "31~40평", label: "31~40평" },
+          { key: "41~50평", label: "41~50평" },
+          { key: "51평 이상", label: "51평 이상" },
+        ]}
+        initial={size}
+        onClose={() => setActive(null)}
+        onApply={(v) => {
+          setSize(v);
           setActive(null);
         }}
       />
