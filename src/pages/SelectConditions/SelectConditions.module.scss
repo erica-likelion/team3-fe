@@ -7,9 +7,9 @@
 
   /* 레이아웃 토큰 */
   --page-hpad: 20px;
-  --gap-topbar-head: 24px; /* TopBar ↔ HeadInfo */
-  --gap-head-to-list: 32px; /* 본문 → 첫 아이템 */
-  --gap-list-to-btn: 132px; /* 마지막 아이템 → 버튼 위 */
+  --gap-topbar-head: 24px;
+  --gap-head-to-list: 32px;
+  --gap-list-to-btn: 132px;
 
   --btn-h: 54px;
   --btn-bottom-offset: 34px;
@@ -17,7 +17,7 @@
   --radius-16: 16px;
 }
 
-/* ===== 페이지 루트: 좌우 20 + 상단 24 보장 ===== */
+/* 페이지 루트 */
 .root {
   width: 100%;
   box-sizing: border-box;
@@ -26,7 +26,6 @@
 
 /* ===== HeadInfo ===== */
 .head {
-  /* 좌우 패딩은 root가 책임짐 */
 }
 
 .head h1 {
@@ -34,12 +33,11 @@
   font-size: 18px;
   font-weight: 600;
   color: var(--NeutralBK);
-  line-height: 22px; /* 시안처럼 타이트 */
-  white-space: normal; /* <br>만 줄바꿈으로 사용 */
-  word-break: keep-all; /* 한국어 단어 깨짐 방지 */
+  line-height: 22px;
+  white-space: normal;
+  word-break: keep-all;
 }
 
-/* 이모지는 제목 끝에서 줄바꿈 되지 않도록 */
 .nowrap {
   white-space: nowrap;
 }
@@ -49,6 +47,7 @@
   margin: 0; /* 위 여백은 h1이 가짐 */
   padding: 0;
   font-family: Pretendard, sans-serif;
+
   font-size: 14px; /* Body/14S */
   font-weight: 400;
   color: var(--GR400);

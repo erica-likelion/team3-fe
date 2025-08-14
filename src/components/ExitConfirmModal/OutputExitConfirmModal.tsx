@@ -1,7 +1,7 @@
-// src/components/ExitConfirmModal.tsx
+// src/components/ExitConfirmModal/OutputExitConfirmModal.tsx
 import s from "./ExitConfirmModal.module.scss";
 
-export default function ExitConfirmModal({
+export default function OutputExitConfirmModal({
   onStay,
   onLeave,
 }: {
@@ -20,10 +20,13 @@ export default function ExitConfirmModal({
         <div id="exitTitle" className={s.title}>
           알림
         </div>
+
         <div className={s.text}>
-          창업 조건 입력을 중단하고
-          <br />홈 화면으로 이동하시겠어요?
+          <span>분석 결과 열람을 중단하고</span>
+          <br />
+          <span>홈 화면으로 이동하시겠어요?</span>
         </div>
+
         <div className={s.actions}>
           <button
             className={`${s.btn} ${s.outline}`}

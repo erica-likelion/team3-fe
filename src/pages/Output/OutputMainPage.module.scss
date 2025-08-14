@@ -6,7 +6,7 @@
 
   --OR600: #f26b4a; /* Secondary/OR600 */
   --OR300: #ffd7c7; /* Secondary/OR300 */
-  --PRIMARYOR: #f57f4c; /* PRIMARY/OR (CTA) */
+  --PRIMARYOR: #f57f4c; /* PRIMARY/OR (CTA & 도넛 진행색) */
   --CR200: #fff2ec; /* 얇은 디바이더 */
 
   --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -15,39 +15,36 @@
 /* ===== 레이아웃 ===== */
 .root {
   position: relative;
-  width: calc(100% + 40px); /* 부모 20px 패딩 상쇄 */
-  margin-left: -20px;
-  margin-right: -20px;
-
+  margin-left: 20px;
   max-width: 375px;
   margin-inline: auto;
-
   background: var(--NeutralWT);
-  padding: 0 20px 20px;
+
   box-sizing: border-box;
 }
 
-/* ===== 페이지 타이틀 ===== */
+/* ===== 페이지 타이틀(탑바 중앙) ===== */
 .pageTitle {
   position: sticky;
   top: 0;
   height: 44px;
   display: grid;
   place-items: center;
-
+  margin: -10px 0 6px 0; /* 위로 4px 끌어올림 */
+  transform: translateY(-2px);
   margin: 0 0 6px 0;
   font: 600 18px/1 Pretendard, system-ui, -apple-system, sans-serif;
   color: var(--NeutralBK);
   background: transparent;
   z-index: 2;
-  pointer-events: none;
+  pointer-events: none; /* 좌우 아이콘과 나란히 보이되, 클릭 방해 X */
 }
 
 /* ===== 히어로 ===== */
 .hero {
   display: grid;
   grid-template-columns: 150px 1fr;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
   padding: 0 0 6px;
 }
@@ -61,12 +58,6 @@
   height: 100%;
   display: block;
 }
-
-.donutProg {
-  transform-origin: 50% 50%;
-  transform: rotate(-90deg) scaleX(-1); /* ▼ 12시 시작 & 시계 방향 */
-}
-
 .donutCenter {
   position: absolute;
   inset: 0;
@@ -75,8 +66,8 @@
   pointer-events: none;
 }
 .donutScore {
-  font: 700 24px/1.1 Pretendard, system-ui, -apple-system, sans-serif; /* 24px */
-  color: var(--OR600);
+  font: 700 24px/1.1 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--PRIMARYOR); /* 점수 텍스트도 메인 오렌지 */
 }
 
 .heroRight {
@@ -95,16 +86,16 @@
 }
 .heroScore {
   font: 700 24px/1 Pretendard, system-ui, -apple-system, sans-serif;
-  color: var(--OR600);
+  color: var(--PRIMARYOR);
 }
 .heroTotal {
   font: 700 24px/1 Pretendard, system-ui, -apple-system, sans-serif;
   color: var(--NeutralBK);
 }
 .heroMeta {
-  margin-top: 8px;
+  margin-top: 6px;
   display: grid;
-  gap: 3px;
+  gap: 8px; /* ▶ 요구: 라인 간격 8 */
   font: 400 12px/1.15 Pretendard, system-ui, -apple-system, sans-serif;
   color: var(--NeutralBK);
 }
@@ -117,7 +108,7 @@
 
 /* ===== 섹션 공통 ===== */
 .section {
-  margin-top: 14px;
+  margin-top: 12px; /* 컴팩트하게 조정 */
 }
 .sectionTitle {
   margin: 0;
@@ -125,15 +116,16 @@
   color: var(--NeutralBK);
 }
 .sectionDesc {
-  margin: 8px 0 12px;
-  font: 500 12px/1.35 Pretendard, system-ui, -apple-system, sans-serif;
+  margin: 6px 0 10px;
+  font: 500 12px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  letter-spacing: 0;
   color: var(--GR400);
 }
 
 /* ===== 아코디언 ===== */
 .accList {
   display: grid;
-  gap: 12px;
+  gap: 10px; /* 컴팩트 */
 }
 
 .acc {
@@ -149,7 +141,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 13.8px 12px;
+  padding: 13.8px 20px; /* ▶ 좌우 내부 여백 20 유지 */
   background: var(--NeutralWT);
   border: 0;
   border-radius: 12px;
@@ -177,7 +169,7 @@
 }
 .accPoint {
   font: 600 14px/1 Pretendard, system-ui, -apple-system, sans-serif;
-  color: var(--OR600);
+  color: var(--PRIMARYOR);
 }
 .chev {
   width: 18px;
@@ -191,7 +183,7 @@
 }
 
 .accBody {
-  padding: 0 12px 12px 12px;
+  padding: 0 20px 14px 20px; /* 본문도 좌우 20 */
 }
 .accDivider {
   display: block;
@@ -204,10 +196,10 @@
   padding: 0;
   border: 0;
   font: 500 12px/1.45 Pretendard, system-ui, -apple-system, sans-serif;
-  color: #4a3b35; /* Secondary/BW800 */
+  color: #4a3b35;
 }
 
-/* ===== 추천 카드  ===== */
+/* ===== 추천 카드 ===== */
 .recoList {
   display: grid;
   gap: 10px;
@@ -218,8 +210,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 77px;
-  padding: 10px;
+  height: 72px; /* 살짝 낮춰서 1스크린 내 배치 */
+  padding: 12px 16px; /* 내부 여백 */
   border-radius: 10px;
   background: var(--OR300);
   border: 0;
@@ -233,7 +225,7 @@
 }
 .recoTitle {
   font: 700 14px/1 Pretendard, system-ui, -apple-system, sans-serif;
-  color: var(--OR600);
+  color: var(--PRIMARYOR);
 }
 .recoSub {
   font: 500 12px/1.1 Pretendard, system-ui, -apple-system, sans-serif;
@@ -246,7 +238,7 @@
 }
 .recoScore {
   font: 700 16px/1 Pretendard, system-ui, -apple-system, sans-serif;
-  color: var(--OR600);
+  color: var(--PRIMARYOR);
 }
 .recoArrow {
   width: 24px;
@@ -256,7 +248,7 @@
 
 /* ===== CTA ===== */
 .ctaWrap {
-  padding: 16px 0 24px;
+  padding: 14px 0 22px;
   display: grid;
   place-items: center;
 }
@@ -270,4 +262,55 @@
   font: 700 16px/1 Pretendard, system-ui, -apple-system, sans-serif;
   box-shadow: var(--card-shadow);
   cursor: pointer;
+}
+
+/* ===== 모달 ===== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 50;
+}
+.modalBox {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(320px, calc(100vw - 40px));
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+  z-index: 51;
+}
+.modalTitle {
+  font: 700 16px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  margin-bottom: 10px;
+}
+.modalText {
+  font: 500 14px/1.4 Pretendard, system-ui, -apple-system, sans-serif;
+  color: var(--NeutralBK);
+  margin-bottom: 16px;
+}
+.modalActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.modalBtn {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font: 700 14px/1 Pretendard, system-ui, -apple-system, sans-serif;
+  cursor: pointer;
+}
+.modalOutline {
+  background: #fff;
+  border: 1px solid var(--PRIMARYOR);
+  color: var(--PRIMARYOR);
+}
+.modalPrimary {
+  background: var(--PRIMARYOR);
+  border: 0;
+  color: #fff;
 }
