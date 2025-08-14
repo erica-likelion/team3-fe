@@ -1,4 +1,3 @@
-// src/pages/Output/OutputMainPage.tsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import s from "./OutputMainPage.module.scss";
@@ -6,7 +5,6 @@ import s from "./OutputMainPage.module.scss";
 import ChevronDown from "../../assets/ui/chevron-down.svg";
 import ArrowRight from "../../assets/ui/arrow-right 2.png";
 
-// 3D 아이콘
 import IconBudget from "../../assets/ui/Budget.png";
 import IconLocation from "../../assets/ui/Location.png";
 import IconTarget from "../../assets/ui/Target.png";
@@ -21,15 +19,16 @@ function ScoreDonut({
   size?: number;
 }) {
   const pct = Math.max(0, Math.min(100, score));
-  const stroke = 18; // ▶ 요구: 도넛 두께 굵게
+  const stroke = 18;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   const filled = (pct / 100) * c;
+  const dash = c;
+  const offset = c - filled;
 
   return (
     <div className={s.donutWrap} style={{ width: size, height: size }}>
       <svg className={s.donutSvg} width={size} height={size}>
-        {/* 트랙 (배경: Secondary/OR300) */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -40,7 +39,6 @@ function ScoreDonut({
           strokeLinecap="round"
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
-        {/* 프로그레스 (PRIMARY/OR, 12시 시작·시계방향) */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -49,8 +47,8 @@ function ScoreDonut({
           strokeWidth={stroke}
           fill="none"
           strokeLinecap="round"
-          strokeDasharray={`${filled} ${c}`}
-          strokeDashoffset={0}
+          strokeDasharray={dash}
+          strokeDashoffset={offset}
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
       </svg>
@@ -61,9 +59,6 @@ function ScoreDonut({
   );
 }
 
-/* ------------------------------ */
-/* 아코디언 아이템 (기본: 닫힘)   */
-/* ------------------------------ */
 type AccordionProps = {
   icon: string;
   title: string;
@@ -95,7 +90,6 @@ function AccordionItem({
           />
         </div>
       </button>
-
       {open && (
         <div className={s.accBody}>
           <i className={s.accDivider} aria-hidden />
@@ -106,9 +100,6 @@ function AccordionItem({
   );
 }
 
-/* ------------------------------ */
-/* 추천 카드                       */
-/* ------------------------------ */
 function RecoItem({
   title,
   subtitle,
@@ -132,13 +123,8 @@ function RecoItem({
   );
 }
 
-/* ------------------------------ */
-/* 페이지                          */
-/* ------------------------------ */
 export default function OutputMainPage() {
   const navigate = useNavigate();
-
-  // X(닫기) 모달
   const [showExit, setShowExit] = useState(false);
   const openExit = () => setShowExit(true);
   const closeExit = () => setShowExit(false);
@@ -147,11 +133,9 @@ export default function OutputMainPage() {
     navigate("/");
   };
 
-  // ✅ 탑바 X 클릭을 "항상" 가로채서 모달을 띄운다 (캡처 단계)
   useEffect(() => {
     const selector =
       '.topbar-x, [data-role="topbar-close"], [aria-label="닫기"], [aria-label="Close"]';
-
     const onCaptureClick = (e: Event) => {
       const t = e.target as HTMLElement | null;
       if (t && t.closest(selector)) {
@@ -160,22 +144,18 @@ export default function OutputMainPage() {
         setShowExit(true);
       }
     };
-
     document.addEventListener("click", onCaptureClick, true);
     return () => {
       document.removeEventListener("click", onCaptureClick, true);
     };
   }, []);
 
-  // 상단 타이틀(탑바 중앙)
   const pageTitle = useMemo(() => "분석 결과", []);
 
   return (
     <main className={s.root} aria-label="분석 결과">
-      {/* 탑바 중앙 타이틀 */}
       <h1 className={s.pageTitle}>{pageTitle}</h1>
 
-      {/* 히어로: 그래프 + 요약 */}
       <section className={s.hero}>
         <ScoreDonut score={60.4} />
         <div className={s.heroRight}>
@@ -196,7 +176,6 @@ export default function OutputMainPage() {
         </div>
       </section>
 
-      {/* 섹션: 항목별 세부 점수 */}
       <section className={s.section}>
         <h2 className={s.sectionTitle}>항목별 세부 점수</h2>
         <p className={s.sectionDesc}>
@@ -224,7 +203,6 @@ export default function OutputMainPage() {
         </div>
       </section>
 
-      {/* 섹션: 추천 */}
       <section className={s.section}>
         <h2 className={s.sectionTitle}>더 나은 조건을 추천해 드려요!</h2>
         <p className={s.sectionDesc}>
@@ -244,48 +222,12 @@ export default function OutputMainPage() {
         </div>
       </section>
 
-      {/* 하단 CTA(스크롤 시 노출) */}
       <div className={s.ctaWrap}>
         <button className={s.cta}>상세 보기</button>
       </div>
 
       {showExit && (
-        <>
-          <div className={s.modalOverlay} />
-          <div
-            className={s.modalBox}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="exitTitle"
-          >
-            <div id="exitTitle" className={s.modalTitle}>
-              알림
-            </div>
-
-            <div className={s.modalText}>
-              <span>분석 결과 열람을 중단하고</span>
-              <br />
-              <span>홈 화면으로 이동하시겠어요?</span>
-            </div>
-
-            <div className={s.modalActions}>
-              <button
-                className={`${s.modalBtn} ${s.modalOutline}`}
-                onClick={goHome}
-                type="button"
-              >
-                이동하기
-              </button>
-              <button
-                className={`${s.modalBtn} ${s.modalPrimary}`}
-                onClick={closeExit}
-                type="button"
-              >
-                머무르기
-              </button>
-            </div>
-          </div>
-        </>
+        <OutputExitConfirmModal onClose={closeExit} onConfirm={goHome} />
       )}
     </main>
   );
