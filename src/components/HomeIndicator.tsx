@@ -1,5 +1,5 @@
 // src/components/HomeIndicator.tsx
-import bar from "../assets/ui/Home Indicator.png";
+import bar from "../assets/ui/Home Indicator.svg";
 
 /* padding: L116 R115 T19 B8 / frame: 375×32 */
 const HomeIndicator = () => (
