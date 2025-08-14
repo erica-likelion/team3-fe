@@ -1,11 +1,38 @@
 .onboarding {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.backgroundImages {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
   justify-content: center;
+  align-items: flex-end;
+}
+
+.backgroundImage {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.backgroundImage.visible {
+  opacity: 1;
 }
 
 .content {
@@ -13,11 +40,140 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 16px;
+  justify-content: center;
+  z-index: 10;
+  position: relative;
+  width: 100%;
+  margin-top: 492px;
 }
 
-h1 {
+.title {
   margin: 0;
   font-size: 24px;
   font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.48px;
+  z-index: 10;
+  position: relative;
+}
+
+.description {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.48px;
+  opacity: 0.75;
+  z-index: 10;
+  position: relative;
+  white-space: pre-line;
+}
+
+.navigation {
+  display: flex;
+  gap: 25px;
+  width: 100%;
+  max-width: 320px;
+  position: fixed;
+  bottom: 108px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 10;
+}
+
+.skipButton {
+  flex: 1;
+  padding: 16px;
+  background: #ffd4ca;
+  border: none;
+  border-radius: 10px;
+  color: #f36b49;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.skipButton:hover {
+  background: #ffc4b8;
+}
+
+.nextButton,
+.startButton {
+  flex: 1;
+  padding: 16px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  color: #f6804d;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.nextButton:hover,
+.startButton:hover {
+  background: #f8f9fa;
+}
+
+.communityButton {
+  flex: 1;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.communityButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.analysisButton {
+  flex: 1;
+  padding: 16px;
+  background: white;
+  border: none;
+  border-radius: 10px;
+  color: #f36b49;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.analysisButton:hover {
+  background: #f8f9fa;
+}
+
+.indicators {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 76px;
+  z-index: 10;
+  position: relative;
+}
+
+.indicator {
+  width: 28px;
+  height: 6px;
+}
+
+.indicator.active {
+  background: #fafafa;
+  border-radius: 20px; /* 네모 모양 */
+}
+
+.indicator:not(.active) {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
 }
