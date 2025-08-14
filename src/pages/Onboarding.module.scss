@@ -1,11 +1,38 @@
 .onboarding {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.backgroundImages {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
   justify-content: center;
+  align-items: flex-end;
+}
+
+.backgroundImage {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.backgroundImage.visible {
+  opacity: 1;
 }
 
 .content {
@@ -13,11 +40,109 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 16px;
+  flex: 1;
+  justify-content: center;
+  z-index: 10;
+  position: relative;
 }
 
-h1 {
+.ongilImage {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.title {
   margin: 0;
   font-size: 24px;
   font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.48px;
+  z-index: 10;
+  position: relative;
+}
+
+.description {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.48px;
+  opacity: 0.75;
+  max-width: 300px;
+  z-index: 10;
+  position: relative;
+  white-space: pre-line;
+}
+
+.navigation {
+  display: flex;
+  gap: 25px;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 32px;
+  z-index: 10;
+  position: relative;
+}
+
+.skipButton {
+  flex: 1;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.skipButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.nextButton,
+.startButton {
+  flex: 1;
+  padding: 16px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  color: #667eea;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.nextButton:hover,
+.startButton:hover {
+  background: #f8f9fa;
+}
+
+.startButton {
+  width: 100%;
+  flex: none;
+}
+
+.indicators {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 76px;
+  z-index: 10;
+  position: relative;
+}
+
+.indicator {
+  width: 24px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  transition: background-color 0.3s;
+}
+
+.indicator.active {
+  background: white;
 }
