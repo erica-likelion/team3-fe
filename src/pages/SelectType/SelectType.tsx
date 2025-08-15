@@ -1,3 +1,4 @@
+// src/pages/SelectType/SelectType.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SelectType.module.scss";
@@ -30,9 +31,9 @@ const CATEGORIES: Category[] = [
   { key: "sushi", name: "일식", icon: sushi },
 ];
 
-// 카테고리 키를 백엔드 형식으로 변환하는 함수
+// 프론트 키 -> 백엔드 카테고리 텍스트
 const getCategoryForBackend = (key: string): string => {
-  const categoryMap: { [key: string]: string } = {
+  const map: Record<string, string> = {
     coffee: "카페/디저트",
     chicken: "치킨",
     pizza: "피자",
@@ -43,7 +44,7 @@ const getCategoryForBackend = (key: string): string => {
     zza: "중식",
     sushi: "일식",
   };
-  return categoryMap[key] || key;
+  return map[key] ?? key;
 };
 
 type SheetKey = null | "월세" | "단가" | "상권" | "운영";
@@ -51,9 +52,10 @@ type SheetKey = null | "월세" | "단가" | "상권" | "운영";
 export default function SelectType() {
   const navigate = useNavigate();
   const { updateFormData } = useRestaurantContext();
+
   const [selected, setSelected] = useState<string | null>(null);
 
-  // ▼ 바텀시트 상태
+  // ▼ 바텀시트 상태(현재 페이지에서 열 일이 없으면 남겨둬도 무관)
   const [activeSheet, setActiveSheet] = useState<SheetKey>(null);
   const [rent, setRent] = useState<[number | null, number | null]>([
     null,
@@ -66,15 +68,13 @@ export default function SelectType() {
   const [trade, setTrade] = useState<string | null>(null);
   const [opMode, setOpMode] = useState<string | null>(null);
 
+  // 이 버튼은 “조건 입력 페이지로 이동”만 수행합니다.
   const onNext = () => {
     if (!selected) return;
-
-    // 카테고리를 전역 상태에 저장
-    const categoryForBackend = getCategoryForBackend(selected);
-    updateFormData({ category: categoryForBackend });
-
+    updateFormData({ category: getCategoryForBackend(selected) });
     navigate(`/select/conditions?cat=${encodeURIComponent(selected)}`);
   };
+
   return (
     <>
       <div className={styles.head}>
@@ -92,7 +92,7 @@ export default function SelectType() {
             <button
               key={c.key}
               className={`${styles.card} ${active ? styles.cardActive : ""}`}
-              onClick={() => setSelected(c.key)}
+              onClick={() => setSelected(c.key)} // ✅ 선택만, 이동/분석 금지
               aria-pressed={active}
               type="button"
             >
@@ -109,6 +109,7 @@ export default function SelectType() {
         })}
       </div>
 
+      {/*  ‘분석하기’가 아니라 ‘다음으로’ */}
       <button
         className={`${styles.next} ${!selected ? styles.disabled : ""}`}
         disabled={!selected}
@@ -118,7 +119,7 @@ export default function SelectType() {
         다음으로
       </button>
 
-      {/* ▼ 바텀시트들: 필요할 때 setActiveSheet("월세") 같은 식으로 열기 */}
+      {/* ▼ 바텀시트들 (필요 시 유지) */}
       <RangeSheet
         open={activeSheet === "월세"}
         title="월세 기준 예상"
@@ -133,7 +134,6 @@ export default function SelectType() {
           setActiveSheet(null);
         }}
       />
-
       <RangeSheet
         open={activeSheet === "단가"}
         title="평균 단가"
@@ -148,7 +148,6 @@ export default function SelectType() {
           setActiveSheet(null);
         }}
       />
-
       <RadioSheet
         open={activeSheet === "상권"}
         title="특수 상권 여부"
@@ -166,7 +165,6 @@ export default function SelectType() {
           setActiveSheet(null);
         }}
       />
-
       <RadioSheet
         open={activeSheet === "운영"}
         title="매장 운영 방식"
