@@ -1,7 +1,12 @@
 // src/App.tsx
 import { RouterProvider } from "react-router-dom";
 import router from "./routes";
+import { RestaurantProvider } from "./context/RestaurantContext";
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <RestaurantProvider>
+      <RouterProvider router={router} />
+    </RestaurantProvider>
+  );
 }
