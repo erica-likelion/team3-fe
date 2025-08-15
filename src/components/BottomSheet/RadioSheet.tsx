@@ -35,16 +35,32 @@ export default function RadioSheet({
     setExpanded(false);
   }, [open, initial]);
 
-  // 헤드 라벨
-  const selectedLabel = items.find((i) => i.key === value)?.label ?? null;
-  const defaultLabel = title.includes("평수")
-    ? "10평 이하"
-    : title.includes("층수")
-    ? "1층"
-    : "선택";
-  const headLabel = selectedLabel ?? defaultLabel;
+  // 드롭다운 디폴트 라벨
+  const defaultLabel = useMemo(() => {
+    if (title.includes("평수")) return "10평 이하";
+    if (title.includes("층수")) return "1층";
+    return "선택";
+  }, [title]);
 
-  const canApply = useMemo(() => value !== null, [value]);
+  // 디폴트 라벨과 일치하는 항목(없으면 첫 항목)
+  const defaultItem = useMemo<Item | null>(() => {
+    return items.find((i) => i.label === defaultLabel) ?? items[0] ?? null;
+  }, [items, defaultLabel]);
+
+  // ✅ 드롭다운일 땐 선택이 없어도 디폴트를 '실제 선택값'으로 간주
+  const effectiveValue = useMemo<string | null>(() => {
+    return variant === "dropdown" ? value ?? defaultItem?.key ?? null : value;
+  }, [variant, value, defaultItem]);
+
+  // 헤더에 표시할 텍스트
+  const selectedLabel =
+    items.find((i) => i.key === effectiveValue)?.label ?? defaultLabel;
+  const headLabel = selectedLabel;
+
+  // ✅ 드롭다운은 기본값만 있어도 적용하기 활성화
+  const canApply = useMemo(() => {
+    return variant === "dropdown" ? !!effectiveValue : value !== null;
+  }, [variant, effectiveValue, value]);
 
   const reset = () => {
     setValue(null);
@@ -53,12 +69,16 @@ export default function RadioSheet({
 
   const apply = () => {
     if (!canApply) return;
-    onApply(value);
+
+    onApply(effectiveValue);
   };
 
   if (!open) return null;
 
-  const dropdownList = items.filter((it) => it.label !== headLabel);
+  const dropdownList =
+    variant === "dropdown"
+      ? items.filter((it) => it.label !== headLabel)
+      : items;
 
   return (
     <>
@@ -85,7 +105,7 @@ export default function RadioSheet({
               className={[
                 s.dropdownHead,
                 expanded ? s.dropdownHeadOpen : "",
-                selectedLabel ? s.dropdownHeadActive : "", // ✅ 선택 시 외곽선/아이콘/텍스트 주황
+                effectiveValue ? s.dropdownHeadActive : "",
               ].join(" ")}
               onClick={() => setExpanded((v) => !v)}
               aria-expanded={expanded}
@@ -93,7 +113,7 @@ export default function RadioSheet({
               <span
                 className={[
                   s.dropdownText,
-                  selectedLabel ? s.dropdownTextActive : "",
+                  effectiveValue ? s.dropdownTextActive : "",
                 ].join(" ")}
               >
                 {headLabel}
@@ -113,11 +133,11 @@ export default function RadioSheet({
                     key={it.key}
                     type="button"
                     role="option"
-                    aria-selected={value === it.key}
+                    aria-selected={effectiveValue === it.key}
                     className={s.option}
                     onClick={() => {
-                      setValue(it.key); // 선택
-                      setExpanded(false); // 접기
+                      setValue(it.key);
+                      setExpanded(false);
                     }}
                   >
                     <span className={s.optionLabel}>{it.label}</span>
@@ -127,7 +147,7 @@ export default function RadioSheet({
             )}
           </>
         ) : (
-          // 라디오 버전
+          // 라디오
           <ul className={s.radioList} role="listbox" aria-label={title}>
             {items.map((it) => {
               const active = value === it.key;
