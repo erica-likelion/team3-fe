@@ -61,7 +61,7 @@ const Onboarding: React.FC = () => {
 
   const handleNewAnalysis = () => {
     console.log("새 분석 시작");
-    navigate("/select-type");
+    navigate("/select-place");
   };
 
   const isLastStep = currentStep === steps.length - 1;

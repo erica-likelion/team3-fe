@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import HomeIndicator from "../components/HomeIndicator";
 import ExitConfirmModal from "../components/ExitConfirmModal";
@@ -7,6 +7,7 @@ import "../styles/global.scss";
 
 export default function AppLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showExit, setShowExit] = useState(false);
 
   useEffect(() => {
@@ -25,10 +26,52 @@ export default function AppLayout() {
     };
   }, [navigate]);
 
+  // 페이지별 TopBar 설정
+  const getTopBarConfig = () => {
+    switch (location.pathname) {
+      case "/select-place":
+        return {
+          title: "위치 선택",
+          onLeftClick: () => navigate("/select-conditions"),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/select-type":
+        return {
+          title: "업종 선택",
+          onLeftClick: () => navigate("/select-place"),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/select/conditions":
+        return {
+          title: "조건 선택",
+          onLeftClick: () => navigate("/onboarding"),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/output":
+        return {
+          title: "분석 결과",
+          onLeftClick: () => navigate("/select-type"),
+          onRightClick: () => setShowExit(true),
+        };
+      default:
+        return {
+          title: "",
+          onLeftClick: () => navigate(-1),
+          onRightClick: () => setShowExit(true),
+        };
+    }
+  };
+
+  const topBarConfig = getTopBarConfig();
+
   return (
     <>
       <div className="iphone-frame">
-        <TopBar />
+        <TopBar
+          title={topBarConfig.title}
+          onLeftClick={topBarConfig.onLeftClick}
+          onRightClick={topBarConfig.onRightClick}
+        />
         <div className="page-content">
           <Outlet />
         </div>
