@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SelectType.module.scss";
+import { useRestaurantContext } from "../../context/RestaurantContext";
 
 import RangeSheet from "../../components/BottomSheet/RangeSheet";
 import RadioSheet from "../../components/BottomSheet/RadioSheet";
@@ -29,10 +30,27 @@ const CATEGORIES: Category[] = [
   { key: "sushi", name: "일식", icon: sushi },
 ];
 
+// 카테고리 키를 백엔드 형식으로 변환하는 함수
+const getCategoryForBackend = (key: string): string => {
+  const categoryMap: { [key: string]: string } = {
+    coffee: "카페/디저트",
+    chicken: "치킨",
+    pizza: "피자",
+    hamboogi: "패스트푸드",
+    bibim: "한식",
+    asian: "아시안",
+    pasta: "양식",
+    zza: "중식",
+    sushi: "일식",
+  };
+  return categoryMap[key] || key;
+};
+
 type SheetKey = null | "월세" | "단가" | "상권" | "운영";
 
 export default function SelectType() {
   const navigate = useNavigate();
+  const { updateFormData } = useRestaurantContext();
   const [selected, setSelected] = useState<string | null>(null);
 
   // ▼ 바텀시트 상태
@@ -50,6 +68,11 @@ export default function SelectType() {
 
   const onNext = () => {
     if (!selected) return;
+
+    // 카테고리를 전역 상태에 저장
+    const categoryForBackend = getCategoryForBackend(selected);
+    updateFormData({ category: categoryForBackend });
+
     navigate(`/select/conditions?cat=${encodeURIComponent(selected)}`);
   };
   return (

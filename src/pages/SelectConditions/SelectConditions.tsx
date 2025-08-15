@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SelectConditions.module.scss";
+import { useRestaurantContext } from "../../context/RestaurantContext";
+import { submitRestaurantData } from "../../services/api";
 
 import RangeSheet from "../../components/BottomSheet/RangeSheet";
 import RadioSheet from "../../components/BottomSheet/RadioSheet";
@@ -16,6 +18,7 @@ type SheetKey =
 
 export default function SelectConditions() {
   const navigate = useNavigate();
+  const { formData } = useRestaurantContext();
   const [unitPrice, setUnitPrice] = useState<[number | null, number | null]>([
     null,
     null,
@@ -28,6 +31,7 @@ export default function SelectConditions() {
   const [opMode, setOpMode] = useState<string | null>(null);
   const [size, setSize] = useState<string | null>(null);
   const [floor, setFloor] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // 어떤 시트를 열지
   const [active, setActive] = useState<SheetKey>(null);
@@ -44,6 +48,88 @@ export default function SelectConditions() {
       floor !== null,
     [unitPrice, rent, district, opMode, size, floor]
   );
+
+  // 평수 범위를 숫자로 변환하는 함수
+  const getSizeRange = (sizeStr: string): { min: number; max: number } => {
+    const sizeMap: { [key: string]: { min: number; max: number } } = {
+      "10평 이하": { min: 0, max: 10 },
+      "11~20평": { min: 11, max: 20 },
+      "21~30평": { min: 21, max: 30 },
+      "31~40평": { min: 31, max: 40 },
+      "41~50평": { min: 41, max: 50 },
+      "51평 이상": { min: 51, max: 100 },
+    };
+    return sizeMap[sizeStr] || { min: 0, max: 0 };
+  };
+
+  // 층수를 숫자로 변환하는 함수
+  const getHeightFromFloor = (floorStr: string): number => {
+    const floorMap: { [key: string]: number } = {
+      지하층: 0,
+      "1층": 1,
+      "2층": 2,
+      "3층": 3,
+      "4층 이상": 4,
+      "루프탑/옥상": 5,
+    };
+    return floorMap[floorStr] || 1;
+  };
+
+  // 운영 방식을 백엔드 형식으로 변환하는 함수
+  const getManagementMethod = (opModeStr: string): string => {
+    const opModeMap: { [key: string]: string } = {
+      "홀 운영 위주": "홀 영업 위주",
+      "배달 운영 위주": "배달 영업 위주",
+      "모두 겸함": "홀/배달 겸업",
+    };
+    return opModeMap[opModeStr] || opModeStr;
+  };
+
+  const handleSubmit = async () => {
+    if (!canNext) return;
+
+    setIsSubmitting(true);
+    try {
+      // 모든 데이터를 수집
+      const sizeRange = getSizeRange(size!);
+      const height = getHeightFromFloor(floor!);
+      const managementMethod = getManagementMethod(opMode!);
+
+      const restaurantData = {
+        addr: formData.addr || "",
+        category: formData.category || "",
+        marketingArea: district!,
+        budget: {
+          min: rent![0]!,
+          max: rent![1]!,
+        },
+        managementMethod: managementMethod,
+        averagePrice: {
+          min: unitPrice![0]!,
+          max: unitPrice![1]!,
+        },
+        size: {
+          min: sizeRange.min,
+          max: sizeRange.max,
+        },
+        height: height,
+      };
+
+      console.log("전송할 데이터:", restaurantData);
+
+      // API 호출
+      const response = await submitRestaurantData(restaurantData);
+      console.log("API 응답:", response);
+
+      // 성공 시 결과 페이지로 이동
+      navigate("/output");
+    } catch (error) {
+      console.error("API 호출 실패:", error);
+      alert("데이터 전송에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const rows = [
     {
@@ -145,14 +231,11 @@ export default function SelectConditions() {
         {/* 하단 고정 버튼 */}
         <button
           className={`${styles.next} ${!canNext ? styles.disabled : ""}`}
-          disabled={!canNext}
+          disabled={!canNext || isSubmitting}
           type="button"
-          onClick={() => {
-            if (!canNext) return;
-            navigate("/loading");
-          }}
+          onClick={handleSubmit}
         >
-          다음으로
+          {isSubmitting ? "전송 중..." : "다음으로"}
         </button>
       </div>
 
