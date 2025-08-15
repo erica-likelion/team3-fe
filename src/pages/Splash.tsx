@@ -9,7 +9,7 @@ const Splash = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate("/onboarding");
-    }, 10000);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [navigate]);

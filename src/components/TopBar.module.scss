@@ -94,3 +94,29 @@
   height: 18px;
   display: block;
 }
+
+.header_left {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.header_center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Pretendard;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #383326;
+}
+
+.header_right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}

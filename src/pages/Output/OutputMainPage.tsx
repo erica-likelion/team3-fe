@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import s from "./OutputMainPage.module.scss";
 
@@ -126,7 +126,6 @@ function RecoItem({
 export default function OutputMainPage() {
   const navigate = useNavigate();
   const [showExit, setShowExit] = useState(false);
-  const openExit = () => setShowExit(true);
   const closeExit = () => setShowExit(false);
   const goHome = () => {
     setShowExit(false);
@@ -150,12 +149,8 @@ export default function OutputMainPage() {
     };
   }, []);
 
-  const pageTitle = useMemo(() => "분석 결과", []);
-
   return (
-    <main className={s.root} aria-label="분석 결과">
-      <h1 className={s.pageTitle}>{pageTitle}</h1>
-
+    <main className={s.root}>
       <section className={s.hero}>
         <ScoreDonut score={60.4} />
         <div className={s.heroRight}>

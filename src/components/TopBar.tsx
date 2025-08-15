@@ -17,9 +17,21 @@ function formatNow(): string {
 
 interface TopBarProps {
   showNavRow?: boolean;
+  title?: string;
+  leftChild?: React.ReactNode;
+  rightChild?: React.ReactNode;
+  onLeftClick?: () => void;
+  onRightClick?: () => void;
 }
 
-export default function TopBar({ showNavRow = true }: TopBarProps) {
+export default function TopBar({
+  showNavRow = true,
+  title = "",
+  leftChild,
+  rightChild,
+  onLeftClick,
+  onRightClick,
+}: TopBarProps) {
   const [time, setTime] = useState<string>(formatNow());
 
   useEffect(() => {
@@ -56,20 +68,45 @@ export default function TopBar({ showNavRow = true }: TopBarProps) {
       </div>
       {showNavRow && (
         <div className={s.navRow}>
-          <button
-            className={s.iconBtn}
-            aria-label="back"
-            onClick={() => emit("topbar:back")}
-          >
-            <img src={Prev} alt="" />
-          </button>
-          <button
-            className={s.iconBtn}
-            aria-label="close"
-            onClick={() => emit("topbar:close")}
-          >
-            <img src={Close} alt="" />
-          </button>
+          <div className={s.header_left}>
+            {leftChild ? (
+              <button
+                className={s.iconBtn}
+                aria-label="left"
+                onClick={onLeftClick}
+              >
+                {leftChild}
+              </button>
+            ) : (
+              <button
+                className={s.iconBtn}
+                aria-label="back"
+                onClick={() => emit("topbar:back")}
+              >
+                <img src={Prev} alt="" />
+              </button>
+            )}
+          </div>
+          <div className={s.header_center}>{title}</div>
+          <div className={s.header_right}>
+            {rightChild ? (
+              <button
+                className={s.iconBtn}
+                aria-label="right"
+                onClick={onRightClick}
+              >
+                {rightChild}
+              </button>
+            ) : (
+              <button
+                className={s.iconBtn}
+                aria-label="close"
+                onClick={() => emit("topbar:close")}
+              >
+                <img src={Close} alt="" />
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>
