@@ -12,7 +12,7 @@ type Props = {
   title: string;
   items: Item[];
   initial: string | null;
-  variant?: Variant; // 기본은 "radio"
+  variant?: Variant;
   onClose: () => void;
   onApply: (v: string | null) => void;
 };
@@ -58,7 +58,6 @@ export default function RadioSheet({
 
   if (!open) return null;
 
-  // 드롭다운에서는 현재 헤드 텍스트는 목록에서 제외
   const dropdownList = items.filter((it) => it.label !== headLabel);
 
   return (
