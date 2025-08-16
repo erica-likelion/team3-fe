@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import s from "./OutputMainPage.module.scss";
+import { useRestaurantContext } from "../../context/RestaurantContext";
 
 import ChevronDown from "../../assets/ui/chevron-down.svg";
 import ArrowRight from "../../assets/ui/arrow-right 2.png";
@@ -125,6 +126,7 @@ function RecoItem({
 
 export default function OutputMainPage() {
   const navigate = useNavigate();
+  const { analysisResult } = useRestaurantContext();
   const [showExit, setShowExit] = useState(false);
   const closeExit = () => setShowExit(false);
   const goHome = () => {
@@ -152,11 +154,13 @@ export default function OutputMainPage() {
   return (
     <main className={s.root}>
       <section className={s.hero}>
-        <ScoreDonut score={60.4} />
+        <ScoreDonut score={analysisResult?.score || 60.4} />
         <div className={s.heroRight}>
           <div className={s.heroCaption}>매물 총점</div>
           <div className={s.heroScoreRow}>
-            <span className={s.heroScore}>60.4</span>
+            <span className={s.heroScore}>
+              {analysisResult?.score?.toFixed(1) || "60.4"}
+            </span>
             <span className={s.heroTotal}>/100점</span>
           </div>
           <div className={s.heroMeta}>
@@ -180,20 +184,29 @@ export default function OutputMainPage() {
           <AccordionItem
             icon={IconLocation}
             title="위치 및 접근성"
-            scoreText="00점"
-            body="해당 매장은 대중교통과 도보 이동이 편리한 위치에 있어요. 학교와 가까워 학생 유입이 용이하고, 주변 유동인구가 안정적인 편이에요."
+            scoreText={`${analysisResult?.location?.score || 0}점`}
+            body={
+              analysisResult?.location?.analysis ||
+              "해당 매장은 대중교통과 도보 이동이 편리한 위치에 있어요. 학교와 가까워 학생 유입이 용이하고, 주변 유동인구가 안정적인 편이에요."
+            }
           />
           <AccordionItem
             icon={IconTarget}
             title="시장 적합성"
-            scoreText="00점"
-            body="학생들이 선호하는 분식집이라는 업종과 합리적인 단가가 학교 앞 상권 특성에 잘 어울리며, 현재 한대정문 사거리에 같은 업종의 매장이 5곳 미만이라 비교적 경쟁이 덜한 환경이에요."
+            scoreText={`${analysisResult?.target?.score || 0}점`}
+            body={
+              analysisResult?.target?.analysis ||
+              "학생들이 선호하는 분식집이라는 업종과 합리적인 단가가 학교 앞 상권 특성에 잘 어울리며, 현재 한대정문 사거리에 같은 업종의 매장이 5곳 미만이라 비교적 경쟁이 덜한 환경이에요."
+            }
           />
           <AccordionItem
             icon={IconBudget}
             title="예산 적합성"
-            scoreText="00점"
-            body="현재 매물의 월세가 설정하신 예산 범위 안에 있어요. 초기 고정비 부담을 줄일 수 있는 조건이에요."
+            scoreText={`${analysisResult?.budget?.score || 0}점`}
+            body={
+              analysisResult?.budget?.analysis ||
+              "현재 매물의 월세가 설정하신 예산 범위 안에 있어요. 초기 고정비 부담을 줄일 수 있는 조건이에요."
+            }
           />
         </div>
       </section>

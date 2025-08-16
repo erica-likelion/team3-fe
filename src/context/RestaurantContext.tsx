@@ -11,10 +11,30 @@ export interface RestaurantFormData {
   height: number;
 }
 
+// API 응답 데이터 타입 정의
+export interface AnalysisResult {
+  score: number;
+  budget: {
+    score: number;
+    analysis: string;
+  };
+  location: {
+    score: number;
+    analysis: string;
+  };
+  target: {
+    score: number;
+    analysis: string;
+  };
+}
+
 interface RestaurantContextType {
   formData: Partial<RestaurantFormData>;
+  analysisResult: AnalysisResult | null;
   updateFormData: (data: Partial<RestaurantFormData>) => void;
+  setAnalysisResult: (result: AnalysisResult) => void;
   clearFormData: () => void;
+  clearAnalysisResult: () => void;
 }
 
 const RestaurantContext = createContext<RestaurantContextType | undefined>(
@@ -39,6 +59,9 @@ export const RestaurantProvider: React.FC<RestaurantProviderProps> = ({
   children,
 }) => {
   const [formData, setFormData] = useState<Partial<RestaurantFormData>>({});
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
+    null
+  );
 
   const updateFormData = (data: Partial<RestaurantFormData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -48,9 +71,20 @@ export const RestaurantProvider: React.FC<RestaurantProviderProps> = ({
     setFormData({});
   };
 
+  const clearAnalysisResult = () => {
+    setAnalysisResult(null);
+  };
+
   return (
     <RestaurantContext.Provider
-      value={{ formData, updateFormData, clearFormData }}
+      value={{
+        formData,
+        analysisResult,
+        updateFormData,
+        setAnalysisResult,
+        clearFormData,
+        clearAnalysisResult,
+      }}
     >
       {children}
     </RestaurantContext.Provider>
