@@ -18,7 +18,7 @@ type SheetKey =
 
 export default function SelectConditions() {
   const navigate = useNavigate();
-  const { formData } = useRestaurantContext();
+  const { formData, setAnalysisResult } = useRestaurantContext();
   const [unitPrice, setUnitPrice] = useState<[number | null, number | null]>([
     null,
     null,
@@ -120,6 +120,9 @@ export default function SelectConditions() {
       // API 호출
       const response = await submitRestaurantData(restaurantData);
       console.log("API 응답:", response);
+
+      // 응답 데이터를 Context에 저장
+      setAnalysisResult(response);
 
       // 성공 시 결과 페이지로 이동
       navigate("/output");
