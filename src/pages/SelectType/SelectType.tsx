@@ -7,8 +7,8 @@ import RangeSheet from "../../components/BottomSheet/RangeSheet";
 import RadioSheet from "../../components/BottomSheet/RadioSheet";
 
 import coffee from "../../assets/categories/coffee.png";
-import chicken from "../../assets/categories/chicken.png";
-import pizza from "../../assets/categories/pizza.png";
+import pitch from "../../assets/categories/pitch.svg";
+import beer from "../../assets/categories/beer.svg";
 import hamboogi from "../../assets/categories/hamboogi.png";
 import bibim from "../../assets/categories/bibim.png";
 import asian from "../../assets/categories/asian.png";
@@ -20,8 +20,8 @@ type Category = { key: string; name: string; icon: string };
 
 const CATEGORIES: Category[] = [
   { key: "coffee", name: "카페/디저트", icon: coffee },
-  { key: "chicken", name: "치킨", icon: chicken },
-  { key: "pizza", name: "피자", icon: pizza },
+  { key: "pitch", name: "피자/치킨", icon: pitch },
+  { key: "beer", name: "주점/술집", icon: beer },
   { key: "hamboogi", name: "패스트푸드", icon: hamboogi },
   { key: "bibim", name: "한식", icon: bibim },
   { key: "asian", name: "아시안", icon: asian },
@@ -34,8 +34,8 @@ const CATEGORIES: Category[] = [
 const getCategoryForBackend = (key: string): string => {
   const categoryMap: { [key: string]: string } = {
     coffee: "카페/디저트",
-    chicken: "치킨",
-    pizza: "피자",
+    pitch: "피자/치킨",
+    beer: "주점/술집",
     hamboogi: "패스트푸드",
     bibim: "한식",
     asian: "아시안",

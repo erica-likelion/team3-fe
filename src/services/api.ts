@@ -7,10 +7,12 @@ export interface RestaurantData {
   category: string;
   marketingArea: string;
   budget: { min: number; max: number };
+  deposit: { min: number; max: number };
   managementMethod: string;
-  averagePrice: { min: number; max: number };
+  representativeMenuName: string;
+  representativeMenuPrice: number;
   size: { min: number; max: number };
-  height: number;
+  height: string;
 }
 
 export const submitRestaurantData = async (data: RestaurantData) => {
