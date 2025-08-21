@@ -16,6 +16,10 @@ const router = createBrowserRouter([
     element: <Splash />,
   },
   {
+    path: "/loading",
+    element: <LoadingPage />,
+  },
+  {
     path: "/onboarding",
     element: <OnboardingLayout />,
     children: [{ index: true, element: <Onboarding /> }],
@@ -27,7 +31,6 @@ const router = createBrowserRouter([
       { path: "select-place", element: <SelectPlace /> },
       { path: "select-type", element: <SelectType /> },
       { path: "select/conditions", element: <SelectConditions /> },
-      { path: "loading", element: <LoadingPage /> },
       { path: "output", element: <OutputMainPage /> },
     ],
   },

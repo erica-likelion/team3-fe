@@ -13,18 +13,25 @@ export interface RestaurantFormData {
 
 // API 응답 데이터 타입 정의
 export interface AnalysisResult {
-  score: number;
-  budget: {
+  scores: Array<{
+    name: string;
     score: number;
-    analysis: string;
+    reason: string;
+  }>;
+  reviewAnalysis: {
+    averageRating: number;
+    feedback: string;
+    reviewSamples: Array<{
+      storeName: string;
+      reviewScore: number;
+      highlights: string[];
+    }>;
   };
-  location: {
-    score: number;
-    analysis: string;
-  };
-  target: {
-    score: number;
-    analysis: string;
+  detailAnalysis: {
+    sections: Array<{
+      name: string;
+      content: string;
+    }>;
   };
 }
 
@@ -58,17 +65,50 @@ interface RestaurantProviderProps {
 export const RestaurantProvider: React.FC<RestaurantProviderProps> = ({
   children,
 }) => {
-  const [formData, setFormData] = useState<Partial<RestaurantFormData>>({});
+  // localStorage에서 저장된 데이터 불러오기 (뒤로 가기인 경우에만)
+  const getStoredFormData = (): Partial<RestaurantFormData> => {
+    const isBackNavigation =
+      sessionStorage.getItem("isBackNavigation") === "true";
+    if (!isBackNavigation) {
+      return {};
+    }
+
+    try {
+      const stored = localStorage.getItem("restaurantFormData");
+      return stored ? JSON.parse(stored) : {};
+    } catch (error) {
+      console.error("Failed to parse stored form data:", error);
+      return {};
+    }
+  };
+
+  const [formData, setFormData] =
+    useState<Partial<RestaurantFormData>>(getStoredFormData);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
     null
   );
 
   const updateFormData = (data: Partial<RestaurantFormData>) => {
-    setFormData((prev) => ({ ...prev, ...data }));
+    setFormData((prev) => {
+      const newData = { ...prev, ...data };
+      // localStorage에 저장
+      try {
+        localStorage.setItem("restaurantFormData", JSON.stringify(newData));
+      } catch (error) {
+        console.error("Failed to save form data to localStorage:", error);
+      }
+      return newData;
+    });
   };
 
   const clearFormData = () => {
     setFormData({});
+    // localStorage에서도 삭제
+    try {
+      localStorage.removeItem("restaurantFormData");
+    } catch (error) {
+      console.error("Failed to remove form data from localStorage:", error);
+    }
   };
 
   const clearAnalysisResult = () => {

@@ -12,3 +12,7 @@
   position: relative;
   overflow-y: auto;
 }
+
+.pageContent.loading {
+  overflow: hidden;
+}

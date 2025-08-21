@@ -12,6 +12,7 @@ type Props = {
   max: number;
   step: number;
   initial: [number | null, number | null];
+  singleValue?: boolean;
   onClose: () => void;
   onApply: (range: [number | null, number | null]) => void;
 };
@@ -24,6 +25,7 @@ export default function RangeSheet({
   max,
   step,
   initial,
+  singleValue = false,
   onClose,
   onApply,
 }: Props) {
@@ -39,7 +41,7 @@ export default function RangeSheet({
     setLo(fmt(initial[0]));
     setHi(fmt(initial[1]));
     setActiveField(null);
-  }, [open, initial[0], initial[1]]);
+  }, [open, initial]);
 
   // 숫자 파싱/스냅 (범위 제한은 props의 min/max 그대로 사용)
   const loNum = useMemo(
@@ -104,27 +106,45 @@ export default function RangeSheet({
 
         {/* 인풋 필드 */}
         <div className={s.fields}>
-          <Field
-            label="최소금액"
-            unit={unit}
-            value={lo}
-            active={activeField === "lo"}
-            hasValue={hasLo}
-            onChange={(v) => setLo(stripComma(v))}
-            onFocus={() => setActiveField("lo")}
-            inputRef={loRef}
-          />
-          <span className={s.hyphen}>-</span>
-          <Field
-            label="최대금액"
-            unit={unit}
-            value={hi}
-            active={activeField === "hi"}
-            hasValue={hasHi}
-            onChange={(v) => setHi(stripComma(v))}
-            onFocus={() => setActiveField("hi")}
-            inputRef={hiRef}
-          />
+          {singleValue ? (
+            <Field
+              label="금액"
+              unit={unit}
+              value={lo}
+              active={activeField === "lo"}
+              hasValue={hasLo}
+              onChange={(v) => {
+                setLo(stripComma(v));
+                setHi(stripComma(v));
+              }}
+              onFocus={() => setActiveField("lo")}
+              inputRef={loRef}
+            />
+          ) : (
+            <>
+              <Field
+                label="최소금액"
+                unit={unit}
+                value={lo}
+                active={activeField === "lo"}
+                hasValue={hasLo}
+                onChange={(v) => setLo(stripComma(v))}
+                onFocus={() => setActiveField("lo")}
+                inputRef={loRef}
+              />
+              <span className={s.hyphen}>-</span>
+              <Field
+                label="최대금액"
+                unit={unit}
+                value={hi}
+                active={activeField === "hi"}
+                hasValue={hasHi}
+                onChange={(v) => setHi(stripComma(v))}
+                onFocus={() => setActiveField("hi")}
+                inputRef={hiRef}
+              />
+            </>
+          )}
         </div>
 
         {/* 듀얼 슬라이더 */}
@@ -134,6 +154,7 @@ export default function RangeSheet({
           step={step}
           low={loNum ?? min}
           high={hiNum ?? max}
+          singleValue={singleValue}
           onChange={(l, h) => {
             setLo(String(l));
             setHi(String(h));
@@ -211,6 +232,7 @@ type DualSliderProps = {
   step: number;
   low: number;
   high: number;
+  singleValue?: boolean;
   onChange: (low: number, high: number) => void;
 };
 
@@ -219,7 +241,15 @@ type DualSliderProps = {
  * - 보이는 native range는 pointer-events:none
  * - 드래그는 오버레이에서 처리 + rAF로 프레임당 1회만 업데이트
  */
-function DualSlider({ min, max, step, low, high, onChange }: DualSliderProps) {
+function DualSlider({
+  min,
+  max,
+  step,
+  low,
+  high,
+  singleValue = false,
+  onChange,
+}: DualSliderProps) {
   const wrapRef = React.useRef<HTMLDivElement | null>(null);
   const activeRef = React.useRef<"low" | "high" | null>(null);
   const rafId = React.useRef<number | null>(null);
@@ -250,9 +280,13 @@ function DualSlider({ min, max, step, low, high, onChange }: DualSliderProps) {
 
   const start = (e: React.PointerEvent) => {
     (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
-    const v = posToValue(e.clientX);
-    const pick = Math.abs(v - low) <= Math.abs(v - high) ? "low" : "high";
-    activeRef.current = pick;
+    if (singleValue) {
+      activeRef.current = "low";
+    } else {
+      const v = posToValue(e.clientX);
+      const pick = Math.abs(v - low) <= Math.abs(v - high) ? "low" : "high";
+      activeRef.current = pick;
+    }
     move(e);
   };
 
@@ -260,10 +294,14 @@ function DualSlider({ min, max, step, low, high, onChange }: DualSliderProps) {
     const pick = activeRef.current;
     if (!pick) return;
     const v = posToValue(e.clientX);
-    if (pick === "low") {
-      schedule(Math.min(v, high), high);
+    if (singleValue) {
+      schedule(v, v);
     } else {
-      schedule(low, Math.max(v, low));
+      if (pick === "low") {
+        schedule(Math.min(v, high), high);
+      } else {
+        schedule(low, Math.max(v, low));
+      }
     }
   };
 
@@ -291,28 +329,44 @@ function DualSlider({ min, max, step, low, high, onChange }: DualSliderProps) {
       />
 
       {/* 보이는 thumb (접근성용으로만 존재, 클릭/드래그는 오버레이가 처리) */}
-      <input
-        className={`${s.thumb} ${s.thumbLow}`}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={low}
-        readOnly
-        tabIndex={-1}
-        aria-hidden
-      />
-      <input
-        className={`${s.thumb} ${s.thumbHigh}`}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={high}
-        readOnly
-        tabIndex={-1}
-        aria-hidden
-      />
+      {singleValue ? (
+        <input
+          className={`${s.thumb} ${s.thumbLow}`}
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={low}
+          readOnly
+          tabIndex={-1}
+          aria-hidden
+        />
+      ) : (
+        <>
+          <input
+            className={`${s.thumb} ${s.thumbLow}`}
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            value={low}
+            readOnly
+            tabIndex={-1}
+            aria-hidden
+          />
+          <input
+            className={`${s.thumb} ${s.thumbHigh}`}
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            value={high}
+            readOnly
+            tabIndex={-1}
+            aria-hidden
+          />
+        </>
+      )}
 
       {/* 포인터 이벤트 전담 */}
       <div

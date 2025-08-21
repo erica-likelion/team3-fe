@@ -4,7 +4,6 @@ import s from "./OutputMainPage.module.scss";
 import { useRestaurantContext } from "../../context/RestaurantContext";
 
 import ChevronDown from "../../assets/ui/chevron-down.svg";
-import ArrowRight from "../../assets/ui/arrow-right 2.png";
 
 import IconBudget from "../../assets/ui/Budget.png";
 import IconLocation from "../../assets/ui/Location.png";
@@ -22,24 +21,13 @@ function ScoreDonut({
   const pct = Math.max(0, Math.min(100, score));
   const stroke = 18;
   const r = (size - stroke) / 2;
-  const c = 2 * Math.PI * r;
-  const filled = (pct / 100) * c;
-  const dash = c;
-  const offset = c - filled;
+  const circumference = 2 * Math.PI * r;
+  const filledLength = (pct / 100) * circumference;
 
   return (
     <div className={s.donutWrap} style={{ width: size, height: size }}>
       <svg className={s.donutSvg} width={size} height={size}>
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          stroke="var(--OR300)"
-          strokeWidth={stroke}
-          fill="none"
-          strokeLinecap="round"
-          transform={`rotate(-90 ${size / 2} ${size / 2})`}
-        />
+        {/* 배경 원 */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -48,8 +36,19 @@ function ScoreDonut({
           strokeWidth={stroke}
           fill="none"
           strokeLinecap="round"
-          strokeDasharray={dash}
-          strokeDashoffset={offset}
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        />
+        {/* 점수 원 - 12시부터 반시계 방향 */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          stroke="var(--OR300)"
+          strokeWidth={stroke}
+          fill="none"
+          strokeLinecap="butt"
+          strokeDasharray={`${circumference - filledLength} ${circumference}`}
+          strokeDashoffset={0}
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
       </svg>
@@ -101,38 +100,32 @@ function AccordionItem({
   );
 }
 
-function RecoItem({
-  title,
-  subtitle,
-  score,
-}: {
-  title: string;
-  subtitle: string;
-  score: string;
-}) {
-  return (
-    <button className={s.reco}>
-      <div className={s.recoTexts}>
-        <div className={s.recoTitle}>{title}</div>
-        <div className={s.recoSub}>{subtitle}</div>
-      </div>
-      <div className={s.recoRight}>
-        <span className={s.recoScore}>{score}</span>
-        <img src={ArrowRight} alt="" className={s.recoArrow} />
-      </div>
-    </button>
-  );
-}
-
 export default function OutputMainPage() {
   const navigate = useNavigate();
-  const { analysisResult } = useRestaurantContext();
+  const { analysisResult, formData } = useRestaurantContext();
   const [showExit, setShowExit] = useState(false);
   const closeExit = () => setShowExit(false);
   const goHome = () => {
     setShowExit(false);
     navigate("/");
   };
+
+  // 점수 계산 로직
+  const calculateTotalScore = () => {
+    if (!analysisResult?.scores || analysisResult.scores.length === 0) {
+      return 60.4; // 기본값
+    }
+
+    const scores = analysisResult.scores.map(
+      (item: { score: number }) => item.score
+    );
+    const average =
+      scores.reduce((sum: number, score: number) => sum + score, 0) /
+      scores.length;
+    return Math.round(average * 10) / 10; // 소수점 첫째 자리까지 반올림
+  };
+
+  const totalScore = calculateTotalScore();
 
   useEffect(() => {
     const selector =
@@ -151,25 +144,59 @@ export default function OutputMainPage() {
     };
   }, []);
 
+  // TopBar 뒤로 가기 버튼 클릭 감지
+  useEffect(() => {
+    const selector =
+      '.topbar-back, [data-role="topbar-back"], [aria-label="뒤로"], [aria-label="Back"]';
+    const onBackClick = (e: Event) => {
+      const t = e.target as HTMLElement | null;
+      if (t && t.closest(selector)) {
+        // 뒤로 가기로 돌아가는 경우 플래그 설정
+        sessionStorage.setItem("isBackNavigation", "true");
+      }
+    };
+    document.addEventListener("click", onBackClick, true);
+    return () => {
+      document.removeEventListener("click", onBackClick, true);
+    };
+  }, []);
+
   return (
     <main className={s.root}>
       <section className={s.hero}>
-        <ScoreDonut score={analysisResult?.score || 60.4} />
+        <ScoreDonut score={totalScore} />
         <div className={s.heroRight}>
           <div className={s.heroCaption}>매물 총점</div>
           <div className={s.heroScoreRow}>
-            <span className={s.heroScore}>
-              {analysisResult?.score?.toFixed(1) || "60.4"}
-            </span>
+            <span className={s.heroScore}>{totalScore.toFixed(1)}</span>
             <span className={s.heroTotal}>/100점</span>
           </div>
           <div className={s.heroMeta}>
             <div>
-              <span className={s.metaLabel}>사동</span> <b>월세 1200/100</b>
+              <span className={s.metaLabel}>사동</span>{" "}
+              <b>{formData.category || "카페/디저트"}</b>
             </div>
-            <div className={s.metaLine}>9/9평&nbsp;&nbsp;1/2층</div>
             <div className={s.metaLine}>
-              관리비 없음&nbsp;&nbsp;한대앞역 3분
+              {formData.size?.min && formData.size?.max
+                ? `${formData.size.min}~${formData.size.max}평`
+                : "15~20평"}
+              &nbsp;&nbsp;
+              {formData.height === 0
+                ? "지하층"
+                : formData.height === 1
+                ? "1층"
+                : formData.height === 2
+                ? "2층"
+                : formData.height === 3
+                ? "3층"
+                : formData.height === 4
+                ? "4층 이상"
+                : formData.height === 5
+                ? "루프탑/옥상"
+                : "1층"}
+            </div>
+            <div className={s.metaLine}>
+              {formData.marketingArea || "대학가/학교 주변"}
             </div>
           </div>
         </div>
@@ -183,49 +210,30 @@ export default function OutputMainPage() {
         <div className={s.accList}>
           <AccordionItem
             icon={IconLocation}
-            title="위치 및 접근성"
-            scoreText={`${analysisResult?.location?.score || 0}점`}
+            title="접근성"
+            scoreText={`${analysisResult?.scores?.[0]?.score || 0}점`}
             body={
-              analysisResult?.location?.analysis ||
+              analysisResult?.detailAnalysis?.sections?.[0]?.content ||
               "해당 매장은 대중교통과 도보 이동이 편리한 위치에 있어요. 학교와 가까워 학생 유입이 용이하고, 주변 유동인구가 안정적인 편이에요."
-            }
-          />
-          <AccordionItem
-            icon={IconTarget}
-            title="시장 적합성"
-            scoreText={`${analysisResult?.target?.score || 0}점`}
-            body={
-              analysisResult?.target?.analysis ||
-              "학생들이 선호하는 분식집이라는 업종과 합리적인 단가가 학교 앞 상권 특성에 잘 어울리며, 현재 한대정문 사거리에 같은 업종의 매장이 5곳 미만이라 비교적 경쟁이 덜한 환경이에요."
             }
           />
           <AccordionItem
             icon={IconBudget}
             title="예산 적합성"
-            scoreText={`${analysisResult?.budget?.score || 0}점`}
+            scoreText={`${analysisResult?.scores?.[1]?.score || 0}점`}
             body={
-              analysisResult?.budget?.analysis ||
+              analysisResult?.detailAnalysis?.sections?.[1]?.content ||
               "현재 매물의 월세가 설정하신 예산 범위 안에 있어요. 초기 고정비 부담을 줄일 수 있는 조건이에요."
             }
           />
-        </div>
-      </section>
-
-      <section className={s.section}>
-        <h2 className={s.sectionTitle}>더 나은 조건을 추천해 드려요!</h2>
-        <p className={s.sectionDesc}>
-          선택하신 창업 환경을 바탕으로 보다 나은 선택지를 알려드려요
-        </p>
-        <div className={s.recoList}>
-          <RecoItem
-            title="위치 및 접근성이 더 뛰어나요"
-            subtitle="한대 정문 사거리 위치"
-            score="96.7점"
-          />
-          <RecoItem
-            title="예산 부합성이 더 뛰어나요"
-            subtitle="한양대 에리카 도보 15분"
-            score="90.3점"
+          <AccordionItem
+            icon={IconTarget}
+            title="메뉴 적합성"
+            scoreText={`${analysisResult?.scores?.[2]?.score || 0}점`}
+            body={
+              analysisResult?.detailAnalysis?.sections?.[2]?.content ||
+              "학생들이 선호하는 분식집이라는 업종과 합리적인 단가가 학교 앞 상권 특성에 잘 어울리며, 현재 한대정문 사거리에 같은 업종의 매장이 5곳 미만이라 비교적 경쟁이 덜한 환경이에요."
+            }
           />
         </div>
       </section>

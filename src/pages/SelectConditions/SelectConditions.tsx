@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SelectConditions.module.scss";
 import { useRestaurantContext } from "../../context/RestaurantContext";
@@ -13,7 +13,7 @@ type SheetKey =
   | "평균 단가"
   | "특수 상권 여부"
   | "매장 운영 방식"
-  | "월세 기준 예상"
+  | "월세 기준 예산"
   | "보증금 기준 예산"
   | "선호 평수"
   | "선호 층수";
@@ -43,7 +43,10 @@ export default function SelectConditions() {
   const [representativeMenu, setRepresentativeMenu] = useState<string | null>(
     null
   );
-  const [unitPrice, setUnitPrice] = useState<number | null>(null);
+  const [unitPrice, setUnitPrice] = useState<[number | null, number | null]>([
+    null,
+    null,
+  ]);
   const [rent, setRent] = useState<[number | null, number | null]>([
     null,
     null,
@@ -57,6 +60,67 @@ export default function SelectConditions() {
   const [size, setSize] = useState<string | null>(null);
   const [floor, setFloor] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showLoading, setShowLoading] = useState<boolean>(false);
+
+  // 뒤로 가기로 돌아왔는지 확인하고 데이터 복원
+  useEffect(() => {
+    // 뒤로 가기로 돌아왔는지 확인 (document.referrer 또는 sessionStorage 사용)
+    const isBackNavigation =
+      sessionStorage.getItem("isBackNavigation") === "true";
+
+    if (isBackNavigation) {
+      // localStorage에서 저장된 데이터 불러오기
+      try {
+        const stored = localStorage.getItem("selectConditionsData");
+        if (stored) {
+          const data = JSON.parse(stored);
+          if (data.representativeMenu)
+            setRepresentativeMenu(data.representativeMenu);
+          if (data.unitPrice) setUnitPrice(data.unitPrice);
+          if (data.rent) setRent(data.rent);
+          if (data.deposit) setDeposit(data.deposit);
+          if (data.district) setDistrict(data.district);
+          if (data.opMode) setOpMode(data.opMode);
+          if (data.size) setSize(data.size);
+          if (data.floor) setFloor(data.floor);
+        }
+      } catch (error) {
+        console.error("Failed to restore saved data:", error);
+      }
+
+      // 복원 후 플래그 제거
+      sessionStorage.removeItem("isBackNavigation");
+    }
+  }, []);
+
+  // 데이터가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    const dataToSave = {
+      representativeMenu,
+      unitPrice,
+      rent,
+      deposit,
+      district,
+      opMode,
+      size,
+      floor,
+    };
+
+    try {
+      localStorage.setItem("selectConditionsData", JSON.stringify(dataToSave));
+    } catch (error) {
+      console.error("Failed to save data:", error);
+    }
+  }, [
+    representativeMenu,
+    unitPrice,
+    rent,
+    deposit,
+    district,
+    opMode,
+    size,
+    floor,
+  ]);
 
   // 어떤 시트를 열지
   const [active, setActive] = useState<SheetKey>(null);
@@ -74,7 +138,8 @@ export default function SelectConditions() {
   const canNext = useMemo(
     () =>
       representativeMenu !== null &&
-      unitPrice !== null &&
+      unitPrice[0] !== null &&
+      unitPrice[1] !== null &&
       rent[0] !== null &&
       rent[1] !== null &&
       deposit[0] !== null &&
@@ -135,6 +200,7 @@ export default function SelectConditions() {
     if (!canNext) return;
 
     setIsSubmitting(true);
+    setShowLoading(true);
     try {
       // 모든 데이터를 수집
       const sizeRange = getSizeRange(size!);
@@ -155,7 +221,7 @@ export default function SelectConditions() {
         },
         managementMethod: managementMethod,
         representativeMenuName: representativeMenu!,
-        representativeMenuPrice: unitPrice!,
+        representativeMenuPrice: unitPrice![0]!,
         size: {
           min: sizeRange.min,
           max: sizeRange.max,
@@ -179,6 +245,7 @@ export default function SelectConditions() {
       alert("데이터 전송에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
+      setShowLoading(false);
     }
   };
 
@@ -192,7 +259,9 @@ export default function SelectConditions() {
     {
       key: "평균 단가",
       title: "평균 단가",
-      value: unitPrice ? `${unitPrice.toLocaleString()}원` : "선택해 주세요",
+      value: unitPrice[0]
+        ? `${unitPrice[0].toLocaleString()}원`
+        : "선택해 주세요",
       onClick: () => setActive("평균 단가"),
     },
     {
@@ -208,10 +277,10 @@ export default function SelectConditions() {
       onClick: () => setActive("매장 운영 방식"),
     },
     {
-      key: "월세 기준 예상",
-      title: "월세 기준 예상",
+      key: "월세 기준 예산",
+      title: "월세 기준 예산",
       value: fmtRange(rent, "원"),
-      onClick: () => setActive("월세 기준 예상"),
+      onClick: () => setActive("월세 기준 예산"),
     },
     {
       key: "보증금 기준 예산",
@@ -232,6 +301,12 @@ export default function SelectConditions() {
       onClick: () => setActive("선호 층수"),
     },
   ];
+
+  // 로딩 페이지 표시
+  if (showLoading) {
+    navigate("/loading");
+    return null;
+  }
 
   return (
     <>
@@ -316,16 +391,18 @@ export default function SelectConditions() {
       />
 
       <RangeSheet
+        key={`unitPrice-${unitPrice[0]}-${unitPrice[1]}`}
         open={active === "평균 단가"}
         title="평균 단가"
         unit="원"
         min={0}
         max={50_000}
         step={100}
-        initial={[unitPrice, unitPrice]}
+        initial={unitPrice}
+        singleValue={true}
         onClose={() => setActive(null)}
         onApply={(v) => {
-          setUnitPrice(v[0]);
+          setUnitPrice(v);
           setActive(null);
         }}
       />
@@ -368,8 +445,9 @@ export default function SelectConditions() {
       />
 
       <RangeSheet
-        open={active === "월세 기준 예상"}
-        title="월세 기준 예상"
+        key={`rent-${rent[0]}-${rent[1]}`}
+        open={active === "월세 기준 예산"}
+        title="월세 기준 예산"
         unit="원"
         min={0}
         max={1_500_000}
@@ -383,6 +461,7 @@ export default function SelectConditions() {
       />
 
       <RangeSheet
+        key={`deposit-${deposit[0]}-${deposit[1]}`}
         open={active === "보증금 기준 예산"}
         title="보증금 기준 예산"
         unit="원"
