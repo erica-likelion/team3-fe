@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SelectConditions.module.scss";
 import { useRestaurantContext } from "../../context/RestaurantContext";
@@ -9,16 +9,40 @@ import RadioSheet from "../../components/BottomSheet/RadioSheet";
 
 type SheetKey =
   | null
+  | "대표 메뉴"
   | "평균 단가"
   | "특수 상권 여부"
   | "매장 운영 방식"
-  | "월세 기준 예상"
+  | "월세 기준 예산"
+  | "보증금 기준 예산"
   | "선호 평수"
   | "선호 층수";
+
+// 대표 메뉴 데이터 정의
+const REPRESENTATIVE_MENUS = {
+  "카페/디저트": [
+    "아메리카노",
+    "조각 케이크",
+    "샌드위치/샐러드",
+    "아이스크림/빙수",
+    "구움과자",
+  ],
+  "피자/치킨": ["피자", "치킨"],
+  "주점/술집": ["볶음/구이", "찜/탕", "튀김/스낵"],
+  패스트푸드: ["햄버거"],
+  한식: ["찜/탕/찌개", "구이/볶음류", "덮밥/비빔밥", "면/국수", "국밥"],
+  아시안: ["팟타이", "나시고렝", "쌀국수", "똠얌꿍", "반미"],
+  양식: ["파스타", "스테이크", "리조또", "샐러드/브런치"],
+  중식: ["짜장면", "짬뽕", "탕수육", "마라탕/샹궈"],
+  일식: ["초밥", "회", "돈카츠", "라멘/우동/소바", "덮밥/도시락"],
+};
 
 export default function SelectConditions() {
   const navigate = useNavigate();
   const { formData, setAnalysisResult } = useRestaurantContext();
+  const [representativeMenu, setRepresentativeMenu] = useState<string | null>(
+    null
+  );
   const [unitPrice, setUnitPrice] = useState<[number | null, number | null]>([
     null,
     null,
@@ -27,26 +51,113 @@ export default function SelectConditions() {
     null,
     null,
   ]);
+  const [deposit, setDeposit] = useState<[number | null, number | null]>([
+    null,
+    null,
+  ]);
   const [district, setDistrict] = useState<string | null>(null);
   const [opMode, setOpMode] = useState<string | null>(null);
   const [size, setSize] = useState<string | null>(null);
   const [floor, setFloor] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showLoading, setShowLoading] = useState<boolean>(false);
+
+  // 뒤로 가기로 돌아왔는지 확인하고 데이터 복원
+  useEffect(() => {
+    // 뒤로 가기로 돌아왔는지 확인 (document.referrer 또는 sessionStorage 사용)
+    const isBackNavigation =
+      sessionStorage.getItem("isBackNavigation") === "true";
+
+    if (isBackNavigation) {
+      // localStorage에서 저장된 데이터 불러오기
+      try {
+        const stored = localStorage.getItem("selectConditionsData");
+        if (stored) {
+          const data = JSON.parse(stored);
+          if (data.representativeMenu)
+            setRepresentativeMenu(data.representativeMenu);
+          if (data.unitPrice) setUnitPrice(data.unitPrice);
+          if (data.rent) setRent(data.rent);
+          if (data.deposit) setDeposit(data.deposit);
+          if (data.district) setDistrict(data.district);
+          if (data.opMode) setOpMode(data.opMode);
+          if (data.size) setSize(data.size);
+          if (data.floor) setFloor(data.floor);
+        }
+      } catch (error) {
+        console.error("Failed to restore saved data:", error);
+      }
+
+      // 복원 후 플래그 제거
+      sessionStorage.removeItem("isBackNavigation");
+    }
+  }, []);
+
+  // 데이터가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    const dataToSave = {
+      representativeMenu,
+      unitPrice,
+      rent,
+      deposit,
+      district,
+      opMode,
+      size,
+      floor,
+    };
+
+    try {
+      localStorage.setItem("selectConditionsData", JSON.stringify(dataToSave));
+    } catch (error) {
+      console.error("Failed to save data:", error);
+    }
+  }, [
+    representativeMenu,
+    unitPrice,
+    rent,
+    deposit,
+    district,
+    opMode,
+    size,
+    floor,
+  ]);
 
   // 어떤 시트를 열지
   const [active, setActive] = useState<SheetKey>(null);
 
+  // 현재 카테고리에 따른 대표 메뉴 목록 가져오기
+  const getMenuItems = () => {
+    const category = formData.category;
+    if (!category) return [];
+
+    const menuList =
+      REPRESENTATIVE_MENUS[category as keyof typeof REPRESENTATIVE_MENUS] || [];
+    return menuList.map((menu) => ({ key: menu, label: menu }));
+  };
+
   const canNext = useMemo(
     () =>
+      representativeMenu !== null &&
       unitPrice[0] !== null &&
       unitPrice[1] !== null &&
       rent[0] !== null &&
       rent[1] !== null &&
+      deposit[0] !== null &&
+      deposit[1] !== null &&
       district !== null &&
       opMode !== null &&
       size !== null &&
       floor !== null,
-    [unitPrice, rent, district, opMode, size, floor]
+    [
+      representativeMenu,
+      unitPrice,
+      rent,
+      deposit,
+      district,
+      opMode,
+      size,
+      floor,
+    ]
   );
 
   // 평수 범위를 숫자로 변환하는 함수
@@ -89,6 +200,7 @@ export default function SelectConditions() {
     if (!canNext) return;
 
     setIsSubmitting(true);
+    setShowLoading(true);
     try {
       // 모든 데이터를 수집
       const sizeRange = getSizeRange(size!);
@@ -103,16 +215,18 @@ export default function SelectConditions() {
           min: rent![0]!,
           max: rent![1]!,
         },
-        managementMethod: managementMethod,
-        averagePrice: {
-          min: unitPrice![0]!,
-          max: unitPrice![1]!,
+        deposit: {
+          min: deposit![0]!,
+          max: deposit![1]!,
         },
+        managementMethod: managementMethod,
+        representativeMenuName: representativeMenu!,
+        representativeMenuPrice: unitPrice![0]!,
         size: {
           min: sizeRange.min,
           max: sizeRange.max,
         },
-        height: height,
+        height: height.toString(),
       };
 
       console.log("전송할 데이터:", restaurantData);
@@ -131,14 +245,23 @@ export default function SelectConditions() {
       alert("데이터 전송에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
+      setShowLoading(false);
     }
   };
 
   const rows = [
     {
+      key: "대표 메뉴",
+      title: "대표 메뉴",
+      value: representativeMenu ?? "선택해 주세요",
+      onClick: () => setActive("대표 메뉴"),
+    },
+    {
       key: "평균 단가",
       title: "평균 단가",
-      value: fmtRange(unitPrice, "원"),
+      value: unitPrice[0]
+        ? `${unitPrice[0].toLocaleString()}원`
+        : "선택해 주세요",
       onClick: () => setActive("평균 단가"),
     },
     {
@@ -154,10 +277,16 @@ export default function SelectConditions() {
       onClick: () => setActive("매장 운영 방식"),
     },
     {
-      key: "월세 기준 예상",
-      title: "월세 기준 예상",
+      key: "월세 기준 예산",
+      title: "월세 기준 예산",
       value: fmtRange(rent, "원"),
-      onClick: () => setActive("월세 기준 예상"),
+      onClick: () => setActive("월세 기준 예산"),
+    },
+    {
+      key: "보증금 기준 예산",
+      title: "보증금 기준 예산",
+      value: fmtRange(deposit, "원"),
+      onClick: () => setActive("보증금 기준 예산"),
     },
     {
       key: "선호 평수",
@@ -172,6 +301,12 @@ export default function SelectConditions() {
       onClick: () => setActive("선호 층수"),
     },
   ];
+
+  // 로딩 페이지 표시
+  if (showLoading) {
+    navigate("/loading");
+    return null;
+  }
 
   return (
     <>
@@ -243,7 +378,20 @@ export default function SelectConditions() {
       </div>
 
       {/* ===== BottomSheets ===== */}
+      <RadioSheet
+        open={active === "대표 메뉴"}
+        title="대표 메뉴"
+        items={getMenuItems()}
+        initial={representativeMenu}
+        onClose={() => setActive(null)}
+        onApply={(v) => {
+          setRepresentativeMenu(v);
+          setActive(null);
+        }}
+      />
+
       <RangeSheet
+        key={`unitPrice-${unitPrice[0]}-${unitPrice[1]}`}
         open={active === "평균 단가"}
         title="평균 단가"
         unit="원"
@@ -251,6 +399,7 @@ export default function SelectConditions() {
         max={50_000}
         step={100}
         initial={unitPrice}
+        singleValue={true}
         onClose={() => setActive(null)}
         onApply={(v) => {
           setUnitPrice(v);
@@ -296,8 +445,9 @@ export default function SelectConditions() {
       />
 
       <RangeSheet
-        open={active === "월세 기준 예상"}
-        title="월세 기준 예상"
+        key={`rent-${rent[0]}-${rent[1]}`}
+        open={active === "월세 기준 예산"}
+        title="월세 기준 예산"
         unit="원"
         min={0}
         max={1_500_000}
@@ -306,6 +456,22 @@ export default function SelectConditions() {
         onClose={() => setActive(null)}
         onApply={(v) => {
           setRent(v);
+          setActive(null);
+        }}
+      />
+
+      <RangeSheet
+        key={`deposit-${deposit[0]}-${deposit[1]}`}
+        open={active === "보증금 기준 예산"}
+        title="보증금 기준 예산"
+        unit="원"
+        min={0}
+        max={100_000_000}
+        step={5_000_000}
+        initial={deposit}
+        onClose={() => setActive(null)}
+        onApply={(v) => {
+          setDeposit(v);
           setActive(null);
         }}
       />

@@ -1,16 +1,18 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://3.34.244.253";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export interface RestaurantData {
   addr: string;
   category: string;
   marketingArea: string;
   budget: { min: number; max: number };
+  deposit: { min: number; max: number };
   managementMethod: string;
-  averagePrice: { min: number; max: number };
+  representativeMenuName: string;
+  representativeMenuPrice: number;
   size: { min: number; max: number };
-  height: number;
+  height: string;
 }
 
 export const submitRestaurantData = async (data: RestaurantData) => {
