@@ -20,27 +20,28 @@ yarn test
 
 ```
 realconnect/
-├── node_modules/    
-├── public/          
+├── node_modules/
+├── public/
 ├── src/
-│   ├── assets/             
+│   ├── assets/
 │   ├── components/
-│   ├── hooks/ 
-│   ├── pages/ 
+│   ├── hooks/
+│   ├── pages/
 │   ├── styles/
-│   ├── types/          
+│   ├── types/
 │   ├── App.tsx
-│   ├── main.tsx       
-│   └── routes.tsx     
+│   ├── main.tsx
+│   └── routes.tsx
 ├── package.json
 ├── index.html
 ├── vite.config.ts
-└── README.md        
+└── README.md
 ```
 
 ## 3. Commit Convention
 
 ### Example:
+
 ```bash
 ex) feat: 로그인 기능 추가
 ```
@@ -56,6 +57,7 @@ ex) feat: 로그인 기능 추가
 - hotfix: 긴급 버그 수정
 
 ### 추가 규칙(선택 사항)
+
 커밋 메시지의 본문에 추가적인 설명이 필요한 경우 추가합니다.
 
 ```bash
