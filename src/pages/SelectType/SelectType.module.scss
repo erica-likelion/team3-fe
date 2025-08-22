@@ -22,12 +22,10 @@
   --radius-16: 16px;
 }
 
-/* AppLayout의 .page-content가 패딩 20px을 주고 있으니 width:100%만 쓰세요 */
 .head {
   width: 100%;
   margin: 0;
   padding: 0;
-  margin-top: var(--gap-topbar-head);
   box-sizing: border-box;
 }
 .head h1 {

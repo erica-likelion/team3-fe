@@ -1,31 +1,10 @@
-:root {
-  --NeutralWT: #fffafa;
-  --NeutralBK: #383326;
-  --PRIMARYOR: #f57f4c;
-}
-
-.iphoneFrame {
+.LoadingPage {
   position: relative;
-  width: 100%;
-  height: 100vh;
-  max-width: 375px;
-  margin: 0 auto;
-  background: #fff;
-  overflow: hidden;
+  width: 375px;
+  height: 812px;
 }
 
 .pageContent {
-  position: relative;
-  overflow: hidden;
-}
-
-.root {
-  width: 100%;
-  height: 100%;
-  background: var(--NeutralWT);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
   position: relative;
   overflow: hidden;
 }
@@ -34,53 +13,40 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   text-align: center;
-  max-width: 375px;
   width: 100%;
-  height: 100%;
+  position: absolute;
+  margin-top: 416px;
 }
 
 .animationContainer {
-  width: 375px;
-  height: 560px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: flex-end;
-}
-
-.animation {
-  width: 375px;
-  height: 560px;
+  position: absolute;
+  bottom: 0;
 }
 
 .textContainer {
-  color: var(--NeutralBK);
   text-align: center;
-  margin-top: 492px;
+  margin-top: 100px;
+  z-index: 1;
+  position: relative;
 }
 
 .title {
+  font-weight: 600;
   font-size: 24px;
-  font-weight: 700;
-  margin: 0 0 20px 0;
-  line-height: 1.2;
-  color: var(--NeutralBK);
+  line-height: 100%;
+  letter-spacing: -0.48px;
+  text-align: center;
+  color: #fafafa;
+  margin-bottom: 16px;
 }
 
 .description {
-  font-size: 16px;
-  font-weight: 500;
-  margin: 0 0 12px 0;
-  line-height: 1.4;
-  color: var(--NeutralBK);
-}
-
-.subDescription {
-  font-size: 14px;
   font-weight: 400;
-  margin: 0;
-  line-height: 1.4;
-  color: var(--GR400);
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.48px;
+  text-align: center;
+  color: rgba(250, 250, 250, 0.75);
 }

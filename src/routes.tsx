@@ -1,5 +1,6 @@
 // src/routes.tsx
 import { createBrowserRouter } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
 import AppLayout from "./layouts/AppLayout";
 import OnboardingLayout from "./layouts/OnboardingLayout";
 import Splash from "./pages/Splash";
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <AppLayout />,
+    element: <MainLayout />,
     children: [
       { path: "select-place", element: <SelectPlace /> },
       { path: "select-type", element: <SelectType /> },
