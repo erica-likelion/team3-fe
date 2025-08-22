@@ -1,4 +1,12 @@
 /* iOS 공통 토큰 */
+@import "@fontsource/pretendard/index.css";
+html,
+body,
+#root {
+  font-family: "Pretendard", -apple-system, system-ui, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
 :root {
   --NeutralBK: #383326;
   --NeutralWT: #fffafa;
@@ -48,4 +56,8 @@ body {
 /* 필요 시: 하단 고정 버튼 겹침 방지용 유틸 */
 .safe-bottom {
   height: max(19px, env(safe-area-inset-bottom, 0px));
+}
+
+.iphone-frame.modal-open {
+  overflow: hidden; /* 세로 스크롤바 숨김 */
 }

@@ -1,0 +1,254 @@
+$OR300: #ffd4c9;
+$OR600: #ff6a3a;
+$BL300: #cad9ed;
+$BL600: #2b6bd6;
+$GR200: #eeeeee;
+$GR300: #e6e6e6;
+$GR400: #b0b0b0;
+
+.wrap {
+  padding: 0 0 96px;
+  max-width: 375px;
+  margin: 0 auto;
+  font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+    Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+/* ===== 검색 입력 ===== */
+.searchRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.searchBox {
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid $GR400;
+  padding: 0 36px 0 36px;
+  display: grid;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 48, 120, 0.06);
+  background: #fff;
+}
+.searchBox input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+}
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+}
+.clearBtn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: $GR200;
+  display: grid;
+  place-items: center;
+}
+.clearBtn img {
+  width: 14px;
+  height: 14px;
+}
+
+.scopeBtn {
+  border: 0;
+  background: none;
+  color: $GR400;
+  font-size: 12px;
+}
+
+/* ===== 히스토리/제안 ===== */
+.historyList,
+.suggestList {
+  list-style: none;
+  padding: 8px 0 0;
+  margin: 0;
+}
+.historyItem,
+.suggestItem {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 12px 2px;
+  color: $OR600;
+  font-size: 14px;
+}
+
+/* ===== 결과 리스트 (커뮤니티 카드와 동일 룩) ===== */
+.postList {
+  list-style: none;
+  padding: 8px 0 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.empty {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  padding: 32px 0;
+}
+.postItem {
+  display: grid;
+  grid-template-columns: 1fr 72px;
+  gap: 17px;
+  align-items: center;
+  cursor: pointer;
+}
+.postText {
+  min-width: 0;
+}
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badgeBL,
+.badgeOR {
+  width: 58px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  line-height: 16px;
+  font-size: 10px;
+  font-weight: 500;
+  border-radius: 66.6667px;
+  margin-bottom: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.badgeBL {
+  background: $BL300;
+  color: $BL600;
+}
+.badgeOR {
+  background: $OR300;
+  color: $OR600;
+}
+
+.pairChip {
+  width: 58px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 66.6667px;
+  border: 1px solid $OR600;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+.pairChip img {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+.pairArrow {
+  width: 10px;
+  height: 10px;
+}
+
+.postTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 4px;
+}
+.postPreview {
+  font-size: 12px;
+  color: #666;
+}
+.postMeta {
+  display: flex;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.postNick {
+  color: #666;
+}
+.agoBL {
+  color: $BL600;
+}
+.agoOR {
+  color: $OR600;
+}
+
+.postRight {
+  display: grid;
+  align-content: center;
+  justify-items: end;
+  gap: 6px;
+}
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 5.6px;
+  background-size: cover;
+  background-position: center;
+}
+.thumbPlaceholder {
+  width: 56px;
+  height: 56px;
+  border-radius: 5.6px;
+  background: $GR300;
+}
+
+.reply {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.replyIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.replyIconOR {
+  background: $OR300;
+}
+.replyIconBL {
+  background: $BL300;
+}
+.replyIcon img {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+.replyNum {
+  font-size: 12px;
+}
+.replyOR {
+  color: $OR600;
+}
+.replyBL {
+  color: $BL600;
+}

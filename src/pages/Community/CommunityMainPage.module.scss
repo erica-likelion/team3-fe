@@ -1,0 +1,384 @@
+$OR300: #ffd4c9;
+$OR600: #ff6a3a;
+$BL300: #cad9ed;
+$BL600: #2b6bd6;
+$GR300: #e6e6e6;
+$GR400: #b0b0b0;
+
+.wrap {
+  padding: 0 0 96px;
+  max-width: 375px;
+  margin: 0 auto;
+  font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+    Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+.tab {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: $GR400;
+  background: transparent;
+  border: 0;
+  padding: 6px 0;
+}
+.tabCenter {
+  display: flex;
+  justify-content: center;
+}
+.active {
+  color: $OR600;
+  font-weight: 600;
+}
+
+.searchBar {
+  margin: 6px 0 4px;
+}
+.searchInput {
+  width: 100%;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+.hotSection {
+  margin-top: 8px;
+}
+.hotTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 12px;
+}
+.fire {
+  font-size: 18px;
+}
+
+.hotCard {
+  background: #ffdcd2;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+  cursor: pointer;
+}
+.hotCardTitle {
+  font-size: 14px;
+  font-weight: 600; /* 세미볼드 */
+  color: #111;
+}
+.hotCardPreview {
+  font-size: 13px;
+  color: #666;
+}
+.hotMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #999;
+}
+.hotNick {
+  color: #777;
+}
+.hotAgoOR {
+  color: $OR600;
+}
+.flex1 {
+  flex: 1;
+}
+
+.reply {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.replyIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.replyIconOR {
+  background: $OR300;
+}
+.replyIconBL {
+  background: $BL300;
+}
+.replyIconHot {
+  background: rgba(255, 255, 255, 0.5);
+}
+.replyIcon img {
+  width: 9.6px;
+  height: 9.6px;
+  display: block;
+}
+.replyNum {
+  font-size: 12px;
+}
+.replyOR {
+  color: $OR600;
+}
+.replyBL {
+  color: $BL600;
+}
+
+/* ========== Banner ========== */
+.banner {
+  position: relative;
+  margin-top: 12px;
+
+  /* 줄별 하단 기준(원하는 값으로 미세조정) */
+  --b-top: 53px; /* 윗줄 */
+  --b-mid: 31.5px; /* 가운데줄(제목+화살표) */
+  --b-bot: 15px; /* 아랫줄 */
+  --title-x: 10px;
+
+  /* 오른쪽 여백(세 줄 공통) */
+  --right-pad: 17px;
+
+  /* 아이콘 크기/간격 */
+  --arrow-w: 20px;
+  --arrow-gap: 4px;
+  cursor: pointer;
+}
+
+.bannerImg {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* 세 줄 공통: 모두 오른쪽 17px 라인에 맞춤 */
+.bannerTop,
+.bannerMid,
+.bannerBottom {
+  position: absolute;
+  right: var(--right-pad);
+  left: 3%;
+  text-align: right;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 윗줄 */
+.bannerTop {
+  bottom: var(--b-top);
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* 가운데줄(제목 + 파란 화살표) */
+.bannerMid {
+  bottom: var(--b-mid);
+}
+.bannerMidInner {
+  display: inline-block;
+}
+.bannerHeadGrad {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(90deg, #295fae 3%, #4c99ff 25%, #123058 78%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+  transform: translateX(var(--title-x));
+}
+.bannerArrowBlue {
+  width: var(--arrow-w);
+  height: var(--arrow-w);
+  margin-left: var(--arrow-gap);
+  vertical-align: -4px;
+}
+
+/* 아랫줄 */
+.bannerBottom {
+  bottom: var(--b-bot);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.newSection {
+  margin-top: 16px;
+}
+.newTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 8px;
+}
+.eyes {
+  font-size: 18px;
+}
+
+.postList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.postItem {
+  display: grid;
+  min-height: 80px; /* ✅ 행 높이 통일 */
+  grid-template-columns: 1fr 72px;
+  gap: 17px;
+  align-items: center;
+  cursor: pointer;
+}
+.postText {
+  min-width: 0;
+  overflow: hidden;
+}
+.badgeRow {
+  display: flex;
+  gap: 4px;
+}
+
+.badgeBL,
+.badgeOR {
+  width: 58px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  line-height: 16px;
+  font-size: 10px;
+  font-weight: 500;
+  border-radius: 66.6667px;
+  margin-bottom: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.badgeBL {
+  background: $BL300;
+  color: $BL600;
+}
+.badgeOR {
+  background: $OR300;
+  color: $OR600;
+}
+
+.pairChip {
+  width: 58px; /* ✅ 배지와 동일 규격 */
+  height: 24px; /* ✅ 배지와 동일 규격 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 아이콘 ↔ 화살표 4px */
+  padding: 4px 6px;
+  border-radius: 66.6667px;
+  border: 1px solid $OR600;
+  box-sizing: border-box; /* ✅ 패딩 변해도 외곽 크기 고정 */
+  vertical-align: middle;
+}
+.pairChip img {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+.pairArrow {
+  width: 10px;
+  height: 10px;
+}
+
+.postTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 4px;
+
+  /* ✅ 한 줄만 표시 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+.postPreview {
+  font-size: 12px;
+  color: #666;
+
+  /* ✅ 두 줄로 고정, 말줄임 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.postMeta {
+  display: flex;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.postNick {
+  color: #666;
+}
+.agoBL {
+  color: $BL600;
+}
+.agoOR {
+  color: $OR600;
+}
+
+.postRight {
+  display: grid;
+  align-content: center;
+  justify-items: end;
+  gap: 6px;
+}
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 5.6px;
+  background-size: cover;
+  background-position: center;
+}
+.thumbPlaceholder {
+  width: 56px;
+  height: 56px;
+  border-radius: 5.6px;
+  background: $GR300;
+}
+
+.fab {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 24px;
+  height: 54px;
+  padding: 10px 24px;
+  border-radius: 100px;
+  background: $OR600;
+  color: #fff;
+  border: 0;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
+}

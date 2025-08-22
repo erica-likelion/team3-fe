@@ -1,19 +1,28 @@
 import s from "./ExitConfirmModal.module.scss";
 
+// 두 방식 모두 지원: 한 줄(message) 또는 줄 배열(messageLines)
+type Props = {
+  onStay: () => void;
+  onLeave: () => void;
+  message?: string; // 한 줄 텍스트(원하면 \n 로 줄바꿈)
+  messageLines?: string[]; // 여러 줄
+};
+
 export default function ExitConfirmModal({
   onStay,
   onLeave,
+  message,
   messageLines,
-}: {
-  onStay: () => void;
-  onLeave: () => void;
-  messageLines?: string[];
-}) {
+}: Props) {
   const defaultLines = [
     "창업 조건 입력을 중단하고",
     "홈 화면으로 이동하시겠어요?",
   ];
-  const lines = messageLines?.length ? messageLines : defaultLines;
+
+  // 우선순위: messageLines -> message -> 기본
+  const lines =
+    (messageLines?.length ? messageLines : undefined) ??
+    (message ? message.split("\n") : defaultLines);
 
   return (
     <>
