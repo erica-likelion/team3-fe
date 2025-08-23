@@ -2,7 +2,7 @@
 :root {
   --NeutralWT: #fffafa;
   --NeutralBK: #383326;
-  --PRIMARYOR: #f57f4c;
+  --OR600: #ff6a3a;
 }
 .overlay {
   position: fixed;
@@ -56,11 +56,11 @@
 }
 .outline {
   background: var(--NeutralWT);
-  border: 1px solid var(--PRIMARYOR);
-  color: var(--PRIMARYOR);
+  border: 1px solid var(--OR600);
+  color: var(--OR600);
 }
 .primary {
-  background: var(--PRIMARYOR);
-  border: 1px solid var(--PRIMARYOR);
+  background: var(--OR600);
+  border: 1px solid var(--OR600);
   color: #fff;
 }

@@ -60,7 +60,7 @@ export default function OutputDetailPage() {
   const closeExit = () => setShowExit(false);
   const goHome = () => {
     setShowExit(false);
-    navigate("/");
+    navigate("/onboarding?final=1");
   };
 
   // 점수 계산 로직
@@ -119,7 +119,7 @@ export default function OutputDetailPage() {
       <section className={styles.hero}>
         <ScoreDonut score={totalScore} />
         <div className={styles.heroRight}>
-          <div className={styles.heroCaption}>매물 총점</div>
+          <div className={styles.heroCaption}>입지 총점</div>
           <div className={styles.heroScoreRow}>
             <span className={styles.heroScore}>{totalScore.toFixed(1)}</span>
             <span className={styles.heroTotal}>/100점</span>
@@ -170,11 +170,16 @@ export default function OutputDetailPage() {
           alt="상세 분석 그래프"
           className={styles.outputDetailGraph}
         />
-        <img
-          src="/src/assets/ui/outputDetailGraphTag.svg"
-          alt="상세 분석 그래프 태그"
-          className={styles.outputDetailGraphTag}
-        />
+
+        {/* ✅ 태그(칩) 추가: 중앙 정렬 / 간격 10 / 좌우 패딩 52.5 */}
+        <div className={styles.tagRow}>
+          {["젊은 연령대", "합리성 추구", "트렌드 중심"].map((t) => (
+            <span key={t} className={styles.tagChip}>
+              {t}
+            </span>
+          ))}
+        </div>
+
         <p className={styles.graphSectionDesc}>
           대학가 소비 성향은 보통 20대 초중반의 대학생과 청년층을 중심으로
           형성되며, 이 연령대는 상대적으로 예산이 제한적이라 기본적으로 절약형
@@ -185,7 +190,6 @@ export default function OutputDetailPage() {
           트렌디하면서도 합리적인 소비처를 선호합니다.
         </p>
       </section>
-
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>
           분석 결과를 바탕으로 운영 전략을 추천해 드려요

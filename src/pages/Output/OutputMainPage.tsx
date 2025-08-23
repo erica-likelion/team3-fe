@@ -169,7 +169,7 @@ export default function OutputMainPage() {
   const closeExit = () => setShowExit(false);
   const goHome = () => {
     setShowExit(false);
-    navigate("/");
+    navigate("/onboarding?final=1");
   };
 
   const handleAccordionToggle = (index: number, isOpen: boolean) => {
@@ -264,7 +264,7 @@ export default function OutputMainPage() {
       <section className={s.hero}>
         <ScoreDonut score={totalScore} />
         <div className={s.heroRight}>
-          <div className={s.heroCaption}>매물 총점</div>
+          <div className={s.heroCaption}>입지 총점</div>
           <div className={s.heroScoreRow}>
             <span className={s.heroScore}>{totalScore.toFixed(1)}</span>
             <span className={s.heroTotal}>/100점</span>

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom"; // ✅ location 추가
 import wearyOngil from "../assets/wearyOngil.svg";
 import thinkOngil from "../assets/thinkOngil.svg";
 import smileOngil from "../assets/smileOngil.svg";
@@ -15,6 +15,7 @@ interface OnboardingStep {
 
 const Onboarding: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ 쿼리 읽기
   const [currentStep, setCurrentStep] = useState(0);
 
   const steps: OnboardingStep[] = [
@@ -45,38 +46,27 @@ const Onboarding: React.FC = () => {
     },
   ];
 
+  // ✅ /onboarding?final=1 로 들어오면 마지막 스텝으로 시작
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("final") === "1") {
+      setCurrentStep(3);
+    }
+  }, [location.search]);
+
   const handleNext = () => {
     if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
   };
 
-  const handleStartAnalysis = () => {
-    console.log("입지 분석하기");
-    navigate("/select-place");
-  };
-
-  const handlePartnership = () => {
-    console.log("제휴 추천 받기");
-    // 제휴 추천 페이지로 이동하는 로직 추가
-  };
-
-  const handleGoCommunity = () => {
-    console.log("커뮤니티 가기");
-    navigate("/community");
-  };
-
-  const handleSkip = () => {
-    // 마지막 단계로 바로 이동
-    setCurrentStep(steps.length - 2);
-  };
+  const handleStartAnalysis = () => navigate("/select-place");
+  const handlePartnership = () => {};
+  const handleGoCommunity = () => navigate("/community");
+  const handleSkip = () => setCurrentStep(steps.length - 2);
 
   const isLastStep = currentStep === steps.length - 1;
   const isThirdStep = currentStep === 2;
   const currentStepData = steps[currentStep];
-
-  const getIndicatorStep = () => {
-    if (currentStep <= 1) return currentStep;
-    return 2;
-  };
+  const getIndicatorStep = () => (currentStep <= 1 ? currentStep : 2);
 
   return (
     <div className={styles.onboarding}>

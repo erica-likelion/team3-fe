@@ -1,3 +1,4 @@
+// src/layouts/MainLayout.tsx
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import TopBar from "../components/TopBar";
@@ -108,6 +109,15 @@ export default function AppLayout() {
 
   const topBarConfig = getTopBarConfig();
 
+  // ✅ 경로에 따른 모달 문구 분기
+  const exitMessage =
+    /^\/output(\/|$)/.test(location.pathname) ||
+    /^\/output-detail(\/|$)/.test(location.pathname)
+      ? "분석 결과 열람을 중단하고\n홈 화면으로 이동하시겠어요?"
+      : /^\/community(\/|$)/.test(location.pathname)
+      ? "커뮤니티 이용을 중단하고\n홈 화면으로 이동하시겠어요?"
+      : undefined; // 나머지는 ExitConfirmModal의 기본 문구 사용
+
   return (
     <>
       <div className={styles.iphoneFrame}>
@@ -125,7 +135,8 @@ export default function AppLayout() {
       {showExit && (
         <ExitConfirmModal
           onStay={() => setShowExit(false)}
-          onLeave={() => navigate("/")}
+          onLeave={() => navigate("/onboarding?final=1")}
+          message={exitMessage}
         />
       )}
     </>

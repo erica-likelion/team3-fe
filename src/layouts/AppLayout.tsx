@@ -1,5 +1,4 @@
-// src/layouts/AppLayout.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import HomeIndicator from "../components/HomeIndicator";
@@ -7,19 +6,36 @@ import ExitConfirmModal from "../components/ExitConfirmModal";
 import SearchButton from "../assets/ui/SearchButton.svg";
 import CheckButton from "../assets/ui/CheckButton.svg";
 import "../styles/global.scss";
-import { getPostById } from "../pages/Community/communityData"; // 그대로 유지
+import { getPostById } from "../pages/Community/communityData";
 
 export default function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [showExit, setShowExit] = useState(false);
+  const [exitLines, setExitLines] = useState<string[] | undefined>(undefined);
+
+  // 현재 경로를 항상 최신으로 보관(리스너 클로저 stale 방지)
+  const pathRef = useRef(location.pathname);
+  useEffect(() => {
+    pathRef.current = location.pathname;
+  }, [location.pathname]);
 
   useEffect(() => {
-    const openExit = () => setShowExit(true);
+    const openExit = () => {
+      const path = pathRef.current;
+      const isCommunity = /^\/community(\/|$)/.test(path);
+      setExitLines(
+        isCommunity
+          ? ["커뮤니티 이용을 중단하고", "홈 화면으로 이동하시겠어요?"]
+          : undefined
+      );
+      setShowExit(true);
+    };
     const goBack = () => {
       if (window.history.length > 1) navigate(-1);
       else navigate("/");
     };
+
     window.addEventListener("topbar:close", openExit as EventListener);
     window.addEventListener("topbar:back", goBack as EventListener);
     return () => {
@@ -31,7 +47,8 @@ export default function AppLayout() {
   const getTopBarConfig = () => {
     const path = location.pathname;
 
-    if (path === "/community") {
+    // ✅ 커뮤니티 메인: /community 또는 /community/
+    if (/^\/community\/?$/.test(path)) {
       return {
         title: "커뮤니티",
         onLeftClick: () => navigate(-1),
@@ -41,7 +58,8 @@ export default function AppLayout() {
       };
     }
 
-    if (path.startsWith("/community/search")) {
+    // ✅ 커뮤니티 검색
+    if (/^\/community\/search/.test(path)) {
       const params = new URLSearchParams(location.search);
       const hasQuery = !!params.get("q") && params.get("q")!.trim().length > 0;
       return {
@@ -51,7 +69,8 @@ export default function AppLayout() {
       };
     }
 
-    if (path === "/community/post/new") {
+    // ✅ 새 글 작성
+    if (/^\/community\/post\/new$/.test(path)) {
       return {
         title: "새 글 작성",
         onLeftClick: () => navigate(-1),
@@ -62,7 +81,7 @@ export default function AppLayout() {
       };
     }
 
-    // 글 디테일
+    // ✅ 글 디테일
     const m = path.match(/^\/community\/post\/(\d+)$/);
     if (m) {
       const id = Number(m[1]);
@@ -70,10 +89,11 @@ export default function AppLayout() {
       return {
         title: board,
         onLeftClick: () => navigate(-1),
-        showRight: true, // X 버튼 표시
+        showRight: true, // X
       };
     }
 
+    // 그 외
     switch (path) {
       case "/select-place":
         return {
@@ -115,13 +135,6 @@ export default function AppLayout() {
 
   const topBarConfig = getTopBarConfig();
 
-  // 디테일 페이지에서만 모달 문구 변경
-  const path = location.pathname;
-  const isCommunityDetail = /^\/community\/post\/\d+$/.test(path);
-  const exitLines = isCommunityDetail
-    ? ["커뮤니티 이용을 중단하고", "홈 화면으로 이동하시겠어요?"]
-    : undefined;
-
   return (
     <>
       <div className="iphone-frame">
@@ -141,8 +154,16 @@ export default function AppLayout() {
       {showExit && (
         <ExitConfirmModal
           onStay={() => setShowExit(false)}
-          onLeave={() => navigate("/")}
-          messageLines={exitLines} // ← 여기서 페이지별 문구 오버라이드
+          onLeave={() => navigate("/onboarding?final=1")}
+          // ✅ 경로에 따라 문구 오버라이드
+          message={
+            /^\/community(\/|$)/.test(location.pathname)
+              ? "커뮤니티 이용을 중단하고\n홈 화면으로 이동하시겠어요?"
+              : /^\/output(\/|$)/.test(location.pathname) ||
+                /^\/output-detail(\/|$)/.test(location.pathname)
+              ? "분석 결과 열람을 중단하고\n홈 화면으로 이동하시겠어요?"
+              : undefined
+          }
         />
       )}
     </>

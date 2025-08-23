@@ -4,6 +4,7 @@
   --GR400: #b5b5b5;
   --NeutralWT: #fffafa;
   --PRIMARYOR: #f57f4c;
+  --OR600: #f26b4a;
 
   /* 레이아웃 토큰 */
   --page-hpad: 20px;
@@ -96,8 +97,8 @@
 }
 
 .selected {
-  color: var(--PRIMARYOR);
-  font-weight: 700;
+  color: var(--OR600);
+  font-weight: 600;
 }
 
 .chev {
@@ -118,7 +119,7 @@
   margin: 0;
   border: 0;
   border-radius: var(--radius-16);
-  background: var(--PRIMARYOR);
+  background: var(--OR600);
   color: #fff;
   font-weight: 600;
   font-size: 16px;
