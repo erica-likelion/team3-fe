@@ -1,0 +1,325 @@
+$OR600: #ff6a3a;
+$OR300: #ffd4c9;
+$BL600: #2b6bd6;
+$BL300: #cad9ed;
+$GR200: #eeeeee;
+$GR300: #d9d9d9;
+$GR400: #b5b5b5;
+$GR500: #8c8c8c;
+$BK: #383326;
+
+.wrap {
+  max-width: 375px;
+  margin: 0 auto;
+}
+
+/* ===== Search Bar (입력 전) ===== */
+.searchBar {
+  width: 335px;
+  height: 54px;
+  margin: 27px auto 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 25px; /* 좌 25 */
+  background: #fffafa;
+  border-radius: 10px;
+  border: 1px solid #f2f2f2;
+  box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
+}
+.searchIconOr {
+  width: 18px;
+  height: 18px;
+  transform: translateY(1px);
+  display: block;
+}
+.searchInput {
+  flex: 1;
+  border: 0;
+  outline: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: $OR600;
+  background: transparent;
+  line-height: 18px;
+  padding: 0;
+  &::placeholder {
+    color: $OR600;
+    opacity: 1;
+  }
+}
+.clearBtn {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* ===== 자동완성 ===== */
+.suggestList {
+  width: 335px;
+  margin: 0 auto 8px;
+  list-style: none;
+  padding: 8px 0 0;
+}
+.suggestItem {
+  background: transparent;
+  border: 0;
+  padding: 6px 4px;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+.hlOr {
+  color: $OR600;
+}
+.hlBk {
+  color: $BK;
+}
+
+/* ===== 검색 기록 ===== */
+.historyList {
+  width: 335px;
+  margin: 0 auto;
+  list-style: none;
+  padding: 0;
+}
+.historyRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  height: 36px;
+}
+.historyWord {
+  background: none;
+  border: 0;
+  text-align: left;
+  padding: 0 4px;
+  font-size: 16px;
+  color: $GR300;
+  cursor: pointer;
+}
+.historyDel {
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 0;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+/* ===== 결과 상단 ===== */
+.resultHead {
+  width: 335px;
+  margin: 30px auto 0;
+}
+
+/* ✅ 외곽선 1.7(네가 지정), 좌측 아이콘 여백 25, 아이콘-텍스트 10 */
+.resultDropdown {
+  width: 335px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 25px; /* 좌 25 고정 */
+  border-radius: 10px;
+  background: #fffafa;
+  border: 1.7px solid $GR400;
+}
+.resultSearchIcon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  filter: grayscale(100%) opacity(0.8);
+}
+.resultPhrase {
+  font-size: 14px;
+  font-weight: 500;
+  color: $GR400;
+}
+
+.resultScopeBtn {
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: $GR500;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.scopeChev {
+  width: 14px;
+  height: 14px;
+  display: block;
+  filter: grayscale(100%) brightness(60%);
+}
+
+/* ===== 결과 리스트 ===== */
+.resultList {
+  list-style: none;
+  padding: 0;
+  margin: 14px auto 0;
+  width: 335px;
+  display: grid;
+  gap: 14px;
+}
+.item {
+  cursor: pointer;
+  min-height: 80px; /* ✅ 행 높이 통일 */
+  display: block;
+}
+.rowHead {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.badge {
+  height: 24px;
+  width: 58px;
+  border-radius: 66.667px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+}
+.badgeOR {
+  background: $OR300;
+  color: $OR600;
+}
+.badgeBL {
+  background: $BL300;
+  color: $BL600;
+}
+
+.pairChip {
+  width: 58px; /* ✅ 배지와 동일 규격 */
+  height: 24px; /* ✅ 배지와 동일 규격 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 66.667px;
+  border: 1px solid $OR600;
+  box-sizing: border-box; /* ✅ 패딩 변해도 외곽 크기 고정 */
+}
+.pairChip img {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+.pairArrow {
+  width: 10px;
+  height: 10px;
+}
+
+.itemBody {
+  display: grid;
+  grid-template-columns: 1fr 72px;
+  align-items: center;
+  gap: 17px;
+}
+.texts {
+  min-width: 0;
+}
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 4px;
+
+  /* ✅ 한 줄로 고정 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+.preview {
+  font-size: 12px;
+  color: #666;
+  text-align: left;
+
+  /* ✅ 두 줄로 고정 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.meta {
+  display: flex;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.nick {
+  color: #666;
+}
+.timeBL {
+  color: $BL600;
+}
+.timeOR {
+  color: $OR600;
+}
+
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 5.6px;
+  background-size: cover;
+  background-position: center;
+}
+.thumbPlaceholder {
+  width: 56px;
+  height: 56px;
+  border-radius: 5.6px;
+  background: $GR200;
+}
+
+.reply {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+.replyIcon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.replyIconOR {
+  background: $OR300;
+}
+.replyIconBL {
+  background: $BL300;
+}
+.reply img {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+.replyNum {
+  font-size: 12px;
+}
+.replyOR {
+  color: $OR600;
+}
+.replyBL {
+  color: $BL600;
+}

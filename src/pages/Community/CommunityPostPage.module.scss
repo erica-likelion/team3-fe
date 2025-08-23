@@ -1,0 +1,320 @@
+/* ===== tokens ===== */
+$OR600: #ff6a3a;
+$OR300: #ffd4c9;
+$BL600: #2b6bd6;
+$GR200: #eeeeee;
+$GR300: #d9d9d9;
+$GR400: #b5b5b5;
+$GR500: #8c8c8c;
+$BK: #383326;
+$CR200: #fff2ec;
+$WT: #fffafa;
+
+:root {
+  --r: 10px;
+  --stroke: 1.5px;
+  --overlap: 6px;
+}
+
+/* ——— 상단 간격: TopBar와 드롭다운 사이 정확히 16px ——— */
+.wrap {
+  max-width: 375px;
+  margin: 0 auto;
+  padding-top: 16px !important;
+  padding-bottom: 24px;
+  font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+    Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+.topSpacer {
+  height: 16px;
+  flex: 0 0 16px;
+}
+/* ===== dropdown ===== */
+.dropdownWrap {
+  width: 335px;
+  margin: 0 auto 0;
+  position: relative;
+}
+.dropdown {
+  width: 335px;
+  min-height: 44px;
+  padding: 10px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: $WT;
+  border-radius: var(--r);
+  border: var(--stroke) solid $GR400;
+  box-shadow: 0 4px 15px rgba(0, 48, 120, 0.06);
+  position: relative;
+  z-index: 2;
+}
+.orBorder {
+  border-color: $OR600;
+}
+.blBorder {
+  border-color: $BL600;
+}
+
+.boardText {
+  font-size: 14px;
+  font-weight: 600;
+}
+.placeholder {
+  color: $GR400;
+  font-weight: 500;
+  opacity: 1;
+}
+.orText {
+  color: $OR600 !important;
+  font-weight: 500;
+}
+.blText {
+  color: $BL600 !important;
+  font-weight: 500;
+}
+
+.chev {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+.chevGray {
+  filter: grayscale(100%) opacity(0.8);
+}
+.chevOR {
+  /* OR600 톤 */
+  filter: brightness(0) saturate(100%) invert(54%) sepia(67%) saturate(2691%)
+    hue-rotate(339deg) brightness(101%) contrast(96%);
+}
+.chevBL {
+  /* BL600 톤 */
+  filter: brightness(0) saturate(100%) invert(41%) sepia(41%) saturate(1353%)
+    hue-rotate(192deg) brightness(92%) contrast(93%);
+}
+
+/* panel border(좌/우/하단) */
+.dropdownWrap.open::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(44px + 20px - var(--stroke));
+  bottom: 0;
+  border-left: var(--stroke) solid $GR400;
+  border-right: var(--stroke) solid $GR400;
+  border-bottom: var(--stroke) solid $GR400;
+  border-bottom-left-radius: var(--r);
+  border-bottom-right-radius: var(--r);
+  pointer-events: none;
+  z-index: 2;
+}
+.ddPanel {
+  position: absolute;
+  top: calc(100% - var(--stroke) - var(--overlap));
+  left: 0;
+  width: 335px;
+  background: $CR200;
+  border-top: 0;
+  border-left: var(--stroke) solid $GR400;
+  border-right: var(--stroke) solid $GR400;
+  border-bottom: var(--stroke) solid $GR400;
+  border-radius: 0 0 var(--r) var(--r);
+  padding: calc(12px + var(--overlap)) 10px 12px;
+  z-index: 1;
+}
+.ddItem {
+  all: unset;
+  display: block;
+  width: 100%;
+  padding: 0 12px;
+  line-height: 24px;
+  font-size: 14px;
+  color: $BK;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ===== pair chips ===== */
+.pairRow {
+  width: 335px;
+  margin: 16px auto 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pairText {
+  color: #8a8a8a;
+  font-size: 14px;
+}
+
+.chip {
+  display: inline-flex; /* 중앙정렬 */
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 4px 8px; /* ↑↓4, ←→8 고정 */
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $OR600;
+  line-height: 20px; /* 텍스트 높이 안정화 */
+  box-sizing: border-box; /* ★ border 포함해서 28px 유지 */
+}
+
+.chipOutlineOR {
+  background: transparent;
+  border: 1px solid $OR600; /* 외곽선 */
+}
+.chipFillOR {
+  background: $OR300;
+  border: 0;
+}
+
+/* ===== title ===== */
+.titleBlock {
+  width: 335px;
+  margin: 16px auto 0;
+} /* 드롭다운↔제목 16 */
+.titleBlockAfterPair {
+  margin-top: 8px;
+} /* 칩이 있으면 8 */
+.titleInput {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 18px;
+  font-weight: 600; /* semibold */
+  color: $GR500;
+  padding: 0;
+}
+.titleInput::placeholder {
+  color: $GR500;
+} /* ✅ placeholder도 GR500로 고정 */
+.divider {
+  width: 336px;
+  height: 1px;
+  margin: 16px 0;
+  background: $CR200;
+}
+
+/* ===== body ===== */
+.bodyBox {
+  width: 335px;
+  margin: 0 auto 0;
+  background: $CR200;
+  border-radius: 12px;
+}
+.bodyArea {
+  width: 100%;
+  min-height: 320px;
+  border: 0;
+  outline: none;
+  resize: none;
+  background: transparent;
+  padding: 15px 19px; /* 좌우 19 */
+  font-size: 16px;
+  font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+    Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; /* ✅ Pretendard */
+  color: $GR400;
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.bodyArea::-webkit-scrollbar {
+  display: none;
+}
+
+.dividerAfterBody {
+  width: 336px;
+  height: 1px;
+  background: $CR200;
+  margin: 16px auto;
+}
+
+/* ===== attach ===== */
+.attachWrap {
+  width: 335px;
+  margin: 16px auto 0;
+  display: flex;
+  align-items: center;
+}
+.folderBtn {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+.folderBtn img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* 썸네일 75x75, radius 5.37313 */
+.thumbRow {
+  width: 335px;
+  margin: 12px auto 0;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.thumb {
+  position: relative;
+  width: 75px;
+  height: 75px;
+  border-radius: 5.37313px;
+  overflow: hidden;
+  background: $GR200;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.thumbDel {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+.thumbDel img {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+/* + 버튼 32x32, 배경 NeutralWT05 */
+.plusBtn {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(255, 250, 250, 0.5);
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.plusBtn img {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+/* hidden input */
+.hiddenFile {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+}

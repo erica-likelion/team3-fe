@@ -45,22 +45,16 @@ const Onboarding: React.FC = () => {
   ];
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+    if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
   };
 
-  const handleSkip = () => {
-    // 마지막 단계로 바로 이동
-    setCurrentStep(steps.length - 2);
-  };
+  const handleSkip = () => setCurrentStep(steps.length - 2);
 
   const handleCommunity = () => {
-    console.log("커뮤니티로 이동");
+    navigate("/community");
   };
 
   const handleNewAnalysis = () => {
-    console.log("새 분석 시작");
     navigate("/select-place");
   };
 
@@ -68,10 +62,9 @@ const Onboarding: React.FC = () => {
   const isThirdStep = currentStep === 2;
   const currentStepData = steps[currentStep];
 
-  // 인디케이터를 위한 단계 계산 (3번째와 4번째는 하나로 합침)
   const getIndicatorStep = () => {
     if (currentStep <= 1) return currentStep;
-    return 2; // 3번째와 4번째 단계는 모두 2번 인디케이터로 표시
+    return 2;
   };
 
   return (
