@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import s from "./TopBar.module.scss";
-
 import Wifi from "../assets/ui/Wifi.svg";
 import Cellular from "../assets/ui/Cellular Connection.svg";
 import Battery from "../assets/ui/Battery.svg";
@@ -22,6 +21,7 @@ interface TopBarProps {
   rightChild?: React.ReactNode;
   onLeftClick?: () => void;
   onRightClick?: () => void;
+  showRight?: boolean;
 }
 
 export default function TopBar({
@@ -31,6 +31,7 @@ export default function TopBar({
   rightChild,
   onLeftClick,
   onRightClick,
+  showRight = true,
 }: TopBarProps) {
   const [time, setTime] = useState<string>(formatNow());
 
@@ -66,6 +67,7 @@ export default function TopBar({
           </div>
         </div>
       </div>
+
       {showNavRow && (
         <div className={s.navRow}>
           <div className={s.header_left}>
@@ -87,24 +89,32 @@ export default function TopBar({
               </button>
             )}
           </div>
+
           <div className={s.header_center}>{title}</div>
+
           <div className={s.header_right}>
-            {rightChild ? (
-              <button
-                className={s.iconBtn}
-                aria-label="right"
-                onClick={onRightClick}
-              >
-                {rightChild}
-              </button>
+            {showRight ? (
+              rightChild ? (
+                <button
+                  className={s.iconBtn}
+                  aria-label="right"
+                  onClick={onRightClick}
+                >
+                  {rightChild}
+                </button>
+              ) : (
+                <button
+                  className={s.iconBtn}
+                  aria-label="close"
+                  onClick={() => emit("topbar:close")}
+                >
+                  <img src={Close} alt="" />
+                </button>
+              )
             ) : (
-              <button
-                className={s.iconBtn}
-                aria-label="close"
-                onClick={() => emit("topbar:close")}
-              >
-                <img src={Close} alt="" />
-              </button>
+              <span
+                style={{ width: 18, height: 18, display: "inline-block" }}
+              />
             )}
           </div>
         </div>

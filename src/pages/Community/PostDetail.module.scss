@@ -1,0 +1,196 @@
+$OR300: #ffd4c9;
+$OR600: #ff6a3a;
+$CR200: #fff2ec;
+$GR400: #b5b5b5;
+$GR500: #8c8c8c;
+$BK: #383326;
+
+/* 화면 하단에 입력창을 28px로 고정시키기 위해 flex 컬럼 */
+.wrap {
+  max-width: 375px;
+  margin: 0 auto;
+  min-height: 100vh; /* 뷰포트 기준 */
+  display: flex;
+  flex-direction: column;
+  padding: 25.5px 0 28px; /* TopBar와 24, 하단 HomeIndicator와 28 */
+  font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+    Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+/* === 상단 제휴 라인(제목 위, 간격 6, 제목/본문과 같은 폭 335) === */
+.pairLine {
+  width: 335px;
+  margin: 0 auto 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pairWord {
+  color: #8a8a8a;
+  font-size: 14px;
+  font-weight: 500;
+}
+.pill {
+  height: 24px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+.pillOutline {
+  color: $OR600;
+  background: transparent;
+  border: 1px solid $OR600;
+}
+.pillFill {
+  color: $OR600;
+  background: $OR300;
+  border: 0;
+}
+
+/* 제목/본문: 좌우 추가 패딩 없이 폭 335로 통일(이미지와 동일) */
+.title {
+  width: 335px;
+  margin: 0 auto;
+  font-size: 18px; /* Head/18L */
+  font-weight: 600;
+  color: $BK;
+}
+
+.content {
+  width: 335px;
+  margin: 16px auto 0; /* 제목 아래 16 */
+  line-height: 1.6;
+  font-size: 14px; /* Body/14M */
+  font-weight: 500;
+  color: $BK;
+}
+
+/* 본문 아래에 이미지(있을 때만) */
+.hero {
+  width: 335px;
+  height: 335px;
+  border-radius: 24px;
+  background-size: cover;
+  background-position: center;
+  margin: 16px auto 0; /* 본문 아래 16 */
+}
+
+.divider {
+  width: 336px;
+  height: 1px;
+  background: $CR200;
+  margin: 16px auto; /* 본문 ↔ 댓글 인포 16 */
+}
+
+/* 댓글 인포(제목/본문과 같은 폭) */
+.cmtHead {
+  width: 335px;
+  margin: 0 auto;
+  font-size: 16px; /* Body/16L */
+  font-weight: 600;
+  color: $BK;
+}
+
+/* 댓글: 좌 들여쓰기 20 요구 → 폭 335 영역 내에서 내부 padding-left 20 */
+.cmtList {
+  list-style: none;
+  width: 335px;
+  margin: 24px auto 124px; /* 인포 → 첫 댓글 메타 24 */
+  padding: 0 0 0 20px; /* ← 댓글 본문만 좌패딩 20 */
+  display: grid;
+  gap: 12px;
+}
+.cmtItem {
+  display: block;
+}
+.cmtMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; /* 닉네임 ↔ 시간 4 */
+}
+.cmtNick {
+  font-size: 12px;
+  font-weight: 500;
+  color: $GR500;
+}
+.cmtAgo {
+  font-size: 12px;
+  font-weight: 500;
+  color: $OR600;
+}
+.cmtText {
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $BK;
+}
+
+/* 댓글 없음 */
+.emptyWrap {
+  width: 335px;
+  margin: 92px auto 0;
+  display: grid;
+  place-items: center;
+  padding: 12px 0 8px;
+}
+.emptyIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: $CR200;
+  display: grid;
+  place-items: center;
+}
+.emptyIcon img {
+  width: 28.8px;
+  height: 28.8px;
+  display: block;
+}
+.emptyText {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $GR400;
+}
+
+/* 입력칸 – 화면 하단으로 붙이고, 스펙 그대로 */
+.inputWrap {
+  width: 335px;
+  margin: 12px auto 0;
+  background: $CR200; /* SecondaryCR200 */
+  border-radius: 12px;
+  padding: 12px 20px; /* v12 / h20 */
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+
+  /* 하단 고정: wrap가 flex-column이라 이 값으로 아래로 밀착 */
+  margin-top: auto;
+}
+.input {
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: $GR400;
+  width: 100%;
+}
+.sendBtn {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: $OR300; /* 동그란 배경 */
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.sendBtn img {
+  width: 32px;
+  height: 32px;
+  display: block; /* 아이콘 32x32 */
+}

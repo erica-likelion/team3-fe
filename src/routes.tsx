@@ -1,4 +1,3 @@
-// src/routes.tsx
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import AppLayout from "./layouts/AppLayout";
@@ -11,12 +10,13 @@ import SelectConditions from "./pages/SelectConditions/SelectConditions";
 import LoadingPage from "./pages/Loading/LoadingPage";
 import OutputMainPage from "./pages/Output/OutputMainPage";
 import OutputDetailPage from "./pages/Output/OutputDetailPage";
+import CommunityMainPage from "./pages/Community/CommunityMainPage";
+import CommunitySearchPage from "./pages/Community/CommunitySearchPage";
+import PostDetail from "./pages/Community/PostDetail";
+import CommunityPostPage from "./pages/Community/CommunityPostPage";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Splash />,
-  },
+  { path: "/", element: <Splash /> },
   {
     path: "/loading",
     element: <LoadingPage />,
@@ -35,6 +35,17 @@ const router = createBrowserRouter([
       { path: "select/conditions", element: <SelectConditions /> },
       { path: "output", element: <OutputMainPage /> },
       { path: "output-detail", element: <OutputDetailPage /> },
+    ],
+  },
+  {
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      { path: "community", element: <CommunityMainPage /> },
+      { path: "community/post/new", element: <CommunityPostPage /> },
+      { path: "community/post/:id", element: <PostDetail /> },
+      { path: "community/search", element: <CommunitySearchPage /> },
+      { path: "community/search/results", element: <CommunitySearchPage /> },
     ],
   },
 ]);

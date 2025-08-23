@@ -46,9 +46,7 @@ const Onboarding: React.FC = () => {
   ];
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+    if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
   };
 
   const handleStartAnalysis = () => {
@@ -63,7 +61,7 @@ const Onboarding: React.FC = () => {
 
   const handleGoCommunity = () => {
     console.log("커뮤니티 가기");
-    // 커뮤니티 페이지로 이동하는 로직 추가
+    navigate("/community");
   };
 
   const handleSkip = () => {
@@ -75,10 +73,9 @@ const Onboarding: React.FC = () => {
   const isThirdStep = currentStep === 2;
   const currentStepData = steps[currentStep];
 
-  // 인디케이터를 위한 단계 계산 (3번째와 4번째는 하나로 합침)
   const getIndicatorStep = () => {
     if (currentStep <= 1) return currentStep;
-    return 2; // 3번째와 4번째 단계는 모두 2번 인디케이터로 표시
+    return 2;
   };
 
   return (
