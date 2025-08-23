@@ -1,5 +1,6 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
 /* iOS 공통 토큰 */
-@import "@fontsource/pretendard/index.css";
 html,
 body,
 #root {
@@ -21,6 +22,7 @@ body,
 /* 기본 Reset(간단) */
 * {
   box-sizing: border-box;
+  font-family: Pretendard, sans-serif;
 }
 html,
 body,
@@ -34,7 +36,6 @@ body {
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
 }
-
 /* iPhone 프레임 – 앱 전체를 이 컨테이너 안에서 */
 .iphone-frame {
   position: relative;

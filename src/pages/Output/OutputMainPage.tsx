@@ -59,24 +59,49 @@ function ScoreDonut({
   );
 }
 
+type PenaltyItem = {
+  label: string;
+  points: number;
+};
+
+type BonusItem = {
+  label: string;
+  points: number;
+};
+
 type AccordionProps = {
   icon: string;
   title: string;
   scoreText: string;
   body: string;
+  penalties?: PenaltyItem[];
+  bonuses?: BonusItem[];
   defaultOpen?: boolean;
+  index: number;
+  onToggle: (index: number, isOpen: boolean) => void;
 };
 function AccordionItem({
   icon,
   title,
   scoreText,
   body,
+  penalties = [],
+  bonuses = [],
   defaultOpen = false,
+  index,
+  onToggle,
 }: AccordionProps) {
   const [open, setOpen] = useState(!!defaultOpen);
+
+  const handleToggle = () => {
+    const newOpen = !open;
+    setOpen(newOpen);
+    onToggle(index, newOpen);
+  };
+
   return (
     <div className={`${s.acc} ${open ? s.accOpen : ""}`}>
-      <button className={s.accHead} onClick={() => setOpen((v) => !v)}>
+      <button className={s.accHead} onClick={handleToggle}>
         <div className={s.accLeft}>
           <img src={icon} alt="" className={s.accIcon} />
           <span className={s.accTitle}>{title}</span>
@@ -94,6 +119,41 @@ function AccordionItem({
         <div className={s.accBody}>
           <i className={s.accDivider} aria-hidden />
           <p className={s.accText}>{body}</p>
+          <i className={s.accDivider} aria-hidden />
+
+          {(penalties.length > 0 || bonuses.length > 0) && (
+            <div className={s.scoreFactors}>
+              {penalties.length > 0 && (
+                <div className={s.penaltySection}>
+                  <div className={s.penaltyTag}>감점</div>
+                  <div className={s.penaltyList}>
+                    {penalties.map((penalty, index) => (
+                      <div key={index} className={s.penaltyItem}>
+                        <span>{penalty.label}</span>
+                        <span className={s.penaltyPoints}>
+                          {penalty.points}점
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {bonuses.length > 0 && (
+                <div className={s.bonusSection}>
+                  <div className={s.bonusTag}>가점</div>
+                  <div className={s.bonusList}>
+                    {bonuses.map((bonus, index) => (
+                      <div key={index} className={s.bonusItem}>
+                        <span>{bonus.label}</span>
+                        <span className={s.bonusPoints}>+{bonus.points}점</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -104,10 +164,24 @@ export default function OutputMainPage() {
   const navigate = useNavigate();
   const { analysisResult, formData } = useRestaurantContext();
   const [showExit, setShowExit] = useState(false);
+  const [ctaOffset, setCtaOffset] = useState(0);
+  const [openAccordions, setOpenAccordions] = useState<Set<number>>(new Set());
   const closeExit = () => setShowExit(false);
   const goHome = () => {
     setShowExit(false);
     navigate("/");
+  };
+
+  const handleAccordionToggle = (index: number, isOpen: boolean) => {
+    setOpenAccordions((prev) => {
+      const newSet = new Set(prev);
+      if (isOpen) {
+        newSet.add(index);
+      } else {
+        newSet.delete(index);
+      }
+      return newSet;
+    });
   };
 
   // 점수 계산 로직
@@ -161,8 +235,32 @@ export default function OutputMainPage() {
     };
   }, []);
 
+  // 스크롤 감지하여 CTA 버튼 위치 조정
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // 스크롤이 페이지 하단에 가까워지면 CTA 버튼을 숨김
+      if (scrollTop + windowHeight >= documentHeight - 100) {
+        setCtaOffset(100); // 버튼을 아래로 밀어서 숨김
+      } else {
+        setCtaOffset(0); // 기본 위치
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // 열린 아코디언 개수에 따라 패딩 계산
+  const openCount = openAccordions.size;
+  const dynamicPadding = openCount > 0 ? 100 * openCount : 100; // 열린 아코디언당 200px 추가, 기본값 100px로 줄임
+
   return (
-    <main className={s.root}>
+    <main className={s.root} style={{ paddingBottom: `${dynamicPadding}px` }}>
       <section className={s.hero}>
         <ScoreDonut score={totalScore} />
         <div className={s.heroRight}>
@@ -210,36 +308,53 @@ export default function OutputMainPage() {
         <div className={s.accList}>
           <AccordionItem
             icon={IconLocation}
-            title="접근성"
+            title="위치 및 접근성"
             scoreText={`${analysisResult?.scores?.[0]?.score || 0}점`}
             body={
-              analysisResult?.detailAnalysis?.sections?.[0]?.content ||
+              analysisResult?.scores?.[0]?.reason ||
               "해당 매장은 대중교통과 도보 이동이 편리한 위치에 있어요. 학교와 가까워 학생 유입이 용이하고, 주변 유동인구가 안정적인 편이에요."
             }
+            penalties={analysisResult?.scores?.[0]?.penalties || []}
+            bonuses={analysisResult?.scores?.[0]?.bonuses || []}
+            index={0}
+            onToggle={handleAccordionToggle}
           />
           <AccordionItem
             icon={IconBudget}
             title="예산 적합성"
             scoreText={`${analysisResult?.scores?.[1]?.score || 0}점`}
             body={
-              analysisResult?.detailAnalysis?.sections?.[1]?.content ||
+              analysisResult?.scores?.[1]?.reason ||
               "현재 매물의 월세가 설정하신 예산 범위 안에 있어요. 초기 고정비 부담을 줄일 수 있는 조건이에요."
             }
+            penalties={analysisResult?.scores?.[1]?.penalties || []}
+            bonuses={analysisResult?.scores?.[1]?.bonuses || []}
+            index={1}
+            onToggle={handleAccordionToggle}
           />
           <AccordionItem
             icon={IconTarget}
             title="메뉴 적합성"
             scoreText={`${analysisResult?.scores?.[2]?.score || 0}점`}
             body={
-              analysisResult?.detailAnalysis?.sections?.[2]?.content ||
+              analysisResult?.scores?.[2]?.reason ||
               "학생들이 선호하는 분식집이라는 업종과 합리적인 단가가 학교 앞 상권 특성에 잘 어울리며, 현재 한대정문 사거리에 같은 업종의 매장이 5곳 미만이라 비교적 경쟁이 덜한 환경이에요."
             }
+            penalties={analysisResult?.scores?.[2]?.penalties || []}
+            bonuses={analysisResult?.scores?.[2]?.bonuses || []}
+            index={2}
+            onToggle={handleAccordionToggle}
           />
         </div>
       </section>
 
-      <div className={s.ctaWrap}>
-        <button className={s.cta}>상세 보기</button>
+      <div
+        className={s.ctaWrap}
+        style={{ transform: `translateY(${ctaOffset}px)` }}
+      >
+        <button className={s.cta} onClick={() => navigate("/output-detail")}>
+          상세 보기
+        </button>
       </div>
 
       {showExit && (

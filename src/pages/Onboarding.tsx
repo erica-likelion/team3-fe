@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import wearyOngil from "../assets/wearyOngil.svg";
 import thinkOngil from "../assets/thinkOngil.svg";
 import smileOngil from "../assets/smileOngil.svg";
+import newSmileOngil from "../assets/newSmileOngil.svg";
 import styles from "./Onboarding.module.scss";
 
 interface OnboardingStep {
@@ -36,10 +37,10 @@ const Onboarding: React.FC = () => {
         "입지 분석 이후, 매출과 손익분기점은 물론\n입지 조건 기반 운영 전략까지 제공해 드려요.\n당신의 가게에 따뜻한 '온길' 드릴게요.",
     },
     {
-      image: smileOngil,
+      image: newSmileOngil,
       title: "당신에게 가장 맞는 길, 온길",
       description:
-        "'새 분석 시작'으로 나만의 로드맵을 만들거나\n커뮤니티에서 다른 창업자들과 이야기를 나눠보세요.",
+        "'새 분석 시작'으로 나만의 로드맵을 만들거나\n제휴 추천을 통해 나와 꼭 맞는 가게와 협업해 보세요!\n커뮤니티에서는 다른 창업자들과 소통하실 수 있어요.",
       isFinal: true,
     },
   ];
@@ -48,14 +49,24 @@ const Onboarding: React.FC = () => {
     if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
   };
 
-  const handleSkip = () => setCurrentStep(steps.length - 2);
+  const handleStartAnalysis = () => {
+    console.log("입지 분석하기");
+    navigate("/select-place");
+  };
 
-  const handleCommunity = () => {
+  const handlePartnership = () => {
+    console.log("제휴 추천 받기");
+    // 제휴 추천 페이지로 이동하는 로직 추가
+  };
+
+  const handleGoCommunity = () => {
+    console.log("커뮤니티 가기");
     navigate("/community");
   };
 
-  const handleNewAnalysis = () => {
-    navigate("/select-place");
+  const handleSkip = () => {
+    // 마지막 단계로 바로 이동
+    setCurrentStep(steps.length - 2);
   };
 
   const isLastStep = currentStep === steps.length - 1;
@@ -88,7 +99,14 @@ const Onboarding: React.FC = () => {
           src={smileOngil}
           alt="Smile Ongil"
           className={`${styles.backgroundImage} ${
-            currentStep >= 2 ? styles.visible : ""
+            currentStep === 2 ? styles.visible : ""
+          }`}
+        />
+        <img
+          src={newSmileOngil}
+          alt="New Smile Ongil"
+          className={`${styles.backgroundImage} ${
+            currentStep === 3 ? styles.visible : ""
           }`}
         />
       </div>
@@ -109,37 +127,49 @@ const Onboarding: React.FC = () => {
             다음으로
           </button>
         ) : isThirdStep ? (
-          <button className={styles.startButton} onClick={handleNext}>
-            시작하기
-          </button>
+          <div className={styles.startButtonsContainer}>
+            <button className={styles.startButton} onClick={handleNext}>
+              시작하기
+            </button>
+          </div>
         ) : (
-          <>
-            <button
-              className={styles.communityButton}
-              onClick={handleCommunity}
-            >
-              커뮤니티로
-            </button>
-            <button
-              className={styles.analysisButton}
-              onClick={handleNewAnalysis}
-            >
-              새분석 시작
-            </button>
-          </>
+          currentStep === 3 && (
+            <div className={styles.actionButtons}>
+              <button
+                className={styles.actionButton}
+                onClick={handleStartAnalysis}
+              >
+                입지 분석하기
+              </button>
+              <button
+                className={styles.allianceButton}
+                onClick={handlePartnership}
+              >
+                제휴 추천 받기
+              </button>
+              <button
+                className={styles.communityButton}
+                onClick={handleGoCommunity}
+              >
+                커뮤니티 가기
+              </button>
+            </div>
+          )
         )}
       </div>
 
-      <div className={styles.indicators}>
-        {[0, 1, 2].map((index) => (
-          <div
-            key={index}
-            className={`${styles.indicator} ${
-              index === getIndicatorStep() ? styles.active : ""
-            }`}
-          />
-        ))}
-      </div>
+      {currentStep !== 3 && (
+        <div className={styles.indicators}>
+          {[0, 1, 2].map((index) => (
+            <div
+              key={index}
+              className={`${styles.indicator} ${
+                index === getIndicatorStep() ? styles.active : ""
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

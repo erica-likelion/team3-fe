@@ -1,0 +1,43 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+}
+
+/* iPhone 프레임 – 앱 전체를 이 컨테이너 안에서 */
+.iphoneFrame {
+  position: relative;
+  width: 375px;
+  height: 812px;
+  margin: 0 auto;
+  background: #fffafa;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TopBar가 다른 요소들보다 앞에 오도록 설정 */
+.iphoneFrame :global(.root) {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* 페이지 기본 패딩(상단 고정바만큼 여유) */
+.pageContent {
+  flex: 1;
+  margin-top: 100px;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

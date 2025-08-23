@@ -17,6 +17,14 @@ export interface AnalysisResult {
     name: string;
     score: number;
     reason: string;
+    penalties?: Array<{
+      label: string;
+      points: number;
+    }>;
+    bonuses?: Array<{
+      label: string;
+      points: number;
+    }>;
   }>;
   reviewAnalysis: {
     averageRating: number;

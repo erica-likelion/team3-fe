@@ -21,21 +21,15 @@
 .root {
   width: 100%;
   box-sizing: border-box;
-  padding: var(--gap-topbar-head) 0 0 0 !important;
-}
-
-/* ===== HeadInfo ===== */
-.head {
 }
 
 .head h1 {
-  margin: 0 0 12px;
+  margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
   color: var(--NeutralBK);
-  line-height: 22px;
-  white-space: normal;
-  word-break: keep-all;
+  line-height: 1.4;
+  white-space: pre-line;
 }
 
 .nowrap {
@@ -64,7 +58,7 @@
 }
 /* ===== List ===== */
 .list {
-  margin: var(--gap-head-to-list) 0 0;
+  margin-top: 32px;
   padding: 0; /* 좌우는 root 패딩과 동일(20px) */
   list-style: none;
 
@@ -79,7 +73,6 @@
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: 8px 0; /* 시안 기준 타이트 */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   cursor: pointer;
 }
 

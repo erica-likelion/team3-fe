@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import type { ReactNode } from "react";
 import s from "./BottomSheet.module.scss";
+import bottomSheetCloseButton from "../../assets/ui/bottomSheetCloseButton.svg";
 
 type Props = {
   open: boolean;
@@ -40,7 +41,7 @@ export default function BottomSheet({
         <div className={s.header}>
           <h3>{title}</h3>
           <button className={s.close} onClick={onClose} aria-label="close">
-            ×
+            <img src={bottomSheetCloseButton} alt="close" />
           </button>
         </div>
         <div className={s.content}>{children}</div>
