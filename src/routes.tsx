@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
-import AppLayout from "./layouts/AppLayout";
 import OnboardingLayout from "./layouts/OnboardingLayout";
 import Splash from "./pages/Splash";
 import Onboarding from "./pages/Onboarding";
@@ -35,12 +34,6 @@ const router = createBrowserRouter([
       { path: "select/conditions", element: <SelectConditions /> },
       { path: "output", element: <OutputMainPage /> },
       { path: "output-detail", element: <OutputDetailPage /> },
-    ],
-  },
-  {
-    path: "/",
-    element: <AppLayout />,
-    children: [
       { path: "community", element: <CommunityMainPage /> },
       { path: "community/post/new", element: <CommunityPostPage /> },
       { path: "community/post/:id", element: <PostDetail /> },
