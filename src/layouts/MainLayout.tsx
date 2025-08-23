@@ -3,6 +3,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import HomeIndicator from "../components/HomeIndicator";
 import ExitConfirmModal from "../components/ExitConfirmModal";
+import { getPostById } from "../pages/Community/communityData";
 import styles from "./MainLayout.module.scss";
 
 export default function AppLayout() {
@@ -29,6 +30,30 @@ export default function AppLayout() {
   // 페이지별 TopBar 설정
   const getTopBarConfig = () => {
     switch (location.pathname) {
+      case "/community":
+        return {
+          title: "커뮤니티",
+          onLeftClick: () => navigate(-1),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/community/post/new":
+        return {
+          title: "새 글 작성",
+          onLeftClick: () => navigate(-1),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/community/search":
+        return {
+          title: "커뮤니티 검색",
+          onLeftClick: () => navigate("/community"),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/community/search/results":
+        return {
+          title: "검색 결과",
+          onLeftClick: () => navigate("/community"),
+          onRightClick: () => setShowExit(true),
+        };
       case "/select-place":
         return {
           title: "위치 선택",
@@ -59,12 +84,25 @@ export default function AppLayout() {
           onLeftClick: () => navigate("/output"),
           onRightClick: () => setShowExit(true),
         };
-      default:
+      default: {
+        // 커뮤니티 게시글 상세 페이지 처리
+        const postMatch = location.pathname.match(/^\/community\/post\/(\d+)$/);
+        if (postMatch) {
+          const id = Number(postMatch[1]);
+          const post = getPostById(id);
+          const board = post?.board ?? "";
+          return {
+            title: board,
+            onLeftClick: () => navigate(-1),
+            onRightClick: () => setShowExit(true),
+          };
+        }
         return {
           title: "",
           onLeftClick: () => navigate(-1),
           onRightClick: () => setShowExit(true),
         };
+      }
     }
   };
 
