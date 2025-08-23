@@ -53,6 +53,12 @@ export default function AppLayout() {
           onLeftClick: () => navigate("/select-type"),
           onRightClick: () => setShowExit(true),
         };
+      case "/output-detail":
+        return {
+          title: "상세 분석 결과",
+          onLeftClick: () => navigate("/output"),
+          onRightClick: () => setShowExit(true),
+        };
       default:
         return {
           title: "",

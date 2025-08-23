@@ -48,6 +48,10 @@
   margin-top: 492px;
 }
 
+.content:has(+ .navigation .actionButtons) {
+  margin-top: 444px;
+}
+
 .title {
   margin: 0;
   font-size: 24px;
@@ -74,7 +78,8 @@
   display: flex;
   gap: 25px;
   width: 100%;
-  max-width: 320px;
+  max-width: 335px;
+  height: 54px;
   position: fixed;
   bottom: 108px;
   left: 0;
@@ -119,23 +124,6 @@
   background: #f8f9fa;
 }
 
-.communityButton {
-  flex: 1;
-  padding: 16px;
-  background: transparent;
-  border: 1px solid white;
-  border-radius: 10px;
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.communityButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
 .analysisButton {
   flex: 1;
   padding: 16px;
@@ -151,6 +139,67 @@
 
 .analysisButton:hover {
   background: #f8f9fa;
+}
+
+.startButtonsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.navigation:has(.actionButtons) {
+  bottom: 180px;
+}
+
+.actionButton {
+  width: 100%;
+  padding: 16px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  color: #f6804d;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actionButton:hover {
+  background: #f8f9fa;
+}
+
+.allianceButton {
+  width: 100%;
+  padding: 16px;
+  background: #ffd4ca;
+  border: none;
+  border-radius: 12px;
+  color: #f6804d;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.communityButton {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid #fffafa;
+  border-radius: 12px;
+  color: #fffafa;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .indicators {

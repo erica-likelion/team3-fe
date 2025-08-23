@@ -24,13 +24,12 @@
 }
 
 .head h1 {
-  margin: 0 0 12px;
+  margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
   color: var(--NeutralBK);
-  line-height: 22px;
-  white-space: normal;
-  word-break: keep-all;
+  line-height: 1.4;
+  white-space: pre-line;
 }
 
 .nowrap {

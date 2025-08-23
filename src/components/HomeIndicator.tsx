@@ -10,11 +10,6 @@ const HomeIndicator = () => (
       bottom: 0,
       transform: "translateX(-50%)",
       width: 375,
-      height: 32,
-      paddingLeft: 116,
-      paddingRight: 115,
-      paddingTop: 19,
-      paddingBottom: 8,
       boxSizing: "border-box",
       pointerEvents: "none",
       zIndex: 9,
@@ -23,7 +18,11 @@ const HomeIndicator = () => (
     <img
       src={bar}
       alt=""
-      style={{ width: "100%", height: 5, display: "block" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "block",
+      }}
     />
   </div>
 );

@@ -10,6 +10,7 @@ import SelectType from "./pages/SelectType/SelectType";
 import SelectConditions from "./pages/SelectConditions/SelectConditions";
 import LoadingPage from "./pages/Loading/LoadingPage";
 import OutputMainPage from "./pages/Output/OutputMainPage";
+import OutputDetailPage from "./pages/Output/OutputDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: "select-type", element: <SelectType /> },
       { path: "select/conditions", element: <SelectConditions /> },
       { path: "output", element: <OutputMainPage /> },
+      { path: "output-detail", element: <OutputDetailPage /> },
     ],
   },
 ]);
