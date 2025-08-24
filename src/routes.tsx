@@ -9,6 +9,7 @@ import SelectConditions from "./pages/SelectConditions/SelectConditions";
 import LoadingPage from "./pages/Loading/LoadingPage";
 import OutputMainPage from "./pages/Output/OutputMainPage";
 import OutputDetailPage from "./pages/Output/OutputDetailPage";
+import Collaboration from "./pages/Collaboration/Collaboration";
 import CommunityMainPage from "./pages/Community/CommunityMainPage";
 import CommunitySearchPage from "./pages/Community/CommunitySearchPage";
 import PostDetail from "./pages/Community/PostDetail";
@@ -31,9 +32,10 @@ const router = createBrowserRouter([
     children: [
       { path: "select-place", element: <SelectPlace /> },
       { path: "select-type", element: <SelectType /> },
-      { path: "select/conditions", element: <SelectConditions /> },
+      { path: "select-conditions", element: <SelectConditions /> },
       { path: "output", element: <OutputMainPage /> },
       { path: "output-detail", element: <OutputDetailPage /> },
+      { path: "collaboration", element: <Collaboration /> },
       { path: "community", element: <CommunityMainPage /> },
       { path: "community/post/new", element: <CommunityPostPage /> },
       { path: "community/post/:id", element: <PostDetail /> },

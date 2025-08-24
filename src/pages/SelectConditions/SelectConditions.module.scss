@@ -24,11 +24,11 @@
 }
 
 .head h1 {
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
   font-size: 18px;
   font-weight: 600;
   color: var(--NeutralBK);
-  line-height: 1.4;
+  line-height: 150%;
   white-space: pre-line;
 }
 
@@ -38,14 +38,12 @@
 
 .head p,
 .desc {
-  margin: 0; /* 위 여백은 h1이 가짐 */
-  padding: 0;
   font-family: Pretendard, sans-serif;
 
   font-size: 14px; /* Body/14S */
   font-weight: 400;
+  line-height: 142%;
   color: var(--GR400);
-  line-height: 20px; /* 고정 */
   white-space: pre-line;
   word-break: keep-all;
   letter-spacing: -0.48px;
@@ -84,7 +82,7 @@
   font-size: 16px; /* Title/16SB */
   font-weight: 600;
   color: var(--NeutralBK);
-  line-height: 20px; /* 고정 */
+  line-height: 150%;
   margin-bottom: 4px;
 }
 
@@ -92,7 +90,7 @@
   font-size: 16px; /* Body/16M */
   font-weight: 500;
   color: var(--GR400);
-  line-height: 20px; /* 고정 */
+  line-height: 150%;
 }
 
 .selected {
@@ -103,7 +101,7 @@
 .chev {
   color: rgba(0, 0, 0, 0.35);
   font-size: 18px;
-  line-height: 1;
+  line-height: 150%;
   padding-left: 8px;
 }
 
@@ -123,6 +121,7 @@
   font-weight: 600;
   font-size: 16px;
   z-index: 5;
+  line-height: 150%;
 }
 
 .disabled {

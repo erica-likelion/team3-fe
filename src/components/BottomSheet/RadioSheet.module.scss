@@ -52,6 +52,7 @@
   margin: 0;
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   color: var(--NeutralBK);
 }
 .close {
@@ -112,6 +113,7 @@
 .dropdownText {
   font-size: 16px;
   font-weight: 500;
+  line-height: 150%;
   color: var(--GR400); /* 기본 회색 */
 }
 .chev {
@@ -152,6 +154,7 @@
 .optionLabel {
   font-size: 16px;
   font-weight: 500;
+  line-height: 150%;
   color: var(--OR600);
 }
 
@@ -200,6 +203,7 @@
 
 .radioLabel {
   font-size: 16px;
+  line-height: 150%;
   color: var(--NeutralBK);
 }
 
@@ -219,6 +223,7 @@
   border-radius: 12px;
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   border: 0;
 }
 .ghost {

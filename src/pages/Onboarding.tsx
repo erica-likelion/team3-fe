@@ -56,7 +56,7 @@ const Onboarding: React.FC = () => {
 
   const handlePartnership = () => {
     console.log("제휴 추천 받기");
-    // 제휴 추천 페이지로 이동하는 로직 추가
+    navigate("/collaboration");
   };
 
   const handleGoCommunity = () => {
