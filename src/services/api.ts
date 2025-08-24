@@ -46,3 +46,17 @@ export const getRestaurants = async (): Promise<Restaurant[]> => {
     throw error;
   }
 };
+
+export const submitPartnershipData = async (data: { storeName: string }) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/api/partnership`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Partnership API 호출 오류:", error);
+    throw error;
+  }
+};

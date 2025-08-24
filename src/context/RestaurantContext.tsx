@@ -43,13 +43,33 @@ export interface AnalysisResult {
   };
 }
 
+export interface PartnershipResult {
+  targetStoreName: string;
+  targetCategory: string;
+  partners: Array<{
+    name: string;
+    category: string;
+    distanceMeters: number;
+    kakaomapUrl: string;
+    address: string;
+  }>;
+  events: Array<{
+    eventTitle: string;
+    description: string;
+    reason: string;
+  }>;
+}
+
 interface RestaurantContextType {
   formData: Partial<RestaurantFormData>;
   analysisResult: AnalysisResult | null;
+  partnershipResult: PartnershipResult | null;
   updateFormData: (data: Partial<RestaurantFormData>) => void;
   setAnalysisResult: (result: AnalysisResult) => void;
+  setPartnershipResult: (result: PartnershipResult) => void;
   clearFormData: () => void;
   clearAnalysisResult: () => void;
+  clearPartnershipResult: () => void;
 }
 
 const RestaurantContext = createContext<RestaurantContextType | undefined>(
@@ -95,6 +115,8 @@ export const RestaurantProvider: React.FC<RestaurantProviderProps> = ({
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
     null
   );
+  const [partnershipResult, setPartnershipResult] =
+    useState<PartnershipResult | null>(null);
 
   const updateFormData = (data: Partial<RestaurantFormData>) => {
     setFormData((prev) => {
@@ -123,15 +145,22 @@ export const RestaurantProvider: React.FC<RestaurantProviderProps> = ({
     setAnalysisResult(null);
   };
 
+  const clearPartnershipResult = () => {
+    setPartnershipResult(null);
+  };
+
   return (
     <RestaurantContext.Provider
       value={{
         formData,
         analysisResult,
+        partnershipResult,
         updateFormData,
         setAnalysisResult,
+        setPartnershipResult,
         clearFormData,
         clearAnalysisResult,
+        clearPartnershipResult,
       }}
     >
       {children}

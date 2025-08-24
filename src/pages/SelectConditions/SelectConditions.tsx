@@ -304,7 +304,7 @@ export default function SelectConditions() {
 
   // 로딩 페이지 표시
   if (showLoading) {
-    navigate("/loading");
+    navigate("/loading?from=select-conditions");
     return null;
   }
 

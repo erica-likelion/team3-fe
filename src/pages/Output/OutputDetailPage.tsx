@@ -344,7 +344,7 @@ export default function OutputDetailPage() {
           <Link to="/select-place" className={styles.restartButton}>
             다시하기
           </Link>
-          <Link to="/onboarding" className={styles.homeButton}>
+          <Link to="/onboarding?final=1" className={styles.homeButton}>
             홈으로
           </Link>
         </div>

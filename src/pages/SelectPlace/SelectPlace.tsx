@@ -244,17 +244,17 @@ const SelectPlace: React.FC = () => {
       {/* 확대 모드에서 위치 정보 카드 (하얀 창) - 고정 위치 */}
       {isMapExpanded && selectedLocation && (
         <div ref={whiteCardRef} className={styles.locationCard}>
+          <button
+            className={styles.closeButton}
+            onClick={() => setIsMapExpanded(false)}
+          >
+            ✕
+          </button>
           <div className={styles.locationInfo}>
             <div className={styles.locationTitle}>{selectedAddress}</div>
             <div className={styles.locationDetail}>{selectedDetailAddress}</div>
           </div>
           <div className={styles.locationActions}>
-            <button
-              className={styles.closeButton}
-              onClick={() => setIsMapExpanded(false)}
-            >
-              ✕
-            </button>
             <button className={styles.addButton} onClick={handleAddLocation}>
               추가하기
             </button>

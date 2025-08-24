@@ -73,6 +73,18 @@ export default function AppLayout() {
           onLeftClick: () => navigate("/onboarding"),
           onRightClick: () => setShowExit(true),
         };
+      case "/collaboration":
+        return {
+          title: "조건 선택",
+          onLeftClick: () => navigate("/onboarding"),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/collaboration-result":
+        return {
+          title: "분석 결과",
+          onLeftClick: () => navigate("/onboarding"),
+          onRightClick: () => setShowExit(true),
+        };
       case "/output":
         return {
           title: "분석 결과",
@@ -116,6 +128,8 @@ export default function AppLayout() {
       ? "분석 결과 열람을 중단하고\n홈 화면으로 이동하시겠어요?"
       : /^\/community(\/|$)/.test(location.pathname)
       ? "커뮤니티 이용을 중단하고\n홈 화면으로 이동하시겠어요?"
+      : /^\/collaboration(\/|$)/.test(location.pathname)
+      ? "제휴 추천 분석을 중단하고\n홈 화면으로 이동하시겠어요?"
       : undefined; // 나머지는 ExitConfirmModal의 기본 문구 사용
 
   return (
