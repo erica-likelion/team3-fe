@@ -5,6 +5,7 @@ import Cellular from "../assets/ui/Cellular Connection.svg";
 import Battery from "../assets/ui/Battery.svg";
 import Prev from "../assets/ui/PreviousButton.svg";
 import Close from "../assets/ui/CloseButton.svg";
+import PostCheck from "../assets/ui/postCheckButton.svg";
 
 function formatNow(): string {
   return new Date().toLocaleTimeString("ko-KR", {
@@ -22,6 +23,7 @@ interface TopBarProps {
   onLeftClick?: () => void;
   onRightClick?: () => void;
   showRight?: boolean;
+  usePostCheckButton?: boolean;
 }
 
 export default function TopBar({
@@ -32,6 +34,7 @@ export default function TopBar({
   onLeftClick,
   onRightClick,
   showRight = true,
+  usePostCheckButton = false,
 }: TopBarProps) {
   const [time, setTime] = useState<string>(formatNow());
 
@@ -101,6 +104,14 @@ export default function TopBar({
                   onClick={onRightClick}
                 >
                   {rightChild}
+                </button>
+              ) : usePostCheckButton ? (
+                <button
+                  className={s.iconBtn}
+                  aria-label="post check"
+                  onClick={onRightClick}
+                >
+                  <img src={PostCheck} alt="" />
                 </button>
               ) : (
                 <button

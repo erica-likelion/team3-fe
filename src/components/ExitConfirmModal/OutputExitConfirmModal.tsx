@@ -1,5 +1,4 @@
 // src/components/ExitConfirmModal/OutputExitConfirmModal.tsx
-import React from "react";
 
 type OutputExitConfirmModalProps = {
   onClose: () => void; // 머무르기

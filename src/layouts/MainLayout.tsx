@@ -41,7 +41,9 @@ export default function AppLayout() {
         return {
           title: "새 글 작성",
           onLeftClick: () => navigate(-1),
-          onRightClick: () => setShowExit(true),
+          onRightClick: () =>
+            window.dispatchEvent(new CustomEvent("community:submitPost")),
+          usePostCheckButton: true,
         };
       case "/community/search":
         return {
@@ -139,6 +141,7 @@ export default function AppLayout() {
           title={topBarConfig.title}
           onLeftClick={topBarConfig.onLeftClick}
           onRightClick={topBarConfig.onRightClick}
+          usePostCheckButton={topBarConfig.usePostCheckButton}
         />
         <main className={styles.pageContent}>
           <Outlet />

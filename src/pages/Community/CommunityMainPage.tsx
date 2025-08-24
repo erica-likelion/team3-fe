@@ -1,21 +1,16 @@
 // src/pages/Community/CommunityMainPage.tsx
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import s from "./CommunityMainPage.module.scss";
-import { getCommentCount /* ... */ } from "./communityData";
+import { getCommentCount } from "./communityData";
 import bannerImg from "../../assets/ui/Banner.png";
 import arrowRightBlue from "../../assets/ui/arrow-right.png";
 import arrowBetween from "../../assets/ui/arrow-right 3.svg";
 import cornerOR from "../../assets/ui/corner-down-right.svg";
 import cornerBL from "../../assets/ui/corner-down-right 2.svg";
+import { getPosts, type ServerPost } from "../../services/api";
 
-import {
-  freePosts,
-  partnerPosts,
-  type Post,
-  type TabKey,
-  getAllPosts,
-} from "./communityData";
+import { type Post, type TabKey, getAllPosts } from "./communityData";
 
 const now = Date.now();
 const fmtAgo = (ts: number) => {
@@ -42,6 +37,28 @@ export default function CommunityMainPage() {
   const [tab, setTab] = useState<TabKey>("all");
   const [searchOpen, setSearchOpen] = useState(false);
   const [q, setQ] = useState("");
+  const [serverPosts, setServerPosts] = useState<ServerPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // 서버에서 게시물 데이터 가져오기
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const posts = await getPosts();
+        setServerPosts(posts);
+        setError(null);
+      } catch (err) {
+        console.error("게시물 로드 실패:", err);
+        setError("게시물을 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   useEffect(() => {
     const h = () => setSearchOpen((v) => !v);
@@ -50,11 +67,60 @@ export default function CommunityMainPage() {
       window.removeEventListener("community:toggleSearch", h as EventListener);
   }, []);
 
+  // 서버 데이터를 로컬 Post 형식으로 변환하는 함수
+  const convertServerPostToLocal = (serverPost: ServerPost): Post => {
+    const createdAt = new Date(serverPost.createdAt).getTime();
+
+    return {
+      id: serverPost.id,
+      board:
+        serverPost.category === "PARTNERSHIP" ? "제휴게시판" : "자유게시판",
+      title: serverPost.title,
+      content: serverPost.content,
+      nick: "익명", // 서버에서 author 필드가 없으므로 기본값 사용
+      ts: createdAt,
+      count: 0, // 서버에서 commentCount 필드가 없으므로 기본값 사용
+      thumb: serverPost.imageUrl || undefined,
+      pairIcons:
+        serverPost.category === "PARTNERSHIP" &&
+        serverPost.myStoreCategory &&
+        serverPost.partnerStoreCategory
+          ? [
+              getCategoryIcon(serverPost.myStoreCategory),
+              getCategoryIcon(serverPost.partnerStoreCategory),
+            ]
+          : undefined,
+    };
+  };
+
+  // 카테고리별 아이콘 매핑 함수
+  const getCategoryIcon = (category: string): string => {
+    const iconMap: { [key: string]: string } = {
+      "카페/디저트": "/src/assets/categories/coffee.png",
+      "피자/치킨": "/src/assets/ui/pizzachicken.png",
+      "주점/술집": "/src/assets/ui/beer.png",
+      패스트푸드: "/src/assets/ui/hamburger.jpg",
+      한식: "/src/assets/categories/bibim.png",
+      아시안: "/src/assets/categories/asian.png",
+      양식: "/src/assets/categories/pasta.png",
+      중식: "/src/assets/categories/zza.png",
+      일식: "/src/assets/categories/sushi.png",
+    };
+    return iconMap[category] || "/src/assets/categories/coffee.png";
+  };
+
+  // 서버 데이터만 사용 (더미데이터 제거)
+  const mergedPosts = useMemo(() => {
+    const convertedServerPosts = serverPosts.map(convertServerPostToLocal);
+    return convertedServerPosts.sort((a, b) => b.ts - a.ts);
+  }, [serverPosts]);
+
   const baseList = useMemo(() => {
-    if (tab === "all") return getAllPosts();
-    if (tab === "free") return freePosts.slice().sort((a, b) => b.ts - a.ts);
-    return partnerPosts.slice().sort((a, b) => b.ts - a.ts);
-  }, [tab]);
+    if (tab === "all") return mergedPosts;
+    if (tab === "free")
+      return mergedPosts.filter((p) => p.board === "자유게시판");
+    return mergedPosts.filter((p) => p.board === "제휴게시판");
+  }, [mergedPosts, tab]);
 
   const list = useMemo(() => {
     if (!q.trim()) return baseList;
@@ -65,13 +131,35 @@ export default function CommunityMainPage() {
   }, [baseList, q]);
 
   const hot = useMemo(() => {
-    if (tab === "all") return pickHot(getAllPosts());
-    if (tab === "free") return pickHot(freePosts);
-    return pickHot(partnerPosts);
-  }, [tab]);
+    if (tab === "all") return pickHot(mergedPosts);
+    if (tab === "free")
+      return pickHot(mergedPosts.filter((p) => p.board === "자유게시판"));
+    return pickHot(mergedPosts.filter((p) => p.board === "제휴게시판"));
+  }, [mergedPosts, tab]);
+
+  // 로딩 중일 때 표시
+  if (loading) {
+    return (
+      <div className={s.wrap}>
+        <div style={{ textAlign: "center", padding: "20px" }}>
+          게시물을 불러오는 중...
+        </div>
+      </div>
+    );
+  }
+
+  // 에러가 있을 때 표시
+  if (error) {
+    return (
+      <div className={s.wrap}>
+        <div style={{ textAlign: "center", padding: "20px", color: "red" }}>
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   // ✅ 여기만 추가: SelectPlace로 이동
-  const goSelectPlace = () => nav("/select-place");
 
   return (
     <div className={s.wrap}>
