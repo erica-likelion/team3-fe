@@ -73,7 +73,7 @@ export default function SelectType() {
     const categoryForBackend = getCategoryForBackend(selected);
     updateFormData({ category: categoryForBackend });
 
-    navigate(`/select/conditions?cat=${encodeURIComponent(selected)}`);
+    navigate(`/select-conditions?cat=${encodeURIComponent(selected)}`);
   };
   return (
     <>

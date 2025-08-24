@@ -4,6 +4,7 @@
   --GR400: #b5b5b5;
   --NeutralWT: #fffafa;
   --PRIMARYOR: #f57f4c;
+  --OR600: #f26b4a;
 
   /* 레이아웃 토큰 */
   --page-hpad: 20px;
@@ -56,7 +57,7 @@
 }
 /* ===== List ===== */
 .list {
-  margin-top: 32px;
+  margin-top: 10px;
   padding: 0; /* 좌우는 root 패딩과 동일(20px) */
   list-style: none;
 
@@ -70,7 +71,7 @@
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  padding: 8px 0; /* 시안 기준 타이트 */
+  padding: 6px 0; /* 시안 기준 타이트 */
   cursor: pointer;
 }
 
@@ -94,8 +95,8 @@
 }
 
 .selected {
-  color: var(--PRIMARYOR);
-  font-weight: 700;
+  color: var(--OR600);
+  font-weight: 600;
 }
 
 .chev {
@@ -116,7 +117,7 @@
   margin: 0;
   border: 0;
   border-radius: var(--radius-16);
-  background: var(--PRIMARYOR);
+  background: var(--OR600);
   color: #fff;
   font-weight: 600;
   font-size: 16px;

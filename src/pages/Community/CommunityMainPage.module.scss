@@ -17,7 +17,7 @@ $GR400: #b0b0b0;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  margin-top: 20px;
+
   margin-bottom: 8px;
 }
 .tab {
@@ -27,7 +27,6 @@ $GR400: #b0b0b0;
   color: $GR400;
   background: transparent;
   border: 0;
-  padding: 6px 0;
 }
 .tabCenter {
   display: flex;
