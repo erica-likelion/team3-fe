@@ -23,15 +23,18 @@
   font-weight: 600;
   color: #383325;
   margin: 0 0 8px 0;
-  line-height: 1.4;
+  line-height: 150%;
   white-space: pre-line;
 }
 
 .description {
-  font-size: 14px;
-  color: #666;
+  color: #828282;
   margin: 0;
-  line-height: 1.5;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 142%;
+  letter-spacing: -0.48px;
+  white-space: pre-line;
 }
 
 .mapContainer {
@@ -50,6 +53,25 @@
   width: 100%;
   height: 240px;
   margin: 0;
+}
+
+.alertSection {
+  position: fixed;
+  top: 465px; /* 지도 아래 (217px + 240px + 20px 간격) */
+  left: 20px;
+  right: 20px;
+  display: flex;
+  gap: 2px;
+  z-index: 10000;
+}
+
+.alertText {
+  margin: 0;
+  font-weight: 400; /* Regular */
+  font-size: 10px;
+  line-height: 150%;
+  vertical-align: middle;
+  color: #828282;
 }
 
 .mapExpanded {
@@ -88,6 +110,7 @@
   margin: 0;
   font-size: 16px;
   font-weight: 500;
+  line-height: 150%;
 }
 
 .locationCard {
@@ -112,6 +135,7 @@
 .locationTitle {
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   color: #f26b4a;
   margin-bottom: 4px;
 }
@@ -120,6 +144,7 @@
   font-size: 14px;
   color: #333;
   font-weight: 400;
+  line-height: 142%;
 }
 
 .locationActions {
@@ -132,6 +157,7 @@
   background: none;
   border: none;
   font-size: 18px;
+  line-height: 150%;
   color: #666;
   cursor: pointer;
   padding: 4px;
@@ -145,6 +171,7 @@
   padding: 8px 16px;
   font-size: 14px;
   font-weight: 600;
+  line-height: 142%;
   cursor: pointer;
 }
 
@@ -164,6 +191,7 @@
 .loading p {
   margin: 0;
   font-size: 16px;
+  line-height: 150%;
   color: #666;
 }
 
@@ -186,11 +214,13 @@
 .error p {
   margin: 0 0 8px 0;
   font-size: 14px;
+  line-height: 142%;
   color: #e74c3c;
 }
 
 .error p:last-child {
   font-size: 12px;
+  line-height: 150%;
   color: #666;
 }
 
@@ -222,6 +252,7 @@
 .searchIcon {
   margin-right: 12px;
   font-size: 16px;
+  line-height: 150%;
   color: #666;
 }
 
@@ -230,6 +261,7 @@
   border: none;
   background: transparent;
   font-size: 14px;
+  line-height: 142%;
   color: #333;
   outline: none;
 }
@@ -269,6 +301,7 @@
   color: white;
   font-size: 14px;
   font-weight: 500;
+  line-height: 142%;
 }
 
 .removeButton {
@@ -276,6 +309,7 @@
   border: none;
   color: white;
   font-size: 16px;
+  line-height: 150%;
   cursor: pointer;
   padding: 4px;
 }
@@ -292,6 +326,7 @@
   color: #666;
   font-size: 16px;
   font-weight: 600;
+  line-height: 150%;
   cursor: not-allowed;
   transition: all 0.2s;
   z-index: 10000;
@@ -334,6 +369,7 @@
   background: none;
   border: none;
   font-size: 18px;
+  line-height: 150%;
   color: #666;
   cursor: pointer;
   padding: 8px;
@@ -342,6 +378,7 @@
 .searchModeTitle {
   font-size: 18px;
   font-weight: 600;
+  line-height: 150%;
   color: #333;
   margin: 0;
 }
@@ -362,6 +399,7 @@
   border: none;
   background: transparent;
   font-size: 14px;
+  line-height: 142%;
   color: #333;
   outline: none;
   margin-left: 12px;
@@ -372,6 +410,7 @@
   border: none;
   color: #f26b4a;
   font-size: 16px;
+  line-height: 150%;
   cursor: pointer;
   padding: 4px;
 }
@@ -381,6 +420,7 @@
   padding: 20px;
   color: #666;
   font-size: 14px;
+  line-height: 142%;
 }
 
 .searchResults {
@@ -394,6 +434,7 @@
   border-bottom: 1px solid #f0f0f0;
   color: #f26b4a;
   font-size: 14px;
+  line-height: 142%;
   cursor: pointer;
   transition: background-color 0.2s;
 }

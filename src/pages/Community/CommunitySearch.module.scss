@@ -38,6 +38,7 @@ $GR400: #b0b0b0;
   border: none;
   outline: none;
   font-size: 16px;
+  line-height: 150%;
   background: transparent;
 }
 .searchIcon {
@@ -72,6 +73,7 @@ $GR400: #b0b0b0;
   background: none;
   color: $GR400;
   font-size: 12px;
+  line-height: 150%;
 }
 
 /* ===== 히스토리/제안 ===== */
@@ -90,6 +92,7 @@ $GR400: #b0b0b0;
   padding: 12px 2px;
   color: $OR600;
   font-size: 14px;
+  line-height: 142%;
 }
 
 /* ===== 결과 리스트 (커뮤니티 카드와 동일 룩) ===== */
@@ -105,6 +108,7 @@ $GR400: #b0b0b0;
   font-size: 14px;
   text-align: center;
   padding: 32px 0;
+  line-height: 142%;
 }
 .postItem {
   display: grid;
@@ -130,7 +134,7 @@ $GR400: #b0b0b0;
   align-items: center;
   justify-content: center;
   padding: 4px 6px;
-  line-height: 16px;
+  line-height: 150%;
   font-size: 10px;
   font-weight: 500;
   border-radius: 66.6667px;
@@ -176,17 +180,20 @@ $GR400: #b0b0b0;
 .postTitle {
   font-size: 14px;
   font-weight: 600;
+  line-height: 142%;
   color: #111;
   margin-bottom: 4px;
 }
 .postPreview {
   font-size: 12px;
+  line-height: 150%;
   color: #666;
 }
 .postMeta {
   display: flex;
   gap: 6px;
   font-size: 12px;
+  line-height: 150%;
   margin-top: 6px;
 }
 .postNick {
@@ -245,6 +252,7 @@ $GR400: #b0b0b0;
 }
 .replyNum {
   font-size: 12px;
+  line-height: 150%;
 }
 .replyOR {
   color: $OR600;

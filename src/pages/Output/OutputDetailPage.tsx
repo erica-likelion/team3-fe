@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styles from "./OutputDetailPage.module.scss";
 import { useRestaurantContext } from "../../context/RestaurantContext";
 import OutputExitConfirmModal from "../../components/ExitConfirmModal/OutputExitConfirmModal";
+import communityBanner from "../../assets/ui/communityBanner.png";
+import arrowRight from "../../assets/ui/arrow-right 3.svg";
 
 function ScoreDonut({
   score = 60.4,
@@ -308,8 +310,44 @@ export default function OutputDetailPage() {
         </div>
       </section>
 
+      <div className={styles.divider}></div>
+
+      {/* Community Banner */}
+      <Link to="/community" className={styles.communityBannerLink}>
+        <div className={styles.communityBanner}>
+          <img
+            src={communityBanner}
+            alt="온길 자영업자 커뮤니티"
+            className={styles.communityBannerImage}
+          />
+          <div className={styles.communityBannerContent}>
+            <div className={styles.communityBannerText1}>
+              우리 지역의 진짜 목소리를 듣고 싶다면?
+            </div>
+            <div className={styles.communityBannerText2}>
+              온길 자영업자 커뮤니티 바로가기
+              <img
+                src={arrowRight}
+                alt="화살표"
+                className={styles.communityBannerArrow}
+              />
+            </div>
+            <div className={styles.communityBannerText3}>
+              일상 공유부터 제휴 업체 매칭까지
+            </div>
+          </div>
+        </div>
+      </Link>
+
       <div className={styles.ctaWrap}>
-        <button className={styles.cta}>상세 보기</button>
+        <div className={styles.buttonContainer}>
+          <Link to="/select-place" className={styles.restartButton}>
+            다시하기
+          </Link>
+          <Link to="/onboarding" className={styles.homeButton}>
+            홈으로
+          </Link>
+        </div>
       </div>
 
       {showExit && (

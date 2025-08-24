@@ -59,6 +59,7 @@ $WT: #fffafa;
 .boardText {
   font-size: 14px;
   font-weight: 600;
+  line-height: 142%;
 }
 .placeholder {
   color: $GR400;
@@ -128,7 +129,7 @@ $WT: #fffafa;
   display: block;
   width: 100%;
   padding: 0 12px 0;
-  line-height: 26px;
+  line-height: 142%;
   font-size: 14px;
   color: $BK;
   cursor: pointer;
@@ -146,6 +147,7 @@ $WT: #fffafa;
 .pairText {
   color: #8a8a8a;
   font-size: 14px;
+  line-height: 142%;
 }
 
 .chip {
@@ -158,7 +160,7 @@ $WT: #fffafa;
   font-size: 14px;
   font-weight: 600;
   color: $OR600;
-  line-height: 20px; /* 텍스트 높이 안정화 */
+  line-height: 142%;
   box-sizing: border-box; /* ★ border 포함해서 28px 유지 */
 }
 
@@ -186,6 +188,7 @@ $WT: #fffafa;
   background: transparent;
   font-size: 18px;
   font-weight: 600; /* semibold */
+  line-height: 150%;
   color: $GR500;
   padding: 0;
 }
@@ -215,6 +218,7 @@ $WT: #fffafa;
   background: transparent;
   padding: 15px 19px; /* 좌우 19 */
   font-size: 16px;
+  line-height: 150%;
   font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
     Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; /* ✅ Pretendard */
   color: $GR400;

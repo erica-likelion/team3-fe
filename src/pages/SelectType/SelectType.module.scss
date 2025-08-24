@@ -33,13 +33,16 @@
   font-size: 18px;
   font-weight: 600;
   color: var(--NeutralBK);
-  line-height: 1.4;
+  line-height: 150%;
   white-space: pre-line;
 }
 .head p {
   margin: 12px 0 0;
   font-size: 14px;
+  line-height: 142%;
+  letter-spacing: -0.48px;
   color: var(--GR400);
+  white-space: pre-line;
 }
 
 /* 그리드 */
@@ -77,6 +80,7 @@
 }
 .label {
   font-size: 12px;
+  line-height: 150%;
   color: var(--PRIMARYOR);
 }
 
@@ -106,6 +110,7 @@
   color: #fff;
   font-weight: 600;
   font-size: 16px;
+  line-height: 150%;
   display: block;
   z-index: 5; /* 다른 요소 위로 */
 }
@@ -144,6 +149,7 @@
 .modalTitle {
   font-size: 18px;
   font-weight: 600;
+  line-height: 150%;
 }
 
 .modalText {
@@ -152,7 +158,7 @@
   color: var(--NeutralBK);
   font-size: 18px;
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 150%;
 }
 
 .actions {
@@ -169,6 +175,7 @@
   border-radius: var(--radius-12);
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
 }
 .btn:focus {

@@ -29,6 +29,7 @@ $BK: #383326;
   color: #8a8a8a;
   font-size: 14px;
   font-weight: 500;
+  line-height: 142%;
 }
 .pill {
   height: 24px;
@@ -36,7 +37,7 @@ $BK: #383326;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  line-height: 16px;
+  line-height: 150%;
 }
 .pillOutline {
   color: $OR600;
@@ -55,15 +56,16 @@ $BK: #383326;
   margin: 0 auto;
   font-size: 18px; /* Head/18L */
   font-weight: 600;
+  line-height: 150%;
   color: $BK;
 }
 
 .content {
   width: 335px;
   margin: 16px auto 0; /* 제목 아래 16 */
-  line-height: 1.6;
   font-size: 14px; /* Body/14M */
   font-weight: 500;
+  line-height: 142%;
   color: $BK;
 }
 
@@ -90,6 +92,7 @@ $BK: #383326;
   margin: 0 auto;
   font-size: 16px; /* Body/16L */
   font-weight: 600;
+  line-height: 150%;
   color: $BK;
 }
 
@@ -113,17 +116,20 @@ $BK: #383326;
 .cmtNick {
   font-size: 12px;
   font-weight: 500;
+  line-height: 150%;
   color: $GR500;
 }
 .cmtAgo {
   font-size: 12px;
   font-weight: 500;
+  line-height: 150%;
   color: $OR600;
 }
 .cmtText {
   margin-top: 2px;
   font-size: 14px;
   font-weight: 500;
+  line-height: 142%;
   color: $BK;
 }
 
@@ -152,6 +158,7 @@ $BK: #383326;
   margin-top: 12px;
   font-size: 16px;
   font-weight: 500;
+  line-height: 150%;
   color: $GR400;
 }
 
@@ -176,6 +183,7 @@ $BK: #383326;
   background: transparent;
   font-size: 14px;
   font-weight: 500;
+  line-height: 142%;
   color: $GR400;
   width: 100%;
 }

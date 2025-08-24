@@ -73,15 +73,15 @@ export default function SelectType() {
     const categoryForBackend = getCategoryForBackend(selected);
     updateFormData({ category: categoryForBackend });
 
-    navigate(`/select/conditions?cat=${encodeURIComponent(selected)}`);
+    navigate(`/select-conditions?cat=${encodeURIComponent(selected)}`);
   };
   return (
     <>
       <div className={styles.head}>
         <h1>당신이 운영할{"\n"}가게의 업종을 선택해 주세요 📝</h1>
         <p>
-          현재 창업을 고려 중인 업종을 선택해 주세요. 정확한 계산을 위해 한 번에
-          하나의 업종만 선택할 수 있어요!
+          현재 창업을 고려 중인 업종을 선택해 주세요.{"\n"}정확한 계산을 위해 한
+          번에 하나의 업종만 선택할 수 있어요!
         </p>
       </div>
 

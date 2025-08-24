@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SelectPlace.module.scss";
 import mapSpotIcon from "../../assets/ui/mapSpot.svg";
+import alertCircleIcon from "../../assets/ui/alertCircle.svg";
 import { useRestaurantContext } from "../../context/RestaurantContext";
 
 declare global {
@@ -14,10 +15,8 @@ const SelectPlace: React.FC = () => {
   const navigate = useNavigate();
   const { updateFormData } = useRestaurantContext();
   const mapRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<any>(null);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [selectedCoordinates, setSelectedCoordinates] = useState<string>("");
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [isMapExpanded, setIsMapExpanded] = useState<boolean>(false);
@@ -27,9 +26,6 @@ const SelectPlace: React.FC = () => {
   const [isLocationAdded, setIsLocationAdded] = useState<boolean>(false);
   const [addedLocationName, setAddedLocationName] = useState<string>("");
   const [whiteCardHeight, setWhiteCardHeight] = useState<number>(0);
-  const [isSearchMode, setIsSearchMode] = useState<boolean>(false);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [isSearching, setIsSearching] = useState<boolean>(false);
   const currentMarkerRef = useRef<any>(null);
   const whiteCardRef = useRef<HTMLDivElement>(null);
 
@@ -47,11 +43,26 @@ const SelectPlace: React.FC = () => {
       // 지도를 생성할 때 필요한 기본 옵션
       const options = {
         center: new kakao.maps.LatLng(37.2983, 126.8391), // 한양대학교 에리카 캠퍼스
-        level: 3, // 지도의 레벨(확대, 축소 정도)
+        level: 5, // 지도의 레벨(확대, 축소 정도) - 약 500m 범위
+        draggable: false, // 지도 드래그 비활성화
+        maxLevel: 5, // 최소 줌 레벨 (5보다 작은 레벨로는 줌 불가)
       };
 
       const kakaoMap = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
-      setMap(kakaoMap);
+
+      // 지도 생성 후 줌 기능 활성화
+      kakaoMap.setZoomable(true);
+
+      // 줌 레벨 변경 이벤트 리스너 추가
+      kakao.maps.event.addListener(kakaoMap, "zoom_changed", function () {
+        const currentLevel = kakaoMap.getLevel();
+        if (currentLevel === 5) {
+          // level 5로 돌아오면 처음 좌표로 이동
+          const initialCenter = new kakao.maps.LatLng(37.2983, 126.8391);
+          kakaoMap.setCenter(initialCenter);
+        }
+      });
+
       setIsLoading(false);
       console.log("카카오 지도 초기화 완료");
 
@@ -66,23 +77,26 @@ const SelectPlace: React.FC = () => {
         // 확대 모드에서 위치 선택
         const latlng = mouseEvent.latLng;
 
-        // 기존 마커가 있다면 제거
+        // 마커 위치를 클릭한 위치로 옮깁니다 (공식 문서 방식)
         if (currentMarkerRef.current) {
-          currentMarkerRef.current.setMap(null);
+          currentMarkerRef.current.setPosition(latlng);
+        } else {
+          // 첫 번째 클릭 시 마커 생성
+          const markerImage = new kakao.maps.MarkerImage(
+            mapSpotIcon,
+            new kakao.maps.Size(34, 34),
+            {
+              anchor: new kakao.maps.Point(17, 17), // 마커 이미지의 중앙을 앵커로 설정하여 정확한 위치에 표시
+            }
+          );
+
+          const marker = new kakao.maps.Marker({
+            position: latlng, // 클릭한 정확한 위치에 마커 표시
+            image: markerImage,
+          });
+          marker.setMap(kakaoMap);
+          currentMarkerRef.current = marker;
         }
-
-        // 즉시 마커 생성 (딜레이 없음)
-        const markerImage = new kakao.maps.MarkerImage(
-          mapSpotIcon,
-          new kakao.maps.Size(33, 33)
-        );
-
-        const marker = new kakao.maps.Marker({
-          position: latlng,
-          image: markerImage,
-        });
-        marker.setMap(kakaoMap);
-        currentMarkerRef.current = marker;
 
         // 좌표 저장
         const coordinates = `${latlng.getLat()}, ${latlng.getLng()}`;
@@ -126,67 +140,6 @@ const SelectPlace: React.FC = () => {
       setWhiteCardHeight(height);
     }
   }, [isMapExpanded, selectedLocation, selectedAddress, selectedDetailAddress]);
-
-  const handleSearchClick = () => {
-    setIsSearchMode(true);
-    setSearchKeyword("");
-    setSearchResults([]);
-  };
-
-  const handleSearchClose = () => {
-    setIsSearchMode(false);
-    setSearchKeyword("");
-    setSearchResults([]);
-  };
-
-  const handleSearch = () => {
-    if (!searchKeyword.trim()) return;
-
-    setIsSearching(true);
-    const kakao = window.kakao;
-    const places = new kakao.maps.services.Places();
-
-    places.keywordSearch(searchKeyword, function (data: any, status: any) {
-      setIsSearching(false);
-      if (status === kakao.maps.services.Status.OK) {
-        setSearchResults(data);
-      } else {
-        setSearchResults([]);
-      }
-    });
-  };
-
-  const handleSearchResultClick = (place: any) => {
-    setSelectedLocation(place.address_name);
-    setSelectedAddress(place.address_name.split(" ").slice(0, 2).join(" "));
-    setSelectedDetailAddress(place.address_name);
-    setIsSearchMode(false);
-    setSearchKeyword("");
-    setSearchResults([]);
-
-    // 지도 확장 및 마커 표시
-    setIsMapExpanded(true);
-
-    if (map) {
-      // 기존 마커가 있다면 제거
-      if (currentMarkerRef.current) {
-        currentMarkerRef.current.setMap(null);
-      }
-
-      // 커스텀 마커 생성
-      const markerImage = new kakao.maps.MarkerImage(
-        mapSpotIcon,
-        new kakao.maps.Size(40, 40)
-      );
-
-      const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(place.y, place.x),
-        image: markerImage,
-      });
-      marker.setMap(map);
-      currentMarkerRef.current = marker;
-    }
-  };
 
   const handleNext = () => {
     if (selectedLocation && selectedCoordinates) {
@@ -233,8 +186,8 @@ const SelectPlace: React.FC = () => {
             당신이 운영할{"\n"}가게의 위치를 선택해 주세요 🏪
           </h1>
           <p className={styles.description}>
-            현재 창업을 고려 중인 지역을 선택해 주세요. 분석 정확도를 위해 한
-            개의 지역만 선택 가능합니다.
+            현재 창업을 고려 중인 지역을 선택해 주세요.{"\n"}분석 정확도를 위해
+            한 개의 지역만 선택 가능합니다.
           </p>
         </div>
       )}
@@ -259,77 +212,13 @@ const SelectPlace: React.FC = () => {
         <div ref={mapRef} className={styles.map}></div>
       </div>
 
-      {/* 검색 모드일 때 */}
-      {isSearchMode && (
-        <div className={styles.searchModeOverlay}>
-          <div className={styles.searchModeHeader}>
-            <button className={styles.backButton} onClick={handleSearchClose}>
-              &lt;
-            </button>
-            <h2 className={styles.searchModeTitle}>위치 검색</h2>
-            <button className={styles.closeButton} onClick={handleSearchClose}>
-              ✕
-            </button>
-          </div>
-
-          <div className={styles.searchModeInput}>
-            <span className={styles.searchIcon}>🔍</span>
-            <input
-              type="text"
-              placeholder="지번, 도로명, 건물명으로 검색"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-              autoFocus
-            />
-            {searchKeyword && (
-              <button
-                className={styles.clearButton}
-                onClick={() => setSearchKeyword("")}
-              >
-                ✕
-              </button>
-            )}
-          </div>
-
-          {isSearching && (
-            <div className={styles.searchingIndicator}>검색 중...</div>
-          )}
-
-          {searchResults.length > 0 && (
-            <div className={styles.searchResults}>
-              {searchResults.map((place, index) => (
-                <div
-                  key={index}
-                  className={styles.searchResultItem}
-                  onClick={() => handleSearchResultClick(place)}
-                >
-                  {place.address_name}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 일반 검색창 - 고정 위치 */}
-      {!isSearchMode && (
-        <div
-          className={`${styles.searchContainer} ${
-            isMapExpanded ? styles.searchExpanded : ""
-          }`}
-        >
-          <div className={styles.searchInput} onClick={handleSearchClick}>
-            <span className={styles.searchIcon}>🔍</span>
-            <input
-              type="text"
-              placeholder="지번, 도로명, 건물명으로 검색"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-              readOnly
-            />
-          </div>
+      {/* 알림 섹션 - 최초 로딩 시에만 표시 */}
+      {!isMapExpanded && (
+        <div className={styles.alertSection}>
+          <img src={alertCircleIcon} alt="알림" className={styles.alertIcon} />
+          <p className={styles.alertText}>
+            2025 중앙해커톤 내 서비스 범위는 한양대 ERICA 인근 상권에 한정됩니다
+          </p>
         </div>
       )}
 

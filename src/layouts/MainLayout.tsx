@@ -67,7 +67,7 @@ export default function AppLayout() {
           onLeftClick: () => navigate("/select-place"),
           onRightClick: () => setShowExit(true),
         };
-      case "/select/conditions":
+      case "/select-conditions":
         return {
           title: "조건 선택",
           onLeftClick: () => navigate("/onboarding"),

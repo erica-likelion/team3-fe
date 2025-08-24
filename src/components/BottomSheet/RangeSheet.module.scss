@@ -48,6 +48,7 @@
   margin: 0;
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   color: var(--NeutralBK);
 }
 
@@ -82,7 +83,7 @@
 .hyphen {
   font-size: 20px;
   text-align: center;
-  line-height: 54px; /* 필드 높이와 동일 */
+  line-height: 150%;
   color: var(--NeutralBK);
 }
 
@@ -112,6 +113,7 @@
   background: transparent;
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   text-align: center;
   color: var(--GR400);
 }
@@ -121,6 +123,7 @@
   margin-left: 10px; /* “최소금액”과 “원” 사이 10 */
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   color: var(--NeutralBK);
 }
 
@@ -247,6 +250,7 @@
   border-radius: 12px;
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   border: 0;
 }
 .ghost {

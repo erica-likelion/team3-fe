@@ -22,7 +22,7 @@ $GR400: #b0b0b0;
 }
 .tab {
   font-size: 16px;
-  line-height: 24px;
+  line-height: 150%;
   font-weight: 500;
   color: $GR400;
   background: transparent;
@@ -47,6 +47,7 @@ $GR400: #b0b0b0;
   border: 1px solid #eee;
   padding: 0 12px;
   font-size: 14px;
+  line-height: 142%;
 }
 
 .hotSection {
@@ -58,11 +59,13 @@ $GR400: #b0b0b0;
   gap: 6px;
   font-size: 18px;
   font-weight: 600;
+  line-height: 150%;
   color: #111;
   margin-bottom: 12px;
 }
 .fire {
   font-size: 18px;
+  line-height: 150%;
 }
 
 .hotCard {
@@ -75,18 +78,21 @@ $GR400: #b0b0b0;
 }
 .hotCardTitle {
   font-size: 14px;
-  font-weight: 600; /* 세미볼드 */
+  font-weight: 600;
+  line-height: 142%;
   color: #111;
 }
 .hotCardPreview {
   font-size: 13px;
   color: #666;
+  line-height: 150%;
 }
 .hotMeta {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 12px;
+  line-height: 150%;
   color: #999;
 }
 .hotNick {
@@ -128,6 +134,7 @@ $GR400: #b0b0b0;
 }
 .replyNum {
   font-size: 12px;
+  line-height: 150%;
 }
 .replyOR {
   color: $OR600;
@@ -180,6 +187,7 @@ $GR400: #b0b0b0;
   bottom: var(--b-top);
   font-size: 10px;
   font-weight: 500;
+  line-height: 150%;
   color: rgba(255, 255, 255, 0.75);
 }
 
@@ -193,7 +201,7 @@ $GR400: #b0b0b0;
 .bannerHeadGrad {
   font-size: 16px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 150%;
   background: linear-gradient(90deg, #295fae 3%, #4c99ff 25%, #123058 78%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -213,6 +221,7 @@ $GR400: #b0b0b0;
   bottom: var(--b-bot);
   font-size: 12px;
   font-weight: 500;
+  line-height: 150%;
   color: rgba(255, 255, 255, 0.75);
 }
 
@@ -225,11 +234,13 @@ $GR400: #b0b0b0;
   gap: 6px;
   font-size: 18px;
   font-weight: 600;
+  line-height: 150%;
   color: #111;
   margin-bottom: 8px;
 }
 .eyes {
   font-size: 18px;
+  line-height: 150%;
 }
 
 .postList {
@@ -264,7 +275,7 @@ $GR400: #b0b0b0;
   align-items: center;
   justify-content: center;
   padding: 4px 6px;
-  line-height: 16px;
+  line-height: 150%;
   font-size: 10px;
   font-weight: 500;
   border-radius: 66.6667px;
@@ -310,6 +321,7 @@ $GR400: #b0b0b0;
 .postTitle {
   font-size: 14px;
   font-weight: 600;
+  line-height: 142%;
   color: #111;
   margin-bottom: 4px;
 
@@ -321,6 +333,7 @@ $GR400: #b0b0b0;
 }
 .postPreview {
   font-size: 12px;
+  line-height: 150%;
   color: #666;
 
   /* ✅ 두 줄로 고정, 말줄임 */
@@ -334,6 +347,7 @@ $GR400: #b0b0b0;
   display: flex;
   gap: 6px;
   font-size: 12px;
+  line-height: 150%;
   margin-top: 6px;
 }
 .postNick {
@@ -379,5 +393,6 @@ $GR400: #b0b0b0;
   border: 0;
   font-size: 16px;
   font-weight: 700;
+  line-height: 150%;
   box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
 }

@@ -58,10 +58,25 @@ const Onboarding: React.FC = () => {
     if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
   };
 
-  const handleStartAnalysis = () => navigate("/select-place");
-  const handlePartnership = () => {};
-  const handleGoCommunity = () => navigate("/community");
-  const handleSkip = () => setCurrentStep(steps.length - 2);
+  const handleStartAnalysis = () => {
+    console.log("입지 분석하기");
+    navigate("/select-place");
+  };
+
+  const handlePartnership = () => {
+    console.log("제휴 추천 받기");
+    navigate("/collaboration");
+  };
+
+  const handleGoCommunity = () => {
+    console.log("커뮤니티 가기");
+    navigate("/community");
+  };
+
+  const handleSkip = () => {
+    // 마지막 단계로 바로 이동
+    setCurrentStep(steps.length - 2);
+  };
 
   const isLastStep = currentStep === steps.length - 1;
   const isThirdStep = currentStep === 2;
