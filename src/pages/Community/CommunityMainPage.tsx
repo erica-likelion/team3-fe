@@ -10,7 +10,7 @@ import cornerOR from "../../assets/ui/corner-down-right.svg";
 import cornerBL from "../../assets/ui/corner-down-right 2.svg";
 import { getPosts, type ServerPost } from "../../services/api";
 
-import { type Post, type TabKey, getAllPosts } from "./communityData";
+import { type Post, type TabKey } from "./communityData";
 
 const now = Date.now();
 const fmtAgo = (ts: number) => {
