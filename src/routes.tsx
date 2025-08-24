@@ -10,6 +10,7 @@ import LoadingPage from "./pages/Loading/LoadingPage";
 import OutputMainPage from "./pages/Output/OutputMainPage";
 import OutputDetailPage from "./pages/Output/OutputDetailPage";
 import Collaboration from "./pages/Collaboration/Collaboration";
+import CollaborationResult from "./pages/Collaboration/CollaborationResult";
 import CommunityMainPage from "./pages/Community/CommunityMainPage";
 import CommunitySearchPage from "./pages/Community/CommunitySearchPage";
 import PostDetail from "./pages/Community/PostDetail";
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "output", element: <OutputMainPage /> },
       { path: "output-detail", element: <OutputDetailPage /> },
       { path: "collaboration", element: <Collaboration /> },
+      { path: "collaboration-result", element: <CollaborationResult /> },
       { path: "community", element: <CommunityMainPage /> },
       { path: "community/post/new", element: <CommunityPostPage /> },
       { path: "community/post/:id", element: <PostDetail /> },

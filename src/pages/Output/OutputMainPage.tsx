@@ -225,15 +225,17 @@ export default function OutputMainPage() {
     const onBackClick = (e: Event) => {
       const t = e.target as HTMLElement | null;
       if (t && t.closest(selector)) {
-        // 뒤로 가기로 돌아가는 경우 플래그 설정
-        sessionStorage.setItem("isBackNavigation", "true");
+        e.preventDefault();
+        e.stopPropagation();
+        // 바로 select-conditions 페이지로 이동
+        navigate("/select-conditions");
       }
     };
     document.addEventListener("click", onBackClick, true);
     return () => {
       document.removeEventListener("click", onBackClick, true);
     };
-  }, []);
+  }, [navigate]);
 
   // 스크롤 감지하여 CTA 버튼 위치 조정
   useEffect(() => {

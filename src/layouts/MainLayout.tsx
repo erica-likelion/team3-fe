@@ -41,7 +41,9 @@ export default function AppLayout() {
         return {
           title: "새 글 작성",
           onLeftClick: () => navigate(-1),
-          onRightClick: () => setShowExit(true),
+          onRightClick: () =>
+            window.dispatchEvent(new CustomEvent("community:submitPost")),
+          usePostCheckButton: true,
         };
       case "/community/search":
         return {
@@ -70,6 +72,18 @@ export default function AppLayout() {
       case "/select-conditions":
         return {
           title: "조건 선택",
+          onLeftClick: () => navigate("/onboarding"),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/collaboration":
+        return {
+          title: "조건 선택",
+          onLeftClick: () => navigate("/onboarding"),
+          onRightClick: () => setShowExit(true),
+        };
+      case "/collaboration-result":
+        return {
+          title: "분석 결과",
           onLeftClick: () => navigate("/onboarding"),
           onRightClick: () => setShowExit(true),
         };
@@ -116,6 +130,8 @@ export default function AppLayout() {
       ? "분석 결과 열람을 중단하고\n홈 화면으로 이동하시겠어요?"
       : /^\/community(\/|$)/.test(location.pathname)
       ? "커뮤니티 이용을 중단하고\n홈 화면으로 이동하시겠어요?"
+      : /^\/collaboration(\/|$)/.test(location.pathname)
+      ? "제휴 추천 분석을 중단하고\n홈 화면으로 이동하시겠어요?"
       : undefined; // 나머지는 ExitConfirmModal의 기본 문구 사용
 
   return (
@@ -125,6 +141,7 @@ export default function AppLayout() {
           title={topBarConfig.title}
           onLeftClick={topBarConfig.onLeftClick}
           onRightClick={topBarConfig.onRightClick}
+          usePostCheckButton={topBarConfig.usePostCheckButton}
         />
         <main className={styles.pageContent}>
           <Outlet />

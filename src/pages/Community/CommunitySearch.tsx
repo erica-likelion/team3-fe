@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import cs from "./CommunitySearch.module.scss";
 
@@ -10,7 +10,7 @@ import cornerBL from "../../assets/ui/corner-down-right 2.svg";
 
 import RadioSheet from "../../components/BottomSheet/RadioSheet";
 
-import { allPosts, type Post } from "./communityData";
+import { getAllPosts, type Post } from "./communityData";
 
 type Scope = "all" | "title" | "nick" | "content";
 
@@ -87,6 +87,7 @@ export default function CommunitySearch() {
     const keys: Array<"title" | "nick" | "content"> =
       scope === "all" ? ["title", "nick", "content"] : [scope];
 
+    const allPosts = getAllPosts();
     return allPosts
       .filter((p) => keys.some((k) => (p as any)[k].includes(qq)))
       .sort((a, b) => b.ts - a.ts);

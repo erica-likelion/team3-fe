@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import s from "./CommunitySearchPage.module.scss";
 
@@ -14,7 +14,7 @@ import cornerBL from "../../assets/ui/corner-down-right 2.svg";
 
 import RadioSheet from "../../components/BottomSheet/RadioSheet";
 
-import { allPosts, type Post } from "./communityData";
+import { getAllPosts, type Post } from "./communityData";
 
 type Field = "all" | "title" | "nick" | "content";
 
@@ -101,6 +101,7 @@ export default function CommunitySearchPage() {
   const suggestions = useMemo(() => {
     const key = q.trim();
     if (!key) return [];
+    const allPosts = getAllPosts();
     const pool = allPosts.flatMap((p) => [p.title, p.content, p.nick, p.board]);
     const uniq: string[] = [];
     for (const t of pool) {
@@ -130,6 +131,7 @@ export default function CommunitySearchPage() {
   const results: Post[] = useMemo(() => {
     if (!isResult) return [];
     const key = qParam;
+    const allPosts = getAllPosts();
     const matchers = {
       all: (p: Post) =>
         [p.title, p.content, p.nick].some((t) => t.includes(key)),

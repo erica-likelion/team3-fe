@@ -6,7 +6,7 @@ $GR200: #eeeeee;
 $GR300: #d9d9d9;
 $GR400: #b5b5b5;
 $GR500: #8c8c8c;
-$BK: #383326;
+$BK: #383325;
 $CR200: #fff2ec;
 $WT: #fffafa;
 
@@ -189,7 +189,7 @@ $WT: #fffafa;
   font-size: 18px;
   font-weight: 600; /* semibold */
   line-height: 150%;
-  color: $GR500;
+  color: $BK;
   padding: 0;
 }
 .titleInput::placeholder {
@@ -221,7 +221,7 @@ $WT: #fffafa;
   line-height: 150%;
   font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
     Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; /* ✅ Pretendard */
-  color: $GR400;
+  color: $BK;
   overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;

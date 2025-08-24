@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import s from "./RadioSheet.module.scss";
 
 import CloseIcon from "../../assets/ui/CloseButton.svg";

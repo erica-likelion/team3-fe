@@ -8,7 +8,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  z-index: 1000;
+  z-index: 10003;
 }
 .modal {
   position: fixed;
@@ -22,7 +22,7 @@
   border-radius: 16px;
   box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
   padding: 16px 20px 0;
-  z-index: 1001;
+  z-index: 10004;
   display: flex;
   flex-direction: column;
   align-items: center;

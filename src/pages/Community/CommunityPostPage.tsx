@@ -1,5 +1,5 @@
 // src/pages/Community/CommunityPostPage.tsx
-import React, { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import s from "./CommunityPostPage.module.scss";
 
@@ -8,8 +8,8 @@ import folder from "../../assets/ui/folder.svg";
 import xCircle from "../../assets/ui/x-circle.svg";
 import plus from "../../assets/ui/plus.svg";
 import CategorySheet from "../../components/BottomSheet/CategorySheet";
-import { saveUserPost } from "./communityData";
 import { fileToDataURL } from "../../utils/fileToDataURL";
+import { submitPost, mapCategoryToEnglish } from "../../services/api";
 
 type Board = "자유게시판" | "제휴게시판";
 
@@ -27,6 +27,7 @@ export default function CommunityPostPage() {
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<string[]>([]); // ✅ dataURL 문자열 보관
+  const [imageFiles, setImageFiles] = useState<File[]>([]); // 실제 파일 객체 보관
 
   const [myCategory, setMyCategory] = useState<string | null>(null);
   const [partnerCategory, setPartnerCategory] = useState<string | null>(null);
@@ -35,17 +36,57 @@ export default function CommunityPostPage() {
 
   // ✅ 체크 아이콘 → 저장 → 디테일로 이동
   useEffect(() => {
-    const submit = () => {
+    const submit = async () => {
       if (!board) return alert("게시판을 선택해 주세요.");
       if (!title.trim()) return alert("제목을 입력해 주세요.");
 
-      const newId = saveUserPost({
-        board,
-        title: title.trim(),
-        content: body.trim(),
-        thumb: images[0], // ✅ dataURL 저장
-      });
-      nav(`/community/post/${newId}`);
+      try {
+        // API 데이터 준비
+        const postData = {
+          title: title.trim(),
+          content: body.trim(),
+          category:
+            board === "자유게시판"
+              ? "GENERAL"
+              : ("PARTNERSHIP" as "GENERAL" | "PARTNERSHIP"),
+          ...(board === "제휴게시판" &&
+            myCategory && {
+              myStoreCategory: mapCategoryToEnglish(myCategory),
+            }),
+          ...(board === "제휴게시판" &&
+            partnerCategory && {
+              partnerStoreCategory: mapCategoryToEnglish(partnerCategory),
+            }),
+        };
+
+        // 디버깅: 전송할 데이터 로그
+        console.log("전송할 데이터:", postData);
+        console.log("이미지 파일 개수:", imageFiles.length);
+        console.log("내 업종:", myCategory);
+        console.log("제휴할 업종:", partnerCategory);
+        console.log(
+          "매핑된 내 업종:",
+          myCategory ? mapCategoryToEnglish(myCategory) : "없음"
+        );
+        console.log(
+          "매핑된 제휴할 업종:",
+          partnerCategory ? mapCategoryToEnglish(partnerCategory) : "없음"
+        );
+
+        // API 호출
+        const response = await submitPost(
+          postData,
+          imageFiles.length > 0 ? imageFiles : undefined
+        );
+
+        console.log("게시글 작성 성공:", response);
+
+        // 성공 시 커뮤니티 목록으로 이동
+        nav("/community");
+      } catch (error) {
+        console.error("게시글 작성 실패:", error);
+        alert("게시글 작성에 실패했습니다. 다시 시도해 주세요.");
+      }
     };
     window.addEventListener("community:submitPost", submit as EventListener);
     return () =>
@@ -53,7 +94,16 @@ export default function CommunityPostPage() {
         "community:submitPost",
         submit as EventListener
       );
-  }, [board, title, body, images, nav]);
+  }, [
+    board,
+    title,
+    body,
+    images,
+    imageFiles,
+    myCategory,
+    partnerCategory,
+    nav,
+  ]);
 
   useEffect(() => {
     if (!ddOpen) return;
@@ -85,6 +135,7 @@ export default function CommunityPostPage() {
     try {
       const dataUrls = await Promise.all(arr.map((f) => fileToDataURL(f)));
       setImages((prev) => [...prev, ...dataUrls]);
+      setImageFiles((prev) => [...prev, ...arr]); // 실제 파일 객체도 저장
     } finally {
       // 같은 파일을 연속 선택해도 onChange가 다시 트리거되도록 초기화
       if (fileRef.current) fileRef.current.value = "";
@@ -207,9 +258,10 @@ export default function CommunityPostPage() {
                 type="button"
                 className={s.thumbDel}
                 aria-label="삭제"
-                onClick={() =>
-                  setImages((prev) => prev.filter((_, idx) => idx !== i))
-                }
+                onClick={() => {
+                  setImages((prev) => prev.filter((_, idx) => idx !== i));
+                  setImageFiles((prev) => prev.filter((_, idx) => idx !== i));
+                }}
               >
                 <img src={xCircle} alt="" />
               </button>

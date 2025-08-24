@@ -115,64 +115,89 @@
 
 .locationCard {
   position: fixed;
-  bottom: 120px; /* 다음으로 버튼 위 */
-  left: 20px;
-  right: 20px;
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  top: 556px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10001; /* 지도보다 위에 표시 */
+  width: 335px;
+  height: 135px;
+  padding: 25px 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #fffafa;
+  box-shadow: 0 4px 30px 0 rgba(120, 0, 0, 0.1);
+  z-index: 10001;
 }
 
 .locationInfo {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0 25px;
 }
 
 .locationTitle {
+  color: #f3633f;
+  text-align: left;
   font-size: 16px;
-  font-weight: 700;
-  line-height: 150%;
-  color: #f26b4a;
-  margin-bottom: 4px;
+  font-weight: 600;
+  line-height: 150%; /* 24px */
+  letter-spacing: -0.485px;
+  margin: 0;
 }
 
 .locationDetail {
-  font-size: 14px;
-  color: #333;
-  font-weight: 400;
-  line-height: 142%;
+  color: #b5b5b5;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 150%; /* 18px */
+  margin: 0;
 }
 
 .locationActions {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+  padding: 0 25px;
 }
 
 .closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
   background: none;
   border: none;
-  font-size: 18px;
-  line-height: 150%;
-  color: #666;
+  color: #b5b5b5;
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .addButton {
-  background: #f26b4a;
-  color: white;
+  color: #f3633f;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 150%; /* 24px */
+  letter-spacing: -0.485px;
+  background: none;
   border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 142%;
   cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #f3633f;
+  text-underline-offset: 2px;
 }
 
 .loading {
@@ -284,34 +309,44 @@
 .expandedAddedLocationCard {
   position: fixed;
   bottom: 200px; /* 하얀 창 위 - 동적으로 조정됨 */
-  left: 20px;
-  right: 20px;
-  padding: 12px 16px;
-  background: #f26b4a;
-  border-radius: 8px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
+  width: 335px;
+  height: 54px;
+  padding: 25px;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #ffd4ca;
+  box-shadow: 0 4px 30px 0 rgba(0, 48, 120, 0.1);
   z-index: 10001; /* 지도보다 위에 표시 */
-  margin-bottom: 8px; /* 하얀 창과의 간격 */
+  margin-bottom: 5px; /* 하얀 창과의 간격 */
 }
 
 .addedLocationCard span,
 .expandedAddedLocationCard span {
-  color: white;
-  font-size: 14px;
+  color: #f3633f;
+  text-align: center;
+  font-size: 16px;
   font-weight: 500;
-  line-height: 142%;
+  line-height: 150%; /* 24px */
+  letter-spacing: -0.485px;
 }
 
 .removeButton {
   background: none;
   border: none;
-  color: white;
-  font-size: 16px;
-  line-height: 150%;
+  color: #f3633f;
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
+  width: 9px;
+  height: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
 }
 
 .nextButton {
