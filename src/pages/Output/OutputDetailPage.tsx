@@ -5,6 +5,7 @@ import { useRestaurantContext } from "../../context/RestaurantContext";
 import OutputExitConfirmModal from "../../components/ExitConfirmModal/OutputExitConfirmModal";
 import communityBanner from "../../assets/ui/communityBanner.png";
 import arrowRight from "../../assets/ui/arrow-right 3.svg";
+import outputDetailGraph from "../../assets/ui/outputDetailGraph.svg";
 
 function ScoreDonut({
   score = 60.4,
@@ -168,7 +169,7 @@ export default function OutputDetailPage() {
 
       <section className={styles.graphSection}>
         <img
-          src="/src/assets/ui/outputDetailGraph.svg"
+          src={outputDetailGraph}
           alt="상세 분석 그래프"
           className={styles.outputDetailGraph}
         />

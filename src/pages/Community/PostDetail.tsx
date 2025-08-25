@@ -75,9 +75,9 @@ const convertServerCommentToLocal = (serverComment: {
 const getCategoryIcon = (category: string): string => {
   const iconMap: { [key: string]: string } = {
     "카페/디저트": "/src/assets/categories/coffee.png",
-    "피자/치킨": "/src/assets/ui/pizzachicken.png",
-    "주점/술집": "/src/assets/ui/beer.png",
-    패스트푸드: "/src/assets/ui/hamburger.jpg",
+    "피자/치킨": "/src/assets/categories/pizzachicken.png",
+    "주점/술집": "/src/assets/categories/beer.png",
+    패스트푸드: "/src/assets/categories/hamboogi.png",
     한식: "/src/assets/categories/bibim.png",
     아시안: "/src/assets/categories/asian.png",
     양식: "/src/assets/categories/pasta.png",
