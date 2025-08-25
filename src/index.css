@@ -14,6 +14,11 @@ html {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  /* 375x812 강제 적용 */
+  min-width: 375px !important;
+  max-width: 375px !important;
+  min-height: 812px !important;
+  max-height: 812px !important;
 }
 
 body {
@@ -36,6 +41,11 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  /* 375x812 강제 적용 */
+  min-width: 375px !important;
+  max-width: 375px !important;
+  min-height: 812px !important;
+  max-height: 812px !important;
 }
 
 /* 모바일에서 터치 영역 최소화 */
@@ -62,13 +72,16 @@ textarea {
 }
 
 /* 기본 컨테이너 설정 */
-#root {
+html body #root {
   background-color: white;
-  width: 375px;
-  height: 812px;
+  width: var(--app-width);
+  height: var(--app-height);
+  max-width: var(--app-width);
+  max-height: var(--app-height);
   margin: 0 auto;
   box-shadow: rgba(100, 100, 100, 0.2) 0px 0px 29px 0px;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* 모바일에서 안전 영역 고려 */
@@ -85,8 +98,33 @@ textarea {
   --font-main: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
+  --app-width: 375px;
+  --app-height: 812px;
 }
 
 body {
   font-family: var(--font-main);
+}
+
+/* 브라우저 창 크기에 관계없이 375x812 강제 고정 */
+@media screen and (min-width: 376px) {
+  html body {
+    width: var(--app-width);
+    height: var(--app-height);
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  html body #root {
+    width: var(--app-width);
+    height: var(--app-height);
+    max-width: var(--app-width);
+    max-height: var(--app-height);
+    margin: 0 auto;
+  }
+}
+
+/* 모든 화면에서 375x812 강제 적용 */
+html body * {
+  max-width: var(--app-width);
 }
