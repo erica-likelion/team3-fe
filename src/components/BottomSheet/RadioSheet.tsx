@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import s from "./RadioSheet.module.scss";
 
-import CloseIcon from "../../assets/ui/CloseButton.svg";
+import CloseIcon from "../../assets/ui/sheetCloseButton.svg";
 import ChevronDown from "../../assets/ui/chevron-down.svg";
 
 type Item = { key: string; label: string };

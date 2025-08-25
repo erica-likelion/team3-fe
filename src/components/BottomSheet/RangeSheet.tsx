@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import s from "./RangeSheet.module.scss";
 
-import CloseIcon from "../../assets/ui/CloseButton.svg";
+import CloseIcon from "../../assets/ui/sheetCloseButton.svg";
 import SelectedIcon from "../../assets/ui/Selected.svg"; // 선택 구간 도트(오버레이용)
 
 type Props = {

@@ -368,7 +368,7 @@ export default function SelectConditions() {
 
         {/* 하단 고정 버튼 */}
         <button
-          className={`${styles.next} ${!canNext ? styles.disabled : ""}`}
+          className={`${styles.next} ${canNext ? styles.enabled : ""}`}
           disabled={!canNext || isSubmitting}
           type="button"
           onClick={handleSubmit}

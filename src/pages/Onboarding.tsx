@@ -116,12 +116,16 @@ const Onboarding: React.FC = () => {
         />
       </div>
 
-      <div className={styles.content}>
+      <div
+        className={`${styles.content} ${isLastStep ? styles.finalStep : ""}`}
+      >
         <h1 className={styles.title}>{currentStepData.title}</h1>
         <p className={styles.description}>{currentStepData.description}</p>
       </div>
 
-      <div className={styles.navigation}>
+      <div
+        className={`${styles.navigation} ${isLastStep ? styles.finalStep : ""}`}
+      >
         {!isLastStep && !isThirdStep && (
           <button className={styles.skipButton} onClick={handleSkip}>
             그만보기

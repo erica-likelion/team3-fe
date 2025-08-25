@@ -1,21 +1,15 @@
 .selectPlace {
   width: 100%;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: #fff;
-  margin-top: 40px;
   position: relative;
   overflow: hidden;
 }
 
 .header {
-  position: fixed;
-  top: 100px;
-  left: 20px;
-  right: 20px;
   z-index: 10000;
-  background: #fff;
+  margin-bottom: 16px;
 }
 
 .title {
@@ -38,10 +32,6 @@
 }
 
 .mapContainer {
-  position: fixed;
-  top: 217px;
-  left: 20px;
-  right: 20px;
   height: 240px;
   border-radius: 8px;
   overflow: hidden;
@@ -56,12 +46,9 @@
 }
 
 .alertSection {
-  position: fixed;
-  top: 465px; /* 지도 아래 (217px + 240px + 20px 간격) */
-  left: 20px;
-  right: 20px;
   display: flex;
   gap: 2px;
+  margin-top: 6px;
   z-index: 10000;
 }
 
@@ -76,10 +63,11 @@
 
 .mapExpanded {
   position: fixed;
-  top: 60px; /* TopBar 높이만큼 아래에서 시작 */
-  left: 0;
-  width: 100vw;
-  height: calc(100vh - 60px); /* TopBar 높이만큼 제외 */
+  top: 52px; /* TopBar 높이만큼 아래에서 시작 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 375px; /* 375 * 812 화면에 맞춤 */
+  height: 752px; /* 812px - 60px(TopBar) = 752px */
   z-index: 9999;
   background: #fff;
   margin: 0;
@@ -88,8 +76,8 @@
 }
 
 .mapExpanded .map {
-  width: 100vw;
-  height: calc(100vh - 60px);
+  width: 375px;
+  height: 752px;
   margin: 0;
 }
 
@@ -115,21 +103,30 @@
 
 .locationCard {
   position: fixed;
-  bottom: 120px; /* 다음으로 버튼 위 */
-  left: 20px;
-  right: 20px;
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  top: 556px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10001; /* 지도보다 위에 표시 */
+  width: 335px;
+  height: 135px;
+  padding: 25px 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #fffafa;
+  box-shadow: 0 4px 30px 0 rgba(120, 0, 0, 0.1);
+  z-index: 10001;
 }
 
 .locationInfo {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0 25px;
 }
 
 .locationTitle {
@@ -292,54 +289,69 @@
 }
 
 .expandedAddedLocationCard {
-  position: fixed;
-  bottom: 200px; /* 하얀 창 위 - 동적으로 조정됨 */
-  left: 20px;
-  right: 20px;
-  padding: 12px 16px;
-  background: #f26b4a;
-  border-radius: 8px;
   display: flex;
+  width: 335px;
+  height: 54px;
+  padding: 25px;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #ffd4ca;
+  box-shadow: 0 4px 30px 0 rgba(0, 48, 120, 0.1);
   z-index: 10001; /* 지도보다 위에 표시 */
-  margin-bottom: 8px; /* 하얀 창과의 간격 */
+  margin-bottom: 12px; /* 하얀 창과의 간격 */
 }
 
 .addedLocationCard span,
 .expandedAddedLocationCard span {
-  color: white;
-  font-size: 14px;
+  color: #f3633f;
+  text-align: center;
+  font-size: 16px;
   font-weight: 500;
-  line-height: 142%;
+  line-height: 150%; /* 24px */
+  letter-spacing: -0.485px;
 }
 
 .removeButton {
   background: none;
   border: none;
-  color: white;
-  font-size: 16px;
-  line-height: 150%;
+  color: #f3633f;
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
+  width: 9px;
+  height: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
 }
 
 .nextButton {
   position: fixed;
-  bottom: 44px;
-  left: 20px;
-  right: 20px;
-  padding: 16px;
-  background: #ccc;
+  bottom: 230px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  width: 335px;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #d9d9d9;
   border: none;
-  border-radius: 8px;
-  color: #666;
+  color: #b5b5b5;
   font-size: 16px;
   font-weight: 600;
   line-height: 150%;
   cursor: not-allowed;
   transition: all 0.2s;
   z-index: 10000;
+  /* ButtonEffect */
+  box-shadow: 0 4px 30px 0 rgba(120, 0, 0, 0.1);
 }
 
 .nextButton.active {
@@ -462,7 +474,7 @@
 /* 레스토랑 모달 스타일 */
 .restaurantModal {
   position: fixed;
-  bottom: 121px;
+  bottom: 305px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10002;

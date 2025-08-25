@@ -10,6 +10,10 @@ html {
   scroll-behavior: smooth;
   /* iOS Safari에서 줌 방지 */
   -webkit-text-size-adjust: 100%;
+  /* 전체 화면 고정 */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -22,12 +26,16 @@ body {
   /* 모바일에서 터치 스크롤 최적화 */
   -webkit-overflow-scrolling: touch;
   /* 기본 배경색 */
-  background-color: #ffffff;
+  background-color: #f0f0f0;
   /* 모바일에서 텍스트 선택 방지 (필요시) */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  /* 전체 화면 고정 */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* 모바일에서 터치 영역 최소화 */
@@ -36,7 +44,6 @@ input,
 select,
 textarea {
   font-size: 16px; /* iOS에서 줌 방지 */
-  min-height: 44px; /* 터치 영역 최소 크기 */
 }
 
 /* 모바일에서 스크롤바 숨기기 */
@@ -56,11 +63,12 @@ textarea {
 
 /* 기본 컨테이너 설정 */
 #root {
-  width: 100%;
-  min-height: 100vh;
-  max-width: 375px; /* 모바일 화면 최대 너비 */
-  margin: 0 auto; /* 중앙 정렬 */
-  position: relative;
+  background-color: white;
+  width: 375px;
+  height: 812px;
+  margin: 0 auto;
+  box-shadow: rgba(100, 100, 100, 0.2) 0px 0px 29px 0px;
+  overflow-x: hidden;
 }
 
 /* 모바일에서 안전 영역 고려 */

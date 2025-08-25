@@ -10,7 +10,7 @@ import asian from "../../assets/categories/asian.png";
 import pasta from "../../assets/categories/pasta.png";
 import zza from "../../assets/categories/zza.png";
 import sushi from "../../assets/categories/sushi.png";
-import CloseIcon from "../../assets/ui/CloseButton 2.svg";
+import CloseIcon from "../../assets/ui/sheetCloseButton.svg";
 
 type Category = { key: string; name: string; icon: string };
 
