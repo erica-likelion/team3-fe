@@ -5,7 +5,7 @@ import bar from "../assets/ui/Home Indicator.svg";
 const HomeIndicator = () => (
   <div
     style={{
-      position: "fixed",
+      position: "absolute",
       left: "50%",
       bottom: 0,
       transform: "translateX(-50%)",

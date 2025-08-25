@@ -81,7 +81,7 @@ const SelectPlace: React.FC = () => {
         if (currentMarkerRef.current) {
           currentMarkerRef.current.setPosition(latlng);
         } else {
-          // 첫 번째 클릭 시 마커 생성
+          // 첫 번째 클릭 시 마커 생성 (커스텀 이미지 사용)
           const markerImage = new kakao.maps.MarkerImage(
             mapSpotIcon,
             new kakao.maps.Size(34, 34),
@@ -93,9 +93,11 @@ const SelectPlace: React.FC = () => {
           const marker = new kakao.maps.Marker({
             position: latlng, // 클릭한 정확한 위치에 마커 표시
             image: markerImage,
+            zIndex: 10002, // z-index 직접 설정
           });
           marker.setMap(kakaoMap);
           currentMarkerRef.current = marker;
+          console.log("마커 생성됨:", latlng.getLat(), latlng.getLng());
         }
 
         // 좌표 저장

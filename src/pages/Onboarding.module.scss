@@ -1,6 +1,5 @@
 .onboarding {
   width: 100%;
-  min-height: 100vh;
   color: white;
   display: flex;
   flex-direction: column;
@@ -11,7 +10,7 @@
 
 .backgroundImages {
   position: absolute;
-  bottom: 0;
+  top: 812px;
   left: 0;
   right: 0;
   z-index: 1;
@@ -46,10 +45,12 @@
   position: relative;
   width: 100%;
   margin-top: 492px;
+  margin-bottom: 38px;
 }
 
-.content:has(+ .navigation .actionButtons) {
+.content.finalStep {
   margin-top: 444px;
+  margin-bottom: 20px;
 }
 
 .title {
@@ -80,17 +81,20 @@
   width: 100%;
   max-width: 335px;
   height: 54px;
-  position: fixed;
-  bottom: 108px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
+  position: relative;
   z-index: 10;
+  margin-bottom: 32px;
 }
 
 .skipButton {
-  flex: 1;
-  padding: 16px;
+  display: flex;
+  width: 155px;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
   background: #ffd4ca;
   border: none;
   border-radius: 10px;
@@ -106,10 +110,35 @@
   background: #ffc4b8;
 }
 
-.nextButton,
+.nextButton {
+  display: flex;
+  width: 155px;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  color: #f6804d;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 150%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
 .startButton {
-  flex: 1;
-  padding: 16px;
+  display: flex;
+  width: 335px;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
   background: white;
   border: none;
   border-radius: 12px;
@@ -127,17 +156,25 @@
 }
 
 .analysisButton {
-  flex: 1;
-  padding: 16px;
-  background: white;
-  border: none;
+  display: flex;
+  width: 335px;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
   border-radius: 10px;
+  background: #d9d9d9;
+  border: none;
   color: #f3633f;
   font-size: 16px;
   font-weight: 600;
   line-height: 150%;
   cursor: pointer;
   transition: background-color 0.2s;
+  /* ButtonEffect */
+  box-shadow: 0 4px 30px 0 rgba(120, 0, 0, 0.1);
 }
 
 .analysisButton:hover {
@@ -159,12 +196,18 @@
 }
 
 .navigation:has(.actionButtons) {
-  bottom: 180px;
+  margin-bottom: 180px;
 }
 
 .actionButton {
-  width: 100%;
-  padding: 16px;
+  display: flex;
+  width: 335px;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
   background: white;
   border: none;
   border-radius: 12px;
@@ -181,8 +224,14 @@
 }
 
 .allianceButton {
-  width: 100%;
-  padding: 16px;
+  display: flex;
+  width: 335px;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
   background: #ffd4ca;
   border: none;
   border-radius: 12px;
@@ -195,8 +244,14 @@
 }
 
 .communityButton {
-  width: 100%;
-  padding: 16px;
+  display: flex;
+  width: 335px;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
   background: transparent;
   border: 1px solid #fffafa;
   border-radius: 12px;
@@ -206,14 +261,15 @@
   line-height: 150%;
   cursor: pointer;
   transition: background-color 0.2s;
+  margin-bottom: 48px;
 }
 
 .indicators {
   display: flex;
   gap: 10px;
-  margin-bottom: 76px;
   z-index: 10;
   position: relative;
+  margin-bottom: 76px;
 }
 
 .indicator {

@@ -13,12 +13,12 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  z-index: 1000;
+  z-index: 10000;
 }
 .sheet {
   position: fixed;
   left: 50%;
-  bottom: 0;
+  bottom: 186px;
   transform: translateX(-50%);
   width: 375px;
   max-width: 100%;
@@ -27,7 +27,7 @@
   border-top-right-radius: 28px;
   box-shadow: 0 4px 15px rgba(120, 0, 0, 0.1);
   padding: 16px 20px 24px;
-  z-index: 1001;
+  z-index: 10001;
 }
 .grabber {
   width: 144px;
@@ -67,6 +67,7 @@
   width: 16px;
   height: 16px;
   display: block;
+  object-fit: contain;
 }
 
 /* ===== Fields ===== */

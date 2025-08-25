@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import type { ReactNode } from "react";
 import s from "./BottomSheet.module.scss";
-import bottomSheetCloseButton from "../../assets/ui/bottomSheetCloseButton.svg";
+import bottomSheetCloseButton from "../../assets/ui/sheetCloseButton.svg";
 
 type Props = {
   open: boolean;

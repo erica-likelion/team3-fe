@@ -327,13 +327,23 @@
   transition: transform 0.3s ease;
 }
 .cta {
-  width: 100%;
+  position: fixed;
+  bottom: 230px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 335px;
   height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
   border-radius: 10px;
   background: #f3633f;
   color: #fff;
   border: 0;
   font: 700 16px/1 Pretendard, system-ui, -apple-system, sans-serif;
-  box-shadow: var(--card-shadow);
   cursor: pointer;
+  /* ButtonEffect */
+  box-shadow: 0 4px 30px 0 rgba(120, 0, 0, 0.1);
 }

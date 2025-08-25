@@ -95,28 +95,40 @@
   color: #fff !important;
 }
 
-/* 고정 버튼 */
 .next {
-  position: fixed; /* ← sticky 제거 */
+  position: fixed;
+  bottom: 230px;
   left: 50%;
   transform: translateX(-50%);
-  bottom: var(--btn-bottom-offset); /* ← px 포함 */
+  display: flex;
   width: 335px;
-  height: var(--btn-h);
-  margin: 0;
-  border: 0;
-  border-radius: var(--radius-16);
-  background: var(--OR600);
-  color: #fff;
-  font-weight: 600;
+  height: 54px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #d9d9d9;
+  border: none;
+  color: #b5b5b5;
   font-size: 16px;
+  font-weight: 600;
   line-height: 150%;
-  display: block;
-  z-index: 5; /* 다른 요소 위로 */
+  cursor: not-allowed;
+  transition: all 0.2s;
+  z-index: 10000;
+  /* ButtonEffect */
+  box-shadow: 0 4px 30px 0 rgba(120, 0, 0, 0.1);
 }
-.disabled {
-  background: #e6e6e6 !important;
-  color: #bdbdbd !important;
+.enabled {
+  background: #f3633f;
+  color: white;
+  cursor: pointer;
+}
+
+.enabled:hover {
+  background: #e55a3a;
 }
 
 /* === Exit Modal 추가 스타일 === */

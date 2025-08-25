@@ -110,7 +110,7 @@ export default function SelectType() {
       </div>
 
       <button
-        className={`${styles.next} ${!selected ? styles.disabled : ""}`}
+        className={`${styles.next} ${selected ? styles.enabled : ""}`}
         disabled={!selected}
         onClick={onNext}
         type="button"
