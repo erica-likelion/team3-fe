@@ -79,7 +79,7 @@ export default function CommunityMainPage() {
       content: serverPost.content,
       nick: "익명", // 서버에서 author 필드가 없으므로 기본값 사용
       ts: createdAt,
-      count: 0, // 서버에서 commentCount 필드가 없으므로 기본값 사용
+      count: serverPost.commentCount || 0, // 서버에서 commentCount 사용
       thumb: serverPost.imageUrl || undefined,
       pairIcons:
         serverPost.category === "PARTNERSHIP" &&
