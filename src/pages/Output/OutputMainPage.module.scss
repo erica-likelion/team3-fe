@@ -316,19 +316,9 @@
   display: block;
 }
 
-.ctaWrap {
-  position: fixed;
-  bottom: 44px;
-  left: 20px;
-  right: 20px;
-  display: grid;
-  place-items: center;
-  z-index: 1000;
-  transition: transform 0.3s ease;
-}
 .cta {
   position: fixed;
-  bottom: 230px;
+  top: 145px;
   left: 50%;
   transform: translateX(-50%);
   width: 335px;

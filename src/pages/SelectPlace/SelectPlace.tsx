@@ -172,11 +172,11 @@ const SelectPlace: React.FC = () => {
   const getRedBoxStyle = () => {
     if (!isMapExpanded || !isLocationAdded) return {};
 
-    // 하얀 창의 높이를 고려하여 빨간 창 위치 계산
-    // 하얀 창은 bottom: 120px, 간격 8px 추가
-    const redBoxBottom = 120 + whiteCardHeight + 8;
+    // viewport 단위를 사용하여 모든 화면에서 일관된 위치 계산
+    // 하얀 창은 68vh, 간격 8px 추가
+    const redBoxBottom = 68 + (whiteCardHeight / window.innerHeight) * 100 + 1; // 1vh ≈ 8px
     return {
-      bottom: `${redBoxBottom}px`,
+      bottom: `${redBoxBottom}vh`,
     };
   };
 
