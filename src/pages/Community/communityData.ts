@@ -82,6 +82,12 @@ export const getPostById = (id: number) =>
   loadUserPosts().find((p) => p.id === id);
 
 export function getCommentCount(id: number, fallback = 0): number {
+  // fallback이 0이 아닌 경우 (서버에서 받은 commentCount) 우선 사용
+  if (fallback > 0) {
+    return fallback;
+  }
+
+  // 로컬 스토리지에서 댓글 수 확인 (기존 로직)
   try {
     const raw = localStorage.getItem(`community:comments:${id}`);
     if (!raw) return fallback;

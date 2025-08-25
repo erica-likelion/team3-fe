@@ -26,7 +26,7 @@ export default function CommunityPostPage() {
   const isPartner = board === "제휴게시판";
 
   const fileRef = useRef<HTMLInputElement>(null);
-  const [images, setImages] = useState<string[]>([]); // ✅ dataURL 문자열 보관
+  const [image, setImages] = useState<string[]>([]); // ✅ dataURL 문자열 보관
   const [imageFiles, setImageFiles] = useState<File[]>([]); // 실제 파일 객체 보관
 
   const [myCategory, setMyCategory] = useState<string | null>(null);
@@ -94,16 +94,7 @@ export default function CommunityPostPage() {
         "community:submitPost",
         submit as EventListener
       );
-  }, [
-    board,
-    title,
-    body,
-    images,
-    imageFiles,
-    myCategory,
-    partnerCategory,
-    nav,
-  ]);
+  }, [board, title, body, image, imageFiles, myCategory, partnerCategory, nav]);
 
   useEffect(() => {
     if (!ddOpen) return;
@@ -238,7 +229,7 @@ export default function CommunityPostPage() {
 
       <div className={s.dividerAfterBody} aria-hidden />
 
-      {images.length === 0 ? (
+      {image.length === 0 ? (
         <div className={s.attachWrap}>
           <button
             type="button"
@@ -251,7 +242,7 @@ export default function CommunityPostPage() {
         </div>
       ) : (
         <div className={s.thumbRow}>
-          {images.map((src, i) => (
+          {image.map((src, i) => (
             <div className={s.thumb} key={`${src}-${i}`}>
               <img src={src} alt="" />
               <button

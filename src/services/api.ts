@@ -80,6 +80,7 @@ export interface ServerPost {
   createdAt: string;
   imageUrl?: string | null; // Changed from imageUrls
   comments?: ServerComment[] | null; // 댓글 목록 추가
+  commentCount?: number; // 댓글 수 추가
 }
 
 // 업종 매핑 함수
@@ -99,7 +100,7 @@ export const mapCategoryToEnglish = (koreanCategory: string): string => {
   return categoryMap[koreanCategory] || koreanCategory;
 };
 
-export const submitPost = async (data: PostData, images?: File[]) => {
+export const submitPost = async (data: PostData, image?: File[]) => {
   try {
     // FormData로 전송
     const formData = new FormData();
@@ -111,9 +112,9 @@ export const submitPost = async (data: PostData, images?: File[]) => {
     formData.append("dto", jsonBlob);
 
     // 이미지 파일들이 있는 경우에만 추가
-    if (images && images.length > 0) {
-      images.forEach((image) => {
-        formData.append("images", image);
+    if (image && image.length > 0) {
+      image.forEach((image) => {
+        formData.append("image", image);
       });
     }
 
