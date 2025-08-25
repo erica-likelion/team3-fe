@@ -23,6 +23,19 @@ const fmtAgo = (ts: number) => {
 const convertServerPostToLocal = (serverPost: ServerPost): Post => {
   const createdAt = new Date(serverPost.createdAt).getTime();
 
+  // imageUrl을 완전한 URL로 변환
+  let fullImageUrl = undefined;
+  if (serverPost.imageUrl) {
+    // 상대 경로인 경우 API 베이스 URL과 결합
+    if (serverPost.imageUrl.startsWith("/")) {
+      fullImageUrl = `${import.meta.env.VITE_API_BASE_URL}${
+        serverPost.imageUrl
+      }`;
+    } else {
+      fullImageUrl = serverPost.imageUrl;
+    }
+  }
+
   return {
     id: serverPost.id,
     board: serverPost.category === "PARTNERSHIP" ? "제휴게시판" : "자유게시판",
@@ -31,7 +44,7 @@ const convertServerPostToLocal = (serverPost: ServerPost): Post => {
     nick: "익명", // 서버에서 author 필드가 없으므로 기본값 사용
     ts: createdAt,
     count: 0, // 서버에서 commentCount 필드가 없으므로 기본값 사용
-    thumb: serverPost.imageUrl || undefined,
+    thumb: fullImageUrl,
     pairIcons:
       serverPost.category === "PARTNERSHIP" &&
       serverPost.myStoreCategory &&
